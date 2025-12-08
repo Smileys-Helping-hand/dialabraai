@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import MenuItemCard from '../../../components/MenuItemCard';
-import { supabase } from '../../../lib/supabase';
 import { menuCategories } from '../../../lib/utils';
 
 const emptyForm = {
@@ -27,38 +26,24 @@ export default function AdminMenuPage() {
   useEffect(() => {
     let active = true;
     const fetchItems = async () => {
-      if (!supabase) {
-        setError('Supabase is not configured.');
-        setLoading(false);
-        return;
-      }
       setLoading(true);
-      const { data, error } = await supabase.from('menu').select('*').order('created_at', { ascending: false });
-      if (!active) return;
-      if (error) {
-        setError(error.message);
-      } else {
+      try {
+        const res = await fetch('/api/menu/list');
+        if (!active) return;
+        if (!res.ok) throw new Error('Failed to fetch menu');
+        const data = await res.json();
         setItems(data || []);
+      } catch (err) {
+        if (active) setError(err.message);
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchItems();
 
-    const channel = supabase
-      ?.channel('admin-menu')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'menu' }, (payload) => {
-        setItems((prev) => {
-          const without = prev.filter((item) => item.id !== payload.new.id);
-          const next = payload.eventType === 'DELETE' ? without : [payload.new, ...without];
-          return next.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        });
-      })
-      .subscribe();
-
     return () => {
       active = false;
-      channel && supabase?.removeChannel(channel);
     };
   }, []);
 
@@ -104,14 +89,11 @@ export default function AdminMenuPage() {
 
   const handleUploadIfNeeded = async () => {
     if (!file) return form.image_url || '';
-    if (!supabase) throw new Error('Supabase is not configured.');
-
-    const extension = file.name.split('.').pop();
-    const path = `menu/${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
-    const { data, error } = await supabase.storage.from('menu-images').upload(path, file, { upsert: true });
-    if (error) throw new Error(error.message);
-    const { data: publicData } = supabase.storage.from('menu-images').getPublicUrl(data.path);
-    return publicData.publicUrl;
+    
+    // TODO: Implement Firebase Storage upload or use external service
+    // For now, return a placeholder or the existing image_url
+    console.warn('File upload not yet implemented for Firebase. Use external storage or Firebase Storage SDK.');
+    return form.image_url || '';
   };
 
   const handleSubmit = async (e) => {

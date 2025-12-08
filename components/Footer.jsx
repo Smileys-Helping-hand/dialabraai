@@ -41,8 +41,18 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-cream/10 bg-black/30 py-4 text-center text-xs text-cream/60">
-        © {new Date().getFullYear()} Dial-A-Braai. Crafted with pride in Cape Town.
+      <div className="border-t border-cream/10 bg-black/30 py-4">
+        <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-cream/60">
+            © {new Date().getFullYear()} Dial-A-Braai. Crafted with pride in Cape Town.
+          </p>
+          <Link
+            href="/admin"
+            className="px-4 py-2 bg-gold/20 text-gold border border-gold/50 rounded-xl text-sm font-semibold hover:bg-gold/30 transition"
+          >
+            🔐 Admin Login
+          </Link>
+        </div>
       </div>
     </footer>
   );

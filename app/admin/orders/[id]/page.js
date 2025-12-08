@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import AdminStatusButtons from '../../../../components/AdminStatusButtons';
 import OrderStatusBadge from '../../../../components/OrderStatusBadge';
-import { supabase } from '../../../../lib/supabase';
 
 const statusTimeline = ['pending', 'preparing', 'ready', 'completed'];
 
@@ -29,37 +28,28 @@ export default function AdminOrderDetailPage() {
     if (!orderId) return;
 
     const fetchOrder = async () => {
-      if (!supabase) {
-        setError('Supabase is not configured.');
-        setLoading(false);
-        return;
-      }
       setLoading(true);
-      const { data, error } = await supabase.from('orders').select('*').eq('id', orderId).single();
-      if (!active) return;
-      if (error) {
-        setError(error.message || 'Unable to load order.');
-      } else {
+      try {
+        const res = await fetch(`/api/orders/get?id=${orderId}`);
+        if (!active) return;
+        if (!res.ok) throw new Error('Unable to load order');
+        const data = await res.json();
         setOrder(data);
+      } catch (err) {
+        if (active) setError(err.message || 'Unable to load order.');
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchOrder();
 
-    const channel = supabase
-      ?.channel(`admin-order-${orderId}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` }, (payload) => {
-        setOrder((prev) => {
-          if (payload.eventType === 'DELETE') return null;
-          return payload.new || prev;
-        });
-      })
-      .subscribe();
+    // Poll for updates every 5 seconds
+    const interval = setInterval(fetchOrder, 5000);
 
     return () => {
       active = false;
-      channel && supabase?.removeChannel(channel);
+      clearInterval(interval);
     };
   }, [orderId]);
 
@@ -155,6 +145,11 @@ export default function AdminOrderDetailPage() {
             <p className="text-sm text-charcoal/70">
               {order.customer_name || 'Customer'} • {order.customer_phone || 'N/A'}
             </p>
+            {order.customer_email && (
+              <p className="text-sm text-charcoal/70">
+                📧 {order.customer_email}
+              </p>
+            )}
             {order.created_at && (
               <p className="text-xs text-charcoal/60">
                 Created: {new Date(order.created_at).toLocaleString()}

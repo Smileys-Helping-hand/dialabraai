@@ -7,7 +7,7 @@ const navLinks = [
   { href: '/home', label: 'Home' },
   { href: '/menu', label: 'Menu' },
   { href: '/order', label: 'Order' },
-  { href: '/admin/orders', label: 'Admin' },
+  // Admin link hidden - access directly via /admin/orders
 ];
 
 export default function Navbar() {

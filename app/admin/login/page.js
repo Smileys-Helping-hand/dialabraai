@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase, persistAdminSession, getStoredAdminSession } from '../../../lib/supabase';
+import { auth, persistAdminSession, getStoredAdminSession } from '../../../lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function AdminLoginPage() {
 
   useEffect(() => {
     const existing = getStoredAdminSession();
-    if (existing?.access_token) {
+    if (existing?.uid) {
       router.replace('/admin/orders');
     }
   }, [router]);
@@ -22,26 +23,25 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError('');
 
-    if (!supabase) {
-      setError('Supabase is not configured. Please add your project keys.');
+    if (!auth) {
+      setError('Firebase is not configured. Please add your project keys.');
       return;
     }
 
     setLoading(true);
-    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
-    if (authError) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        persistAdminSession(userCredential.user);
+        router.replace('/admin/orders');
+      } else {
+        setError('Unable to sign in.');
+      }
+    } catch (authError) {
       setError(authError.message || 'Unable to sign in.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    if (data?.session) {
-      persistAdminSession(data.session);
-      router.replace('/admin/orders');
-    } else {
-      setError('No session returned from Supabase.');
-    }
-    setLoading(false);
   };
 
   return (

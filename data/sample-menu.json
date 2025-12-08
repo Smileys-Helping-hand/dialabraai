@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Grilled Snoek",
+    "category": "Seafood",
+    "description": "Local snoek grilled to perfection.",
+    "price": 120.0,
+    "image_url": "/images/menu/snoek.svg",
+    "stock": 50,
+    "low_stock_threshold": 10
+  },
+  {
+    "id": 2,
+    "name": "Beef Braai",
+    "category": "Meat",
+    "description": "Charred beef with signature spice rub.",
+    "price": 150.0,
+    "image_url": "/images/menu/beef.svg",
+    "stock": 30,
+    "low_stock_threshold": 5
+  },
+  {
+    "id": 3,
+    "name": "Chicken Quarter",
+    "category": "Chicken",
+    "description": "Marinated chicken quarter with our house sauce.",
+    "price": 90.0,
+    "image_url": "/images/menu/chicken.svg",
+    "stock": 40,
+    "low_stock_threshold": 10
+  }
+]

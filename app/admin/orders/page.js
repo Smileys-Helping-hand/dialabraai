@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import AdminOrderCard from '../../../components/AdminOrderCard';
 import AdminStatusButtons from '../../../components/AdminStatusButtons';
 import OrderStatusBadge from '../../../components/OrderStatusBadge';
-import { supabase } from '../../../lib/supabase';
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -19,46 +18,33 @@ export default function AdminOrdersPage() {
     let active = true;
 
     const fetchOrders = async () => {
-      if (!supabase) {
-        setError('Supabase is not configured.');
-        setLoading(false);
-        return;
-      }
       setLoading(true);
-      const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-      if (!active) return;
-      if (error) {
-        setError(error.message);
-      } else {
+      try {
+        const res = await fetch('/api/orders/list');
+        if (!active) return;
+        if (!res.ok) throw new Error('Failed to fetch orders');
+        const data = await res.json();
         setOrders(data || []);
         if (data && data.length > 0) {
           setSelectedId((prev) => prev || data[0].id);
         }
+      } catch (err) {
+        if (active) setError(err.message);
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchOrders();
 
-    const channel = supabase
-      ?.channel('admin-orders')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
-        setOrders((prev) => {
-          const without = prev.filter((o) => o.id !== payload.new.id);
-          const next = payload.eventType === 'DELETE' ? without : [payload.new, ...without];
-          return next.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        });
-        if (!selectedId) {
-          setSelectedId(payload.new.id);
-        }
-      })
-      .subscribe();
+    // Poll for updates every 10 seconds
+    const interval = setInterval(fetchOrders, 10000);
 
     return () => {
       active = false;
-      channel && supabase?.removeChannel(channel);
+      clearInterval(interval);
     };
-  }, [selectedId]);
+  }, []);
 
   const updateStatus = async (status) => {
     if (!selected) return;
@@ -136,6 +122,11 @@ export default function AdminOrdersPage() {
                   <p className="text-sm text-charcoal/70">
                     {selected.customer_name} • {selected.customer_phone}
                   </p>
+                  {selected.customer_email && (
+                    <p className="text-sm text-charcoal/70">
+                      📧 {selected.customer_email}
+                    </p>
+                  )}
                 </div>
                 <OrderStatusBadge status={selected.status} />
               </div>

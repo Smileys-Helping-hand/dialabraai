@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import OrderStatusBadge from '../../../components/OrderStatusBadge';
-import { supabase } from '../../../lib/supabase';
 
 export default function OrderTrackingPage({ params }) {
   const { id } = params || {};
@@ -20,44 +19,32 @@ export default function OrderTrackingPage({ params }) {
 
   useEffect(() => {
     if (!id) return;
-    if (!supabase) {
-      setError('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
-      setLoading(false);
-      return;
-    }
+    let active = true;
 
     const fetchOrder = async () => {
       setLoading(true);
       setError('');
-      const { data, error: fetchError } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (fetchError || !data) {
-        setError(fetchError?.message || 'Order not found.');
-      } else {
+      try {
+        const res = await fetch(`/api/orders/get?id=${id}`);
+        if (!active) return;
+        if (!res.ok) throw new Error('Order not found');
+        const data = await res.json();
         setOrder(data);
+      } catch (err) {
+        if (active) setError(err.message || 'Order not found.');
+      } finally {
+        if (active) setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchOrder();
 
-    const channel = supabase
-      .channel(`orders-status-${id}`)
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders', filter: `id=eq.${id}` },
-        (payload) => {
-          if (payload.new) setOrder(payload.new);
-        }
-      )
-      .subscribe();
+    // Poll for updates every 10 seconds
+    const interval = setInterval(fetchOrder, 10000);
 
     return () => {
-      supabase.removeChannel(channel);
+      active = false;
+      clearInterval(interval);
     };
   }, [id]);
 

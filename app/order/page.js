@@ -8,7 +8,7 @@ import { clearCart, isNonEmpty, isValidPhone, loadCart, saveCart } from '../../l
 export default function OrderPage() {
   const router = useRouter();
   const [cart, setCart] = useState([]);
-  const [customer, setCustomer] = useState({ name: '', phone: '', notes: '' });
+  const [customer, setCustomer] = useState({ name: '', phone: '', email: '', notes: '' });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -54,6 +54,12 @@ export default function OrderPage() {
       return;
     }
 
+    // Optional email validation
+    if (customer.email && !customer.email.includes('@')) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch('/api/orders/create', {
@@ -63,6 +69,7 @@ export default function OrderPage() {
           items: cart,
           customer_name: customer.name.trim(),
           customer_phone: customer.phone.trim(),
+          customer_email: customer.email.trim(),
           notes: customer.notes.trim(),
           total_price: total,
         }),
@@ -140,6 +147,17 @@ export default function OrderPage() {
               value={customer.phone}
               onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
               aria-label="Contact Number"
+            />
+          </label>
+          <label className="space-y-1 block">
+            <span className="text-sm font-semibold text-charcoal">Email (Optional - for order updates)</span>
+            <input
+              type="email"
+              className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+              placeholder="your@email.com"
+              value={customer.email}
+              onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+              aria-label="Email"
             />
           </label>
           <label className="space-y-1 block">
