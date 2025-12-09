@@ -20,6 +20,9 @@ export default function AdminMenuPage() {
   const [form, setForm] = useState(emptyForm);
   const [file, setFile] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [showBulkImport, setShowBulkImport] = useState(false);
+  const [bulkText, setBulkText] = useState('');
+  const [bulkImporting, setBulkImporting] = useState(false);
 
   const title = useMemo(() => (editingId ? 'Update Menu Item' : 'Add New Menu Item'), [editingId]);
 
@@ -133,15 +136,171 @@ export default function AdminMenuPage() {
     }
   };
 
+  const parseBulkMenu = (text) => {
+    const lines = text.trim().split('\n');
+    const items = [];
+    let currentCategory = 'Mains';
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+
+      // Detect category headers
+      if (trimmed.match(/^(Meat|Chicken|Seafood|Sides|Combos|Salads|Snacks|Specialty)$/i)) {
+        const categoryMap = {
+          'meat': 'Mains',
+          'chicken': 'Mains', 
+          'seafood': 'Starters',
+          'sides': 'Sides',
+          'combos': 'Mains',
+          'salads': 'Sides',
+          'snacks': 'Sides',
+          'specialty': 'Mains'
+        };
+        currentCategory = categoryMap[trimmed.toLowerCase()] || 'Mains';
+        continue;
+      }
+
+      // Parse menu item with price - format: "Item Name (details): R250.00" or "Item Name: R250.00"
+      const priceMatch = trimmed.match(/^(.+?):\s*R?(\d+(?:\.\d{2})?)$/);
+      if (priceMatch) {
+        let [, namePart, price] = priceMatch;
+        
+        // Extract description from parentheses
+        let description = '';
+        const descMatch = namePart.match(/^([^(]+)\(([^)]+)\)/);
+        if (descMatch) {
+          namePart = descMatch[1].trim();
+          description = descMatch[2].trim();
+        }
+
+        items.push({
+          name: namePart.trim(),
+          description: description,
+          price: parseFloat(price),
+          category: currentCategory,
+          image_url: ''
+        });
+      }
+    }
+    
+    return items;
+  };
+
+  const handleBulkImport = async () => {
+    if (!bulkText.trim()) {
+      setError('Please paste your menu text');
+      return;
+    }
+
+    setBulkImporting(true);
+    setError('');
+    
+    try {
+      const parsedItems = parseBulkMenu(bulkText);
+      
+      if (parsedItems.length === 0) {
+        throw new Error('No valid menu items found. Make sure format is: "Item Name (description): R250.00"');
+      }
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const item of parsedItems) {
+        try {
+          const res = await fetch('/api/menu/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item),
+          });
+          
+          if (res.ok) {
+            const json = await res.json();
+            if (json.item) {
+              setItems((prev) => [json.item, ...prev]);
+              successCount++;
+            }
+          } else {
+            failCount++;
+          }
+        } catch {
+          failCount++;
+        }
+      }
+
+      setBulkText('');
+      setShowBulkImport(false);
+      alert(`Import complete!\n✅ Successfully added: ${successCount}\n❌ Failed: ${failCount}`);
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBulkImporting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-cream px-4 py-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 md:grid md:grid-cols-5">
         <section className="md:col-span-2 card p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-heading text-primary">{title}</h1>
-            {saving && <span className="text-xs text-charcoal/70">Saving…</span>}
+            <button
+              onClick={() => setShowBulkImport(!showBulkImport)}
+              className="px-3 py-1 text-sm bg-gold/20 text-primary rounded-lg hover:bg-gold/30 transition"
+            >
+              {showBulkImport ? 'Cancel' : 'Bulk Import'}
+            </button>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
+          
+          {showBulkImport ? (
+            <div className="space-y-3">
+              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-xl text-sm">
+                <p className="font-semibold text-amber-900 mb-2">📋 Bulk Import Instructions:</p>
+                <p className="text-amber-800 mb-1">Paste your menu in this format:</p>
+                <pre className="text-xs bg-white p-2 rounded mt-2 text-charcoal">
+{`Meat
+T-Bone Steak (200g-300g): R40.00
+Lamb Chops (+ 12-13 pieces): R255.00
+
+Chicken
+Mixed Chicken Portions (7 Pieces): R95.00
+
+Salads
+Greek Salad: R95.00`}
+                </pre>
+              </div>
+              
+              <textarea
+                value={bulkText}
+                onChange={(e) => setBulkText(e.target.value)}
+                placeholder="Paste your menu here..."
+                className="w-full h-64 px-4 py-3 border-2 border-charcoal/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono text-sm"
+              />
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={handleBulkImport}
+                  disabled={bulkImporting || !bulkText.trim()}
+                  className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {bulkImporting ? 'Importing...' : '✅ Import Menu'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowBulkImport(false);
+                    setBulkText('');
+                  }}
+                  className="px-4 py-2 bg-charcoal/10 text-charcoal rounded-xl hover:bg-charcoal/20 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {saving && <span className="text-xs text-charcoal/70">Saving…</span>}
           <form className="space-y-3" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-charcoal">Name</label>
@@ -232,6 +391,8 @@ export default function AdminMenuPage() {
               )}
             </div>
           </form>
+          </>
+          )}
         </section>
         <section className="md:col-span-3 space-y-3">
           <div className="flex items-center justify-between">
