@@ -5,6 +5,11 @@ const protectedPaths = ['/admin', '/admin/orders', '/admin/stats'];
 export function middleware(req) {
   const { pathname } = req.nextUrl;
 
+  // Redirect root to /home
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/home', req.url));
+  }
+
   const isProtected = protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`));
   const isLogin = pathname === '/admin/login';
 
@@ -19,5 +24,5 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/', '/admin/:path*'],
 };
