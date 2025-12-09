@@ -339,5 +339,7 @@ export default function AdminOrdersPage() {
         </div>
       </div>
     </div>
+    </div>
   );
 }
+
