@@ -1,9 +1,1 @@
-{
-  "/home/page": "app/home/page.js",
-  "/menu/page": "app/menu/page.js",
-  "/api/menu/list/route": "app/api/menu/list/route.js",
-  "/order/page": "app/order/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/stats/page": "app/admin/stats/page.js"
-}
+{}
