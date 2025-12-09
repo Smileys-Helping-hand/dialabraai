@@ -221,9 +221,16 @@ export default function AdminMenuPage() {
               successCount++;
             }
           } else {
+            const errorData = await res.json();
+            if (errorData.error && errorData.error.includes('Firebase is not configured')) {
+              throw new Error('Firebase Admin SDK not configured. Add FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY to environment variables.');
+            }
             failCount++;
           }
-        } catch {
+        } catch (err) {
+          if (err.message.includes('Firebase')) {
+            throw err;
+          }
           failCount++;
         }
       }
