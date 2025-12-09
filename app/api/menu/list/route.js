@@ -26,7 +26,7 @@ export async function GET() {
   }
 
   try {
-    const snapshot = await adminDb.collection('menu').orderBy('category').orderBy('name').get();
+    const snapshot = await adminDb.collection('menu').get();
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     return new Response(JSON.stringify(data || []), {
