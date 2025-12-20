@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format-key": "node scripts/format-firebase-key.js",
+    "check-env": "node scripts/check-environment.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
