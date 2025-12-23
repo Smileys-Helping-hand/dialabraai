@@ -26,28 +26,23 @@ export default function AdminMenuPage() {
 
   const title = useMemo(() => (editingId ? 'Update Menu Item' : 'Add New Menu Item'), [editingId]);
 
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/menu/list', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to fetch menu');
+      const data = await res.json();
+      setItems(data || []);
+      setError(''); // Clear any previous errors
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let active = true;
-    const fetchItems = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch('/api/menu/list');
-        if (!active) return;
-        if (!res.ok) throw new Error('Failed to fetch menu');
-        const data = await res.json();
-        setItems(data || []);
-      } catch (err) {
-        if (active) setError(err.message);
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-
     fetchItems();
-
-    return () => {
-      active = false;
-    };
   }, []);
 
   const resetForm = () => {
@@ -81,7 +76,10 @@ export default function AdminMenuPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Unable to delete item');
-      setItems((prev) => prev.filter((m) => m.id !== item.id));
+      
+      // Refresh the entire list from Firebase to ensure consistency
+      await fetchItems();
+      
       if (editingId === item.id) resetForm();
     } catch (err) {
       setError(err.message);
@@ -121,12 +119,8 @@ export default function AdminMenuPage() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Unable to save menu item');
 
-      if (json.item) {
-        setItems((prev) => {
-          const without = prev.filter((m) => m.id !== json.item.id);
-          return [json.item, ...without].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        });
-      }
+      // Refresh the entire list from Firebase to ensure consistency
+      await fetchItems();
 
       resetForm();
     } catch (err) {
@@ -235,6 +229,9 @@ export default function AdminMenuPage() {
         }
       }
 
+      // Refresh the entire list from Firebase to ensure consistency
+      await fetchItems();
+      
       setBulkText('');
       setShowBulkImport(false);
       alert(`Import complete!\n✅ Successfully added: ${successCount}\n❌ Failed: ${failCount}`);

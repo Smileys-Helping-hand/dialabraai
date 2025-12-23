@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
 import { menuCategories } from '@/lib/utils';
 
+// Disable caching for this route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function POST(request) {
   if (!adminDb) {
     return NextResponse.json(

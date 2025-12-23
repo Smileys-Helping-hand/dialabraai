@@ -14,7 +14,7 @@ export default function MenuPage() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await fetch('/api/menu/list');
+        const res = await fetch('/api/menu/list', { cache: 'no-store' });
         if (!res.ok) {
           throw new Error('Request failed');
         }

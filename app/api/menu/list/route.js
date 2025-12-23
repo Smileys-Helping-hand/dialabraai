@@ -3,6 +3,10 @@ import { demoStore } from '@/lib/demo-store';
 import fs from 'fs/promises';
 import path from 'path';
 
+// Disable all caching for this route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   // If Firebase isn't configured, fall back to sample data
   if (!adminDb) {
@@ -31,7 +35,12 @@ export async function GET() {
 
     return new Response(JSON.stringify(data || []), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     });
   } catch (error) {
     console.error('Failed to fetch menu:', error.message);
