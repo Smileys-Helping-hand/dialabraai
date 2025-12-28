@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+import AccountButton from './AccountButton';
 
 const navLinks = [
   { href: '/home', label: 'Home' },
@@ -54,13 +55,16 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <Link
-          href="/order"
-          className="brand-button text-base font-semibold"
-          aria-label="Start an order"
-        >
-          Order now
-        </Link>
+        <div className="flex items-center gap-3">
+          <AccountButton />
+          <Link
+            href="/order"
+            className="brand-button text-base font-semibold"
+            aria-label="Start an order"
+          >
+            Order now
+          </Link>
+        </div>
       </div>
 
       <nav className="md:hidden border-t border-gold/30 bg-white/80 backdrop-blur">

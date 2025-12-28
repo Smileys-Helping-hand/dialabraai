@@ -10,7 +10,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.googleusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
     ],
+    unoptimized: process.env.NODE_ENV === 'development',
   },
   // Enable compression
   compress: true,

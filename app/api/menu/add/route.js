@@ -36,7 +36,8 @@ export async function POST(request) {
       description,
       price: numericPrice,
       category,
-      image_url,
+      image_url: image_url || '',
+      available: true,
       created_at: new Date().toISOString(),
     });
 

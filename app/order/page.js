@@ -2,19 +2,40 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CartItem from '../../components/CartItem';
+import SaveCartModal from '../../components/SaveCartModal';
+import { useAuth } from '@/lib/auth';
 import { calculateTotal } from '../../lib/price';
-import { clearCart, isNonEmpty, isValidPhone, loadCart, saveCart } from '../../lib/utils';
+import { clearCart, isNonEmpty, isValidPhone, loadCart, saveCart, loadCustomerInfo, saveCustomerInfo } from '../../lib/utils';
 
 export default function OrderPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [cart, setCart] = useState([]);
   const [customer, setCustomer] = useState({ name: '', phone: '', email: '', notes: '' });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [savedCustomer, setSavedCustomer] = useState(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
 
   useEffect(() => {
     const stored = loadCart();
     if (stored.length) setCart(stored);
+    
+    // Load saved customer info
+    const savedInfo = loadCustomerInfo();
+    if (savedInfo) {
+
+    // Auto-fill from user account if logged in
+    if (user && !savedInfo) {
+      setCustomer({
+        name: user.name || '',
+        phone: user.phone || '',
+        email: user.email || '',
+        notes: ''
+      });
+    }
+  }, [usersetSavedCustomer(savedInfo);
+    }
   }, []);
 
   useEffect(() => {
@@ -34,6 +55,17 @@ export default function OrderPage() {
   const remove = (id) => setCart((prev) => prev.filter((item) => item.id !== id));
 
   const total = useMemo(() => calculateTotal(cart), [cart]);
+
+  const fillSavedInfo = () => {
+    if (savedCustomer) {
+      setCustomer({
+        name: savedCustomer.name || '',
+        phone: savedCustomer.phone || '',
+        email: savedCustomer.email || '',
+        notes: ''
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,6 +104,7 @@ export default function OrderPage() {
           customer_email: customer.email.trim(),
           notes: customer.notes.trim(),
           total_price: total,
+          userId: user?.uid || null, // Link to user account if logged in
         }),
       });
 
@@ -80,6 +113,14 @@ export default function OrderPage() {
       }
 
       const data = await res.json();
+      
+      // Save customer info for future orders
+      saveCustomerInfo({
+        name: customer.name.trim(),
+        phone: customer.phone.trim(),
+        email: customer.email.trim()
+      });
+      
       clearCart();
       setCart([]);
       router.push(`/success?orderId=${data.id}`);
@@ -100,8 +141,23 @@ export default function OrderPage() {
             <h1 className="text-3xl font-heading text-primary">Your Order</h1>
             <p className="text-sm text-charcoal/75">You only pay when collecting your meal. Please confirm your details below.</p>
           </div>
-          <span className="rounded-full bg-cream px-3 py-1 text-xs text-charcoal/70 border border-gold/50">VAT-free</span>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-cream px-3 py-1 text-xs text-charcoal/70 border border-gold/50">VAT-free</span>
+          </div>
         </div>
+
+        {cart.length > 0 && (
+          <button
+            onClick={() => setShowSaveModal(true)}
+            className="w-full button-secondary text-sm"
+            type="button"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            Save as Order Pack
+          </button>
+        )}
 
         {cart.length === 0 ? (
           <div className="rounded-lg bg-cream p-4 text-charcoal">Your cart is empty. Head back to the menu to add your favourites.</div>
@@ -125,6 +181,29 @@ export default function OrderPage() {
           <p className="text-sm uppercase tracking-wide text-flame font-semibold">Customer</p>
           <h2 className="text-2xl font-heading text-primary">Collection details</h2>
         </div>
+
+        {savedCustomer && !customer.name && (
+          <div className="rounded-lg bg-gold/10 border border-gold/30 p-4 flex items-start gap-3">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
+              <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-charcoal">Welcome back!</p>
+              <p className="text-xs text-charcoal/75 mb-2">
+                We found your previous order details: <span className="font-semibold">{savedCustomer.name}</span>
+              </p>
+              <button
+                type="button"
+                onClick={fillSavedInfo}
+                className="text-sm font-semibold text-flame hover:text-orange transition-colors underline"
+              >
+                Use saved details
+              </button>
+            </div>
+          </div>
+        )}
 
         {error && <div className="rounded-lg bg-red-50 p-3 text-red-700 text-sm">{error}</div>}
 
@@ -180,6 +259,12 @@ export default function OrderPage() {
               type="submit"
               className="button-primary flex-1 justify-center disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={submitting}
+
+      <SaveCartModal 
+        isOpen={showSaveModal} 
+        onClose={() => setShowSaveModal(false)} 
+        cart={cart} 
+      />
             >
               {submitting ? 'Placing order...' : 'Place Order'}
             </button>

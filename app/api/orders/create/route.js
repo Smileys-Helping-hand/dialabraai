@@ -4,7 +4,7 @@ import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
   const body = await request.json();
-  const { items, customer_name, customer_phone, customer_email, notes, total_price } = body || {};
+  const { items, customer_name, customer_phone, customer_email, notes, total_price, userId } = body || {};
 
   if (!Array.isArray(items) || items.length === 0) {
     return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
@@ -24,6 +24,7 @@ export async function POST(request) {
     status: 'pending',
     paid: false,
     created_at: new Date().toISOString(),
+    userId: userId || null, // Link to user account if provided
   };
 
   // If Firebase is configured, use it

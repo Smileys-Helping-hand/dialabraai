@@ -362,16 +362,43 @@ Greek Salad: R95.00`}
                 value={form.image_url}
                 onChange={(e) => setForm((prev) => ({ ...prev, image_url: e.target.value }))}
                 className="w-full rounded-lg border border-orange/30 bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                placeholder="https://images..."
+                placeholder="https://images.unsplash.com/photo-..."
               />
+              {form.image_url && (
+                <div className="mt-2 p-2 border border-charcoal/10 rounded-lg bg-white">
+                  <p className="text-xs text-charcoal/70 mb-2">Image Preview:</p>
+                  <img 
+                    src={form.image_url} 
+                    alt="Preview" 
+                    className="w-full h-32 object-cover rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling.style.display = 'block';
+                    }}
+                  />
+                  <div className="hidden text-xs text-red-600 mt-2">
+                    ⚠️ Unable to load image. Check the URL.
+                  </div>
+                </div>
+              )}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-charcoal">Upload Image</label>
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+                <p className="font-semibold mb-1">📌 Note:</p>
+                <p>File upload requires Firebase Storage setup. For now, use direct image URLs from:</p>
+                <ul className="list-disc ml-4 mt-1 space-y-0.5">
+                  <li><a href="https://unsplash.com" target="_blank" className="text-flame hover:underline">Unsplash</a> (free stock photos)</li>
+                  <li><a href="https://imgur.com" target="_blank" className="text-flame hover:underline">Imgur</a> (image hosting)</li>
+                  <li>Your own hosting service</li>
+                </ul>
+              </div>
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="w-full rounded-lg border border-orange/30 bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                disabled
               />
               {file && <p className="text-xs text-charcoal/70">Selected: {file.name}</p>}
             </div>
@@ -403,6 +430,30 @@ Greek Salad: R95.00`}
             <h2 className="text-xl font-heading text-primary">Menu Items</h2>
             {loading && <span className="text-xs text-charcoal/70">Loading…</span>}
           </div>
+
+          {/* Info box for creating menu packs */}
+          <div className="p-4 bg-gold/10 border-2 border-gold/30 rounded-xl text-sm">
+            <p className="font-semibold text-primary mb-2">💡 Creating Combo Packs:</p>
+            <p className="text-charcoal/80 text-xs mb-2">
+              To create combo packs (e.g., "Family Braai Pack"), add to Firestore with:
+            </p>
+            <pre className="text-xs bg-white p-2 rounded text-charcoal overflow-x-auto">
+{`{
+  name: "Family Braai Pack",
+  category: "Packs",
+  price: 299.99,
+  isPack: true,
+  items: [
+    { id: "chops", name: "Lamb Chops", quantity: 10, price: 15.00 },
+    { id: "chicken", name: "Chicken Pieces", quantity: 8, price: 12.00 }
+  ]
+}`}
+            </pre>
+            <p className="text-xs text-charcoal/70 mt-2">
+              Run <code className="bg-white px-1 rounded">node scripts/add-sample-packs.js</code> to add examples
+            </p>
+          </div>
+
           {error && <p className="text-sm text-red-600">{error}</p>}
           {!loading && items.length === 0 && <p className="text-sm text-charcoal/70">No menu items yet.</p>}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -31,10 +31,16 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete }) {
             fill
             className="object-cover transition duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, 33vw"
+            unoptimized
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
           />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-flame">Braai Fire</div>
-        )}
+        ) : null}
+        <div className={`absolute inset-0 flex items-center justify-center text-flame font-semibold ${item.image_url ? 'hidden' : ''}`}>
+          🔥 Braai Fire
+        </div>
       </div>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
