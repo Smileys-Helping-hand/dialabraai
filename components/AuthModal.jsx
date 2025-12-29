@@ -31,7 +31,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
     try {
       if (mode === 'signin') {
         await signIn(email, password);
+        // Wait a moment for auth state to update
+        await new Promise(resolve => setTimeout(resolve, 500));
         onClose();
+        // Refresh the page to update UI
+        window.location.reload();
       } else {
         if (!name || !phone) {
           setError('Please provide your name and phone number');
@@ -39,7 +43,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           return;
         }
         await signUp(email, password, name, phone);
+        // Wait a moment for auth state to update
+        await new Promise(resolve => setTimeout(resolve, 500));
         onClose();
+        // Refresh the page to update UI
+        window.location.reload();
       }
     } catch (err) {
       console.error('Auth error:', err);
