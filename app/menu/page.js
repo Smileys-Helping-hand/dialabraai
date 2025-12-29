@@ -6,7 +6,7 @@ import PackItemCard from '@/components/PackItemCard';
 import CartNotification from '@/components/CartNotification';
 import FloatingCartButton from '@/components/FloatingCartButton';
 import { useAuth } from '@/lib/auth';
-import { getOrderPacks, getOrderPacksLocal } from '@/lib/order-packs';
+import { getOrderPacks, getOrderPacksLocal, saveOrderPack, saveOrderPackLocal } from '@/lib/order-packs';
 import { calculateTotal } from '@/lib/price';
 import { loadCart, menuCategories, saveCart } from '@/lib/utils';
 
@@ -19,6 +19,9 @@ export default function MenuPage() {
   const [error, setError] = useState('');
   const [cart, setCart] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [showSavePackModal, setShowSavePackModal] = useState(false);
+  const [packName, setPackName] = useState('');
+  const [savingPack, setSavingPack] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -110,6 +113,45 @@ export default function MenuPage() {
     setNotification(item);
   };
 
+  const handleSavePack = async () => {
+    if (!packName.trim()) {
+      alert('Please enter a pack name');
+      return;
+    }
+    if (cart.length === 0) {
+      alert('Your cart is empty. Add items before saving a pack.');
+      return;
+    }
+
+    setSavingPack(true);
+    try {
+      if (user) {
+        await saveOrderPack(user.uid, packName, cart);
+      } else {
+        saveOrderPackLocal(packName, cart);
+      }
+      alert('Pack saved successfully!');
+      setShowSavePackModal(false);
+      setPackName('');
+      // Reload packs
+      const loadPacks = async () => {
+        if (user) {
+          const userPacks = await getOrderPacks(user.uid);
+          setSavedOrderPacks(userPacks);
+        } else {
+          const localPacks = getOrderPacksLocal();
+          setSavedOrderPacks(localPacks);
+        }
+      };
+      loadPacks();
+    } catch (err) {
+      console.error('Failed to save pack:', err);
+      alert('Failed to save pack. Please try again.');
+    } finally {
+      setSavingPack(false);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 space-y-8">
       {notification && (
@@ -125,8 +167,21 @@ export default function MenuPage() {
           <h1 className="text-4xl font-heading text-primary leading-tight">Explore our selection of fresh seafood, tender meats, signature chicken, and homestyle sides.</h1>
           <p className="text-base text-charcoal/80">Browse by category and tap to add to your order.</p>
         </div>
-        <div className="rounded-full bg-cream px-4 py-2 text-sm text-charcoal shadow-sm border border-charcoal/15">
-          <span className="font-semibold text-flame">Cart Preview:</span> {cart.reduce((sum, item) => sum + item.quantity, 0)} items
+        <div className="flex flex-col sm:flex-row gap-2 items-center">
+          {cart.length > 0 && (
+            <button
+              onClick={() => setShowSavePackModal(true)}
+              className="button-secondary flex items-center gap-2 text-sm whitespace-nowrap"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+              </svg>
+              Save as Pack
+            </button>
+          )}
+          <div className="rounded-full bg-cream px-4 py-2 text-sm text-charcoal shadow-sm border border-charcoal/15 whitespace-nowrap">
+            <span className="font-semibold text-flame">Cart:</span> {cart.reduce((sum, item) => sum + item.quantity, 0)} items
+          </div>
         </div>
       </div>
 
@@ -196,6 +251,50 @@ export default function MenuPage() {
         itemCount={cart.reduce((sum, item) => sum + item.quantity, 0)} 
         total={total} 
       />
+
+      {/* Save Pack Modal */}
+      {showSavePackModal && (
+        <div className="fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowSavePackModal(false)}>
+          <div className="bg-cream rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-heading text-primary">Save Cart as Pack</h2>
+              <button onClick={() => setShowSavePackModal(false)} className="text-charcoal/40 hover:text-charcoal">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-sm text-charcoal/70">Give your order pack a memorable name for quick reordering later.</p>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-charcoal block">Pack Name</label>
+              <input
+                type="text"
+                value={packName}
+                onChange={(e) => setPackName(e.target.value)}
+                placeholder="e.g., Family Braai"
+                className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                autoFocus
+              />
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSavePackModal(false)}
+                className="button-secondary flex-1"
+                disabled={savingPack}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSavePack}
+                className="button-primary flex-1"
+                disabled={savingPack}
+              >
+                {savingPack ? 'Saving...' : 'Save Pack'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
