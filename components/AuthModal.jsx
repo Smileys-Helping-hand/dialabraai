@@ -61,7 +61,8 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
         alignItems: 'center',
         justifyContent: 'center',
         animation: 'fade-in 0.2s ease-out',
-        zIndex: 99999
+        zIndex: 2147483647,
+        isolation: 'isolate'
       }}
     >
       <div
@@ -72,8 +73,9 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           maxHeight: '90vh',
           overflowY: 'auto',
           margin: 'auto',
-          zIndex: 100000,
-          position: 'relative'
+          zIndex: 2147483647,
+          position: 'relative',
+          isolation: 'isolate'
         }}
       >
         <button
