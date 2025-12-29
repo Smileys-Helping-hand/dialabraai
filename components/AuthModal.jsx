@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
@@ -11,10 +12,16 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { signIn, signUp } = useAuth();
   const router = useRouter();
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +54,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
     setError('');
   };
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md overflow-y-auto"
       onClick={onClose}
@@ -194,4 +201,6 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
