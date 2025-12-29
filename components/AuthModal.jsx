@@ -49,7 +49,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
 
   return (
     <div
-      className="fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md overflow-y-auto"
       onClick={onClose}
       style={{ 
         position: 'fixed',
@@ -60,7 +60,8 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        animation: 'fade-in 0.2s ease-out'
+        animation: 'fade-in 0.2s ease-out',
+        zIndex: 99999
       }}
     >
       <div
@@ -70,7 +71,9 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           animation: 'scale-in 0.3s ease-out',
           maxHeight: '90vh',
           overflowY: 'auto',
-          margin: 'auto'
+          margin: 'auto',
+          zIndex: 100000,
+          position: 'relative'
         }}
       >
         <button
