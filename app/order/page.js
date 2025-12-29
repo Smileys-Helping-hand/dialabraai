@@ -259,12 +259,6 @@ export default function OrderPage() {
               type="submit"
               className="button-primary flex-1 justify-center disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={submitting}
-
-      <SaveCartModal 
-        isOpen={showSaveModal} 
-        onClose={() => setShowSaveModal(false)} 
-        cart={cart} 
-      />
             >
               {submitting ? 'Placing order...' : 'Place Order'}
             </button>
@@ -280,6 +274,12 @@ export default function OrderPage() {
           </div>
         </form>
       </section>
+
+      <SaveCartModal 
+        isOpen={showSaveModal} 
+        onClose={() => setShowSaveModal(false)} 
+        cart={cart} 
+      />
     </div>
   );
 }

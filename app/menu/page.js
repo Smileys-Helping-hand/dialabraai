@@ -91,7 +91,7 @@ export default function MenuPage() {
     
     // Show notification for the pack
     setNotification({ name: pack.name, price: pack.price });
-  }; [cart]);
+  };
 
   const displayItems = useMemo(() => items.filter((item) => item.category === active), [items, active]);
 
