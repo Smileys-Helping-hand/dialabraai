@@ -49,58 +49,62 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="card max-w-md w-full p-8 space-y-6 animate-slide-in-right"
+        className="bg-cream rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-scale-in relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-heading text-primary">
-              {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
-            </h2>
-            <p className="text-sm text-charcoal/70">
-              {mode === 'signin'
-                ? 'Sign in to access your order history and saved packs'
-                : 'Sign up to save orders and create quick reorder packs'}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-charcoal/50 hover:text-charcoal"
-            aria-label="Close"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-charcoal/40 hover:text-charcoal transition-colors"
+          aria-label="Close"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl font-heading text-primary">
+            {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
+          </h2>
+          <p className="text-sm text-charcoal/70">
+            {mode === 'signin'
+              ? 'Sign in to access your order history and saved packs'
+              : 'Sign up to save orders and create quick reorder packs'}
+          </p>
         </div>
 
         {error && (
-          <div className="rounded-lg bg-red-50 p-3 text-red-700 text-sm">{error}</div>
+          <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-red-700 text-sm flex items-start gap-2">
+            <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <span>{error}</span>
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <>
-              <label className="space-y-1 block">
+              <label className="space-y-2 block">
                 <span className="text-sm font-semibold text-charcoal">Full Name</span>
                 <input
                   type="text"
-                  className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
               </label>
-              <label className="space-y-1 block">
+              <label className="space-y-2 block">
                 <span className="text-sm font-semibold text-charcoal">Phone Number</span>
                 <input
                   type="tel"
-                  className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
                   placeholder="0123456789"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -110,11 +114,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             </>
           )}
 
-          <label className="space-y-1 block">
+          <label className="space-y-2 block">
             <span className="text-sm font-semibold text-charcoal">Email</span>
             <input
               type="email"
-              className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -122,11 +126,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             />
           </label>
 
-          <label className="space-y-1 block">
+          <label className="space-y-2 block">
             <span className="text-sm font-semibold text-charcoal">Password</span>
             <input
               type="password"
-              className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -137,7 +141,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
 
           <button
             type="submit"
-            className="button-primary w-full disabled:opacity-60"
+            className="button-primary w-full disabled:opacity-60 mt-6 py-3.5 text-base font-semibold"
             disabled={loading}
           >
             {loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
@@ -148,7 +152,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           <button
             type="button"
             onClick={toggleMode}
-            className="text-sm text-flame hover:text-orange font-semibold"
+            className="text-sm text-flame hover:text-orange font-semibold transition-colors"
           >
             {mode === 'signin'
               ? "Don't have an account? Sign up"
@@ -156,11 +160,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           </button>
         </div>
 
-        <div className="text-center pt-4 border-t border-charcoal/10">
+        <div className="text-center pt-2 border-t border-charcoal/10">
           <button
             type="button"
             onClick={onClose}
-            className="text-sm text-charcoal/70 hover:text-charcoal"
+            className="text-sm text-charcoal/60 hover:text-charcoal transition-colors"
           >
             Continue as guest
           </button>
