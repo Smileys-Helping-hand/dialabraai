@@ -68,7 +68,7 @@ export default function MenuPage() {
 
   useEffect(() => {
     saveCart(cart);
-  },
+  }, [cart]);
 
   const handleAddPack = (pack) => {
     // Add all items from the pack to cart

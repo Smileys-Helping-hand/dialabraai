@@ -24,6 +24,8 @@ export default function OrderPage() {
     // Load saved customer info
     const savedInfo = loadCustomerInfo();
     if (savedInfo) {
+      setSavedCustomer(savedInfo);
+    }
 
     // Auto-fill from user account if logged in
     if (user && !savedInfo) {
@@ -34,9 +36,7 @@ export default function OrderPage() {
         notes: ''
       });
     }
-  }, [usersetSavedCustomer(savedInfo);
-    }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     saveCart(cart);
