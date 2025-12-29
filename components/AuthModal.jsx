@@ -49,28 +49,31 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
+      className="modal-overlay fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm overflow-y-auto"
       onClick={onClose}
+      style={{ animation: 'fade-in 0.2s ease-out' }}
     >
-      <div
-        className="bg-cream rounded-3xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-scale-in relative"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="min-h-full flex items-center justify-center p-4">
+        <div
+          className="modal-content bg-cream rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 space-y-5 relative"
+          onClick={(e) => e.stopPropagation()}
+          style={{ animation: 'scale-in 0.3s ease-out' }}
+        >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-charcoal/40 hover:text-charcoal transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-charcoal/40 hover:text-charcoal transition-colors z-10"
           aria-label="Close"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl font-heading text-primary">
+        <div className="text-center space-y-1.5 sm:space-y-2 pt-2">
+          <h2 className="text-2xl sm:text-3xl font-heading text-primary">
             {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
           </h2>
-          <p className="text-sm text-charcoal/70">
+          <p className="text-xs sm:text-sm text-charcoal/70 px-2">
             {mode === 'signin'
               ? 'Sign in to access your order history and saved packs'
               : 'Sign up to save orders and create quick reorder packs'}
@@ -86,25 +89,25 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
           {mode === 'signup' && (
             <>
-              <label className="space-y-2 block">
-                <span className="text-sm font-semibold text-charcoal">Full Name</span>
+              <label className="space-y-1.5 sm:space-y-2 block">
+                <span className="text-xs sm:text-sm font-semibold text-charcoal">Full Name</span>
                 <input
                   type="text"
-                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3 sm:p-3.5 text-sm sm:text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
               </label>
-              <label className="space-y-2 block">
-                <span className="text-sm font-semibold text-charcoal">Phone Number</span>
+              <label className="space-y-1.5 sm:space-y-2 block">
+                <span className="text-xs sm:text-sm font-semibold text-charcoal">Phone Number</span>
                 <input
                   type="tel"
-                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3 sm:p-3.5 text-sm sm:text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
                   placeholder="0123456789"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -114,11 +117,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             </>
           )}
 
-          <label className="space-y-2 block">
-            <span className="text-sm font-semibold text-charcoal">Email</span>
+          <label className="space-y-1.5 sm:space-y-2 block">
+            <span className="text-xs sm:text-sm font-semibold text-charcoal">Email</span>
             <input
               type="email"
-              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+              className="w-full border-2 border-charcoal/15 rounded-xl p-3 sm:p-3.5 text-sm sm:text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -126,11 +129,11 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             />
           </label>
 
-          <label className="space-y-2 block">
-            <span className="text-sm font-semibold text-charcoal">Password</span>
+          <label className="space-y-1.5 sm:space-y-2 block">
+            <span className="text-xs sm:text-sm font-semibold text-charcoal">Password</span>
             <input
               type="password"
-              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+              className="w-full border-2 border-charcoal/15 rounded-xl p-3 sm:p-3.5 text-sm sm:text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -141,7 +144,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
 
           <button
             type="submit"
-            className="button-primary w-full disabled:opacity-60 mt-6 py-3.5 text-base font-semibold"
+            className="button-primary w-full disabled:opacity-60 mt-4 sm:mt-6 py-3 sm:py-3.5 text-sm sm:text-base font-semibold"
             disabled={loading}
           >
             {loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
@@ -168,6 +171,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           >
             Continue as guest
           </button>
+        </div>
         </div>
       </div>
     </div>
