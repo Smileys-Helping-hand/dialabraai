@@ -17,16 +17,30 @@ export default function SiteLoginGate({ children }) {
     setLoading(false);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Simple hardcoded authentication
-    if (email === 'mraaziqp@gmail.com' && password === '114477') {
-      sessionStorage.setItem('site_authenticated', 'true');
-      setIsAuthenticated(true);
-    } else {
-      setError('Invalid email or password');
+    try {
+      // Authenticate via secure server-side API
+      const response = await fetch('/api/site-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        sessionStorage.setItem('site_authenticated', 'true');
+        setIsAuthenticated(true);
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      setError('Connection error. Please try again.');
     }
   };
 
