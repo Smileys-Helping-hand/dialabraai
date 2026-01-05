@@ -71,7 +71,7 @@ export default function SiteLoginGate({ children }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rust/20 focus:border-rust transition-all duration-200 outline-none text-charcoal"
-                placeholder="mraaziqp@gmail.com"
+                placeholder="Enter your email"
               />
             </div>
 
