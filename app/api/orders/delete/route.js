@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { docClient, TABLES, deleteItem } from '@/lib/dynamodb';
 import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
@@ -20,15 +20,15 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 });
   }
 
-  if (!adminDb) {
+  if (!docClient) {
     return NextResponse.json(
-      { error: 'Firebase is not configured and order is not a demo order.' },
+      { error: 'DynamoDB is not configured and order is not a demo order.' },
       { status: 500 }
     );
   }
 
   try {
-    await adminDb.collection('orders').doc(id).delete();
+    await deleteItem(TABLES.ORDERS, { id });
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { docClient, TABLES, createItem, generateId, getTimestamp } from '@/lib/dynamodb';
 import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
@@ -14,7 +14,9 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Customer name and phone are required' }, { status: 400 });
   }
 
+  const orderId = generateId();
   const payload = {
+    id: orderId,
     items,
     total_price: Number(total_price) || 0,
     customer_name,
@@ -23,29 +25,25 @@ export async function POST(request) {
     notes: notes || '',
     status: 'pending',
     paid: false,
-    created_at: new Date().toISOString(),
+    created_at: getTimestamp(),
     userId: userId || null, // Link to user account if provided
   };
 
-  // If Firebase is configured, use it
-  if (adminDb) {
+  // If DynamoDB is configured, use it
+  if (docClient) {
     try {
-      const docRef = await adminDb.collection('orders').add(payload);
-      return NextResponse.json({ id: docRef.id }, { status: 200 });
+      await createItem(TABLES.ORDERS, payload);
+      return NextResponse.json({ id: orderId }, { status: 200 });
     } catch (error) {
-      console.error('Firebase order insert failed', error);
-      // If Firestore has configuration issues, fall back to demo mode
-      // Error codes: 5 = NOT_FOUND (no database), 7 = SERVICE_DISABLED, etc.
-      if (error.code === 5 || error.code === 7 || error.reason === 'SERVICE_DISABLED') {
-        console.log('⚠️  Firestore not available - creating demo order');
-        const orderId = demoStore.createOrder(payload);
-        return NextResponse.json({ id: orderId }, { status: 200 });
-      }
-      return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+      console.error('DynamoDB order insert failed', error);
+      // Fall back to demo mode
+      console.log('⚠️  DynamoDB not available - creating demo order');
+      const demoOrderId = demoStore.createOrder(payload);
+      return NextResponse.json({ id: demoOrderId }, { status: 200 });
     }
   }
 
   // Fallback: use demo mode (in-memory storage)
-  const orderId = demoStore.createOrder(payload);
-  return NextResponse.json({ id: orderId }, { status: 200 });
+  const demoOrderId = demoStore.createOrder(payload);
+  return NextResponse.json({ id: demoOrderId }, { status: 200 });
 }

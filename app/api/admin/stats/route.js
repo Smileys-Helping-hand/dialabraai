@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { docClient, TABLES, scanTable } from '@/lib/dynamodb';
 import { demoStore } from '@/lib/demo-store';
 
 export const dynamic = 'force-dynamic';
@@ -84,29 +84,23 @@ function calculateStats(orders) {
 }
 
 export async function GET() {
-  // If Firebase is not configured, use demo orders
-  if (!adminDb) {
+  // If DynamoDB is not configured, use demo orders
+  if (!docClient) {
     console.log('📊 Demo mode: calculating stats from demo orders');
     const orders = demoStore.getAllOrders();
     return NextResponse.json(calculateStats(orders));
   }
 
   try {
-    const snapshot = await adminDb
-      .collection('orders')
-      .orderBy('created_at', 'desc')
-      .get();
-
-    const orders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const orders = await scanTable(TABLES.ORDERS);
+    // Sort by created_at descending
+    orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     return NextResponse.json(calculateStats(orders));
   } catch (error) {
     console.error('Failed to fetch stats', error);
-    // If Firestore has any configuration issues, use demo orders
-    if (error.code === 5 || error.code === 7 || error.reason === 'SERVICE_DISABLED') {
-      console.log('⚠️  Firestore not available - using demo orders for stats');
-      const orders = demoStore.getAllOrders();
-      return NextResponse.json(calculateStats(orders));
-    }
-    return NextResponse.json({ error: 'Unable to load stats' }, { status: 500 });
+    // If DynamoDB has any configuration issues, use demo orders
+    console.log('⚠️  DynamoDB not available - using demo orders for stats');
+    const orders = demoStore.getAllOrders();
+    return NextResponse.json(calculateStats(orders));
   }
 }

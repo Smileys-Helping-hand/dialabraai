@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { docClient, TABLES, updateItem, deleteItem, getItem, getTimestamp } from '@/lib/dynamodb';
 import { menuCategories } from '@/lib/utils';
 
 // Disable caching for this route
@@ -7,9 +7,9 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST(request) {
-  if (!adminDb) {
+  if (!docClient) {
     return NextResponse.json(
-      { error: 'Firebase is not configured. Add Firebase credentials.' },
+      { error: 'DynamoDB is not configured. Add AWS credentials.' },
       { status: 500 }
     );
   }
@@ -23,7 +23,7 @@ export async function POST(request) {
 
   try {
     if (shouldDelete) {
-      await adminDb.collection('menu').doc(id).delete();
+      await deleteItem(TABLES.MENU, { id });
       return NextResponse.json({ deleted: id });
     }
 
@@ -40,19 +40,17 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Price must be a positive number.' }, { status: 400 });
     }
 
-    await adminDb.collection('menu').doc(id).update({
+    await updateItem(TABLES.MENU, { id }, {
       name,
       description,
       price: numericPrice,
       category,
       image_url: image_url || '',
       available: true,
-      updated_at: new Date().toISOString(),
+      updated_at: getTimestamp(),
     });
 
-    const doc = await adminDb.collection('menu').doc(id).get();
-    const item = { id: doc.id, ...doc.data() };
-
+    const item = await getItem(TABLES.MENU, { id });
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

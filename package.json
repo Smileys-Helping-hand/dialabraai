@@ -7,14 +7,18 @@
     "build": "next build",
     "start": "next start",
     "format-key": "node scripts/format-firebase-key.js",
-    "check-env": "node scripts/check-environment.js"
+    "check-env": "node scripts/check-environment.js",
+    "check-email": "node scripts/check-email-env.js"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/client-ses": "^3.965.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
     "@supabase/supabase-js": "^2.45.4",
     "@tanstack/react-query": "^5.51.21",
     "firebase": "^12.6.0",
     "firebase-admin": "^13.6.0",
-    "next": "14.2.3",
+    "next": "^14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },

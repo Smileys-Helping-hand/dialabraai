@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { docClient, TABLES, createItem, generateId, getTimestamp } from '@/lib/dynamodb';
 import { menuCategories } from '@/lib/utils';
 
 // Disable caching for this route
@@ -7,9 +7,9 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST(request) {
-  if (!adminDb) {
+  if (!docClient) {
     return NextResponse.json(
-      { error: 'Firebase is not configured. Add Firebase credentials.' },
+      { error: 'DynamoDB is not configured. Add AWS credentials.' },
       { status: 500 }
     );
   }
@@ -31,19 +31,19 @@ export async function POST(request) {
   }
 
   try {
-    const docRef = await adminDb.collection('menu').add({
+    const itemId = generateId();
+    const item = {
+      id: itemId,
       name,
       description,
       price: numericPrice,
       category,
       image_url: image_url || '',
       available: true,
-      created_at: new Date().toISOString(),
-    });
+      created_at: getTimestamp(),
+    };
 
-    const doc = await docRef.get();
-    const item = { id: doc.id, ...doc.data() };
-
+    await createItem(TABLES.MENU, item);
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

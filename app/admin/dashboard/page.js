@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import EmailDispatchTester from '../../../components/EmailDispatchTester';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -99,7 +100,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Current Orders Status */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white border-4 border-charcoal/10 rounded-3xl p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-primary mb-6">Current Orders</h2>
           <div className="space-y-4">
@@ -119,6 +120,9 @@ export default function AdminDashboard() {
             📦 Manage Orders
           </Link>
         </div>
+
+        {/* Email System Tester */}
+        <EmailDispatchTester />
 
         <div className="bg-white border-4 border-charcoal/10 rounded-3xl p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-primary mb-6">Quick Actions</h2>
