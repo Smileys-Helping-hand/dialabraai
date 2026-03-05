@@ -43,7 +43,8 @@ export async function POST(request) {
           category = ${category}, image_url = ${image_url || ''}, available = true, updated_at = ${updated_at}
       WHERE id = ${id}
     `;
-    const [item] = await sql`SELECT * FROM menu_items WHERE id = ${id}`;
+    const [row] = await sql`SELECT * FROM menu_items WHERE id = ${id}`;
+    const item = row ? { ...row, price: Number(row.price) } : null;
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

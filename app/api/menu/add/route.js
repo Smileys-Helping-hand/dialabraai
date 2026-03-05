@@ -30,10 +30,11 @@ export async function POST(request) {
     const itemId = generateId();
     const created_at = getTimestamp();
     await sql`
-      INSERT INTO menu_items (id, name, description, price, category, image_url, available, created_at)
-      VALUES (${itemId}, ${name}, ${description}, ${numericPrice}, ${category}, ${image_url}, true, ${created_at})
+      INSERT INTO menu_items (id, name, description, price, category, image_url, available, stock, low_stock_threshold, created_at)
+      VALUES (${itemId}, ${name}, ${description}, ${numericPrice}, ${category}, ${image_url}, true, 50, 5, ${created_at})
     `;
-    const [item] = await sql`SELECT * FROM menu_items WHERE id = ${itemId}`;
+    const [row] = await sql`SELECT * FROM menu_items WHERE id = ${itemId}`;
+    const item = { ...row, price: Number(row.price) };
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

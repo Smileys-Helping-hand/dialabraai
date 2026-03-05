@@ -37,11 +37,13 @@ export async function POST(request) {
       `;
       return NextResponse.json({ id: orderId }, { status: 200 });
     } catch (error) {
-      console.error('DB order insert failed', error);
+      console.error('DB order insert failed:', error.message);
+      // Return the error so the customer knows the order wasn't saved
+      return NextResponse.json({ error: 'Failed to save your order. Please try again.' }, { status: 500 });
     }
   }
 
-  // Fallback: in-memory demo mode
+  // No DB configured — demo/dev fallback only
   const demoOrderId = demoStore.createOrder(payload);
   return NextResponse.json({ id: demoOrderId }, { status: 200 });
 }

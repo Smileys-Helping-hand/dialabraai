@@ -24,12 +24,8 @@ export default function OrderHistoryPage() {
     const fetchOrders = async () => {
       try {
         const userOrders = await getOrderHistory(user.uid);
-        // Sort by date, newest first
-        userOrders.sort((a, b) => {
-          const dateA = a.created_at?.seconds ? a.created_at.seconds * 1000 : 0;
-          const dateB = b.created_at?.seconds ? b.created_at.seconds * 1000 : 0;
-          return dateB - dateA;
-        });
+        // Sort by date, newest first — created_at is an ISO string from Neon
+        userOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setOrders(userOrders);
       } catch (err) {
         console.error('Failed to load orders:', err);
@@ -118,15 +114,15 @@ export default function OrderHistoryPage() {
                     <OrderStatusBadge status={order.status} />
                   </div>
                   <p className="text-sm text-charcoal/60">
-                    {new Date(
-                      order.created_at?.seconds ? order.created_at.seconds * 1000 : order.created_at
-                    ).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {order.created_at
+                      ? new Date(order.created_at).toLocaleDateString('en-ZA', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+                      : ''}
                   </p>
                 </div>
                 <div className="text-right">
