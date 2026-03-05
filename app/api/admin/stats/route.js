@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { docClient, TABLES, scanTable } from '@/lib/dynamodb';
+import { sql } from '@/lib/db';
 import { demoStore } from '@/lib/demo-store';
 
 export const dynamic = 'force-dynamic';
@@ -84,22 +84,16 @@ function calculateStats(orders) {
 }
 
 export async function GET() {
-  // If DynamoDB is not configured, use demo orders
-  if (!docClient) {
-    console.log('📊 Demo mode: calculating stats from demo orders');
+  if (!sql) {
     const orders = demoStore.getAllOrders();
     return NextResponse.json(calculateStats(orders));
   }
 
   try {
-    const orders = await scanTable(TABLES.ORDERS);
-    // Sort by created_at descending
-    orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    const orders = await sql`SELECT * FROM orders ORDER BY created_at DESC`;
     return NextResponse.json(calculateStats(orders));
   } catch (error) {
     console.error('Failed to fetch stats', error);
-    // If DynamoDB has any configuration issues, use demo orders
-    console.log('⚠️  DynamoDB not available - using demo orders for stats');
     const orders = demoStore.getAllOrders();
     return NextResponse.json(calculateStats(orders));
   }

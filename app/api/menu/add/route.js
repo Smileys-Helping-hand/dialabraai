@@ -1,17 +1,13 @@
 import { NextResponse } from 'next/server';
-import { docClient, TABLES, createItem, generateId, getTimestamp } from '@/lib/dynamodb';
+import { sql, generateId, getTimestamp } from '@/lib/db';
 import { menuCategories } from '@/lib/utils';
 
-// Disable caching for this route
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST(request) {
-  if (!docClient) {
-    return NextResponse.json(
-      { error: 'DynamoDB is not configured. Add AWS credentials.' },
-      { status: 500 }
-    );
+  if (!sql) {
+    return NextResponse.json({ error: 'Database not configured.' }, { status: 500 });
   }
 
   const body = await request.json();
@@ -32,18 +28,12 @@ export async function POST(request) {
 
   try {
     const itemId = generateId();
-    const item = {
-      id: itemId,
-      name,
-      description,
-      price: numericPrice,
-      category,
-      image_url: image_url || '',
-      available: true,
-      created_at: getTimestamp(),
-    };
-
-    await createItem(TABLES.MENU, item);
+    const created_at = getTimestamp();
+    await sql`
+      INSERT INTO menu_items (id, name, description, price, category, image_url, available, created_at)
+      VALUES (${itemId}, ${name}, ${description}, ${numericPrice}, ${category}, ${image_url}, true, ${created_at})
+    `;
+    const [item] = await sql`SELECT * FROM menu_items WHERE id = ${itemId}`;
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

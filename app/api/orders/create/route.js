@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { docClient, TABLES, createItem, generateId, getTimestamp } from '@/lib/dynamodb';
+import { sql, generateId, getTimestamp } from '@/lib/db';
 import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
@@ -26,24 +26,22 @@ export async function POST(request) {
     status: 'pending',
     paid: false,
     created_at: getTimestamp(),
-    userId: userId || null, // Link to user account if provided
+    userId: userId || null,
   };
 
-  // If DynamoDB is configured, use it
-  if (docClient) {
+  if (sql) {
     try {
-      await createItem(TABLES.ORDERS, payload);
+      await sql`
+        INSERT INTO orders (id, items, total_price, customer_name, customer_phone, customer_email, notes, status, paid, created_at, user_id)
+        VALUES (${orderId}, ${JSON.stringify(items)}::jsonb, ${payload.total_price}, ${customer_name}, ${customer_phone}, ${payload.customer_email}, ${payload.notes}, 'pending', false, ${payload.created_at}, ${userId || null})
+      `;
       return NextResponse.json({ id: orderId }, { status: 200 });
     } catch (error) {
-      console.error('DynamoDB order insert failed', error);
-      // Fall back to demo mode
-      console.log('⚠️  DynamoDB not available - creating demo order');
-      const demoOrderId = demoStore.createOrder(payload);
-      return NextResponse.json({ id: demoOrderId }, { status: 200 });
+      console.error('DB order insert failed', error);
     }
   }
 
-  // Fallback: use demo mode (in-memory storage)
+  // Fallback: in-memory demo mode
   const demoOrderId = demoStore.createOrder(payload);
   return NextResponse.json({ id: demoOrderId }, { status: 200 });
 }

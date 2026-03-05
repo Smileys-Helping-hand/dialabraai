@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
-import { docClient, TABLES, getItem } from '@/lib/dynamodb';
+import { sql } from '@/lib/db';
 import { demoStore } from '@/lib/demo-store';
+
+function normaliseOrder(row) {
+  if (!row) return null;
+  return {
+    ...row,
+    total_price: Number(row.total_price),
+    created_at: row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at,
+  };
+}
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -10,27 +19,19 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
   }
 
-  // Check for demo order first
   if (id.startsWith('demo-')) {
     const demoOrder = demoStore.getOrder(id);
-    if (demoOrder) {
-      return NextResponse.json(demoOrder);
-    }
+    if (demoOrder) return NextResponse.json(demoOrder);
   }
 
-  // If DynamoDB is configured, use it
-  if (!docClient) {
-    return NextResponse.json({ error: 'DynamoDB not configured and order not found' }, { status: 404 });
+  if (!sql) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 404 });
   }
 
   try {
-    const order = await getItem(TABLES.ORDERS, { id });
-    
-    if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(order);
+    const [row] = await sql`SELECT * FROM orders WHERE id = ${id}`;
+    if (!row) return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    return NextResponse.json(normaliseOrder(row));
   } catch (error) {
     console.error('Failed to fetch order', error);
     return NextResponse.json({ error: 'Unable to load order' }, { status: 500 });
