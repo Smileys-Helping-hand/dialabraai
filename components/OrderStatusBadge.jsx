@@ -7,7 +7,7 @@ const colorMap = {
 
 const copyMap = {
   pending: 'Your order is in the queue.',
-  preparing: 'We’re on the braai — almost ready!',
+  preparing: 'Your order is being prepared.',
   ready: 'Your order is ready for collection.',
   completed: 'Enjoy your meal!',
 };

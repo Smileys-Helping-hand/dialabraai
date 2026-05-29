@@ -1,6 +1,6 @@
-# Dial-A-Braai
+# Shopfront Ordering Platform
 
-A modern food ordering web application for Dial-A-Braai, built with Next.js 14 and Firebase.
+A multi-shop ordering platform for local restaurants and stores, built with Next.js 14 and Firebase/Neon.
 
 ## Tech Stack
 
@@ -12,12 +12,12 @@ A modern food ordering web application for Dial-A-Braai, built with Next.js 14 a
 
 ## Features
 
-- 🍖 Browse menu by category (Seafood, Meat, Chicken, Sides, Combos)
-- 🛒 Shopping cart with local storage persistence
-- 📱 Fully responsive design
-- 🔥 Real-time order management for admins
-- 📊 Admin dashboard with statistics
-- 🔐 Secure admin authentication
+- Multi-shop storefronts using `?shop=<slug>` routing
+- Guided onboarding wizard at `/admin/setup`
+- Shop-specific menu, orders, analytics, and inventory
+- WhatsApp checkout handoff per shop
+- Saved carts, order packs, and order history
+- Admin dashboard, order flow, and stats by shop
 
 ## Quick Start
 
@@ -29,8 +29,8 @@ A modern food ordering web application for Dial-A-Braai, built with Next.js 14 a
 
 1. Clone and install dependencies:
 ```bash
-git clone https://github.com/Smileys-Helping-hand/dialabraai.git
-cd dialabraai
+git clone <your-repo-url>
+cd <your-project-folder>
 npm install
 ```
 
@@ -49,17 +49,25 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000)
 
+## Onboarding A New Shop
+
+1. Go to `/admin/setup`
+2. Fill in shop slug, name, contact channels, and category defaults
+3. Save to generate:
+	- Public storefront URL: `/home?shop=<slug>`
+	- Shop-specific setup URL: `/admin/setup?shop=<slug>`
+4. Load menu items under `/admin/menu?shop=<slug>`
+
+For a full owner workflow (signup, product uploads, manual payments, tracking, and customization), see [SELLER-ONBOARDING.md](./SELLER-ONBOARDING.md).
+
 ## Project Structure
 
 ```
-dialabraai/
-├── api/              # Next.js API routes (Firestore operations)
-├── app/              # Next.js app directory (pages & layouts)
-├── components/       # React components
-├── lib/              # Utilities & Firebase config
-├── public/           # Static assets (images, icons)
-├── data/             # Sample menu data (fallback)
-└── DEPLOYMENT.md     # Full production deployment guide
+app/                  # Routes, APIs, admin, onboarding
+components/           # UI and providers (includes ShopProvider)
+lib/                  # Shared shop config, db helpers, auth
+scripts/              # Schema migration and utility scripts
+data/                 # Sample menu fallback data
 ```
 
 ## Deployment
@@ -73,13 +81,14 @@ vercel
 
 ## Admin Panel
 
-Access admin features at `/admin/login`:
-- View and manage orders
-- Update order status (pending → preparing → ready → completed)
-- Mark orders as paid
-- Manage menu items
-- View sales statistics
+Access admin features at `/admin`:
+- `/admin/setup` for onboarding and branding setup
+- `/admin/menu` for menu management
+- `/admin/orders` for operations
+- `/admin/stats` for analytics
+
+Add `?shop=<slug>` to any admin route for a specific storefront.
 
 ## License
 
-Proprietary - Dial-A-Braai © 2025
+Proprietary © 2026

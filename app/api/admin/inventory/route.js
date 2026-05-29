@@ -4,13 +4,20 @@ import { demoStore } from '@/lib/demo-store';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const shopSlug = searchParams.get('shop') || 'default';
+
   if (!sql) {
     return NextResponse.json(demoStore.getAllInventory());
   }
 
   try {
-    const rows = await sql`SELECT * FROM menu_items ORDER BY category, name`;
+    const rows = await sql`
+      SELECT * FROM menu_items
+      WHERE COALESCE(shop_slug, 'default') = ${shopSlug}
+      ORDER BY category, name
+    `;
     return NextResponse.json(rows.map(r => ({ ...r, price: Number(r.price) })));
   } catch (error) {
     console.error('Failed to fetch inventory', error);
@@ -20,7 +27,7 @@ export async function GET() {
 
 export async function POST(request) {
   const body = await request.json();
-  const { id, stock } = body || {};
+  const { id, stock, shop_slug = 'default' } = body || {};
 
   if (!id || stock === undefined) {
     return NextResponse.json({ error: 'Item ID and stock are required' }, { status: 400 });
@@ -37,7 +44,7 @@ export async function POST(request) {
   }
 
   try {
-    await sql`UPDATE menu_items SET stock = ${stock} WHERE id = ${id}`;
+    await sql`UPDATE menu_items SET stock = ${stock} WHERE id = ${id} AND COALESCE(shop_slug, 'default') = ${shop_slug || 'default'}`;
     const [inventory] = await sql`SELECT * FROM menu_items WHERE id = ${id}`;
     return NextResponse.json({ inventory });
   } catch (error) {

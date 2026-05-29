@@ -4,18 +4,19 @@
 console.log(`
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
-║  🎉 NEW FEATURES ADDED: Accounts, Order Packs & Menu Combos!     ║
+║  🎉 PLATFORM FEATURES: Shops, Accounts, Packs & Analytics!       ║
 ║                                                                   ║
 ╚═══════════════════════════════════════════════════════════════════╝
 
 📋 WHAT'S NEW:
 ─────────────────────────────────────────────────────────────────────
 ✅ Optional user accounts (guest checkout still works!)
-✅ Menu packs/combos (e.g., "Family Braai Pack")
+✅ Menu packs/combos (e.g., "Family Value Bundle")
 ✅ Save order packs for quick reordering
 ✅ Order history tracking
 ✅ Cart notifications & floating cart button
 ✅ Customer info auto-fill for returning customers
+✅ Shop onboarding via /admin/setup
 
 🚀 QUICK START:
 ─────────────────────────────────────────────────────────────────────
@@ -69,7 +70,7 @@ Option 2: Add via Firebase Console
   Collection: menu
   Document structure:
   {
-    name: "Family Braai Pack",
+    name: "Family Value Bundle",
     category: "Packs",
     price: 299.99,
     isPack: true,

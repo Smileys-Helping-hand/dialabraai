@@ -5,10 +5,13 @@ import { useRouter } from 'next/navigation';
 import { getOrderHistory } from '@/lib/order-packs';
 import { formatPrice } from '@/lib/utils';
 import OrderStatusBadge from '@/components/OrderStatusBadge';
+import { STORAGE_KEYS } from '@/lib/shop-config';
+import { useShop } from '@/components/ShopProvider';
 
 export default function OrderHistoryPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { shopSlug } = useShop();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,7 +26,7 @@ export default function OrderHistoryPage() {
 
     const fetchOrders = async () => {
       try {
-        const userOrders = await getOrderHistory(user.uid);
+        const userOrders = await getOrderHistory(user.uid, shopSlug);
         // Sort by date, newest first — created_at is an ISO string from Neon
         userOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setOrders(userOrders);
@@ -36,13 +39,13 @@ export default function OrderHistoryPage() {
     };
 
     fetchOrders();
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router, shopSlug]);
 
   const handleReorder = (order) => {
     // Load order items into cart and navigate to menu
     if (typeof window !== 'undefined') {
-      localStorage.setItem('dialabraai_cart', JSON.stringify(order.items));
-      router.push('/order');
+      localStorage.setItem(shopSlug !== 'default' ? `${STORAGE_KEYS.CART}:${shopSlug}` : STORAGE_KEYS.CART, JSON.stringify(order.items));
+      router.push(`/order${shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : ''}`);
     }
   };
 

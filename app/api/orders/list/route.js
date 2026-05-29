@@ -13,13 +13,20 @@ function normaliseOrder(row) {
   };
 }
 
-export async function GET() {
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const shopSlug = searchParams.get('shop') || 'default';
+
   if (!sql) {
     return NextResponse.json(demoStore.getAllOrders());
   }
 
   try {
-    const rows = await sql`SELECT * FROM orders ORDER BY created_at DESC`;
+    const rows = await sql`
+      SELECT * FROM orders
+      WHERE COALESCE(shop_slug, 'default') = ${shopSlug}
+      ORDER BY created_at DESC
+    `;
     // Normalise Postgres types for the frontend
     const orders = rows.map(normaliseOrder);
     return NextResponse.json(orders);

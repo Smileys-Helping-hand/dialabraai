@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { SHOP_CONFIG, STORAGE_KEYS, LEGACY_STORAGE_KEYS } from '@/lib/shop-config';
 
 export default function SiteLoginGate({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,7 +11,8 @@ export default function SiteLoginGate({ children }) {
 
   useEffect(() => {
     // Check if user is already authenticated
-    const authStatus = sessionStorage.getItem('site_authenticated');
+    const authStatus = sessionStorage.getItem(STORAGE_KEYS.SITE_AUTH)
+      || sessionStorage.getItem(LEGACY_STORAGE_KEYS.SITE_AUTH);
     if (authStatus === 'true') {
       setIsAuthenticated(true);
     }
@@ -34,7 +36,7 @@ export default function SiteLoginGate({ children }) {
       const data = await response.json();
 
       if (data.success) {
-        sessionStorage.setItem('site_authenticated', 'true');
+        sessionStorage.setItem(STORAGE_KEYS.SITE_AUTH, 'true');
         setIsAuthenticated(true);
       } else {
         setError('Invalid email or password');
@@ -61,7 +63,7 @@ export default function SiteLoginGate({ children }) {
               <span className="text-3xl">🍖</span>
             </div>
             <h2 className="text-4xl font-bold text-charcoal mb-2">
-              Dial-A-Braai
+              {SHOP_CONFIG.name}
             </h2>
             <p className="text-gray-500 text-sm">Sign in to continue</p>
           </div>
@@ -115,7 +117,7 @@ export default function SiteLoginGate({ children }) {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-400">
-              Halal braai delivered with care in Cape Town
+              {SHOP_CONFIG.description}
             </p>
           </div>
         </div>

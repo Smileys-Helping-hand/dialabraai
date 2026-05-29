@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { SHOP_CONFIG, buildNoreplyEmail } from '@/lib/shop-config';
 
 /**
  * Email dispatch via Resend (https://resend.com).
@@ -23,7 +24,7 @@ export async function POST(request) {
     }
 
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@dialabraai.co.za';
+    const FROM_EMAIL = process.env.FROM_EMAIL || buildNoreplyEmail();
 
     if (RESEND_API_KEY) {
       const { Resend } = await import('resend');

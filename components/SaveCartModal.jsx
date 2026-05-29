@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/auth';
 import { saveOrderPack, saveOrderPackLocal } from '@/lib/order-packs';
 import AuthModal from './AuthModal';
 
-export default function SaveCartModal({ isOpen, onClose, cart }) {
+export default function SaveCartModal({ isOpen, onClose, cart, shopSlug = 'default' }) {
   const [packName, setPackName] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ export default function SaveCartModal({ isOpen, onClose, cart }) {
       if (user) {
         await saveOrderPack(user.uid, packName.trim(), cart);
       } else {
-        saveOrderPackLocal(packName.trim(), cart);
+        saveOrderPackLocal(packName.trim(), cart, shopSlug);
       }
       onClose();
     } catch (err) {
@@ -52,7 +52,7 @@ export default function SaveCartModal({ isOpen, onClose, cart }) {
             <div>
               <h2 className="text-2xl font-heading text-primary">Save Order Pack</h2>
               <p className="text-sm text-charcoal/70">
-                Save this cart for quick reordering later
+                  Save this cart for quick reordering later
               </p>
             </div>
             <button
@@ -91,7 +91,7 @@ export default function SaveCartModal({ isOpen, onClose, cart }) {
               <input
                 type="text"
                 className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
-                placeholder="e.g., Family BBQ, Weekend Braai"
+                placeholder="e.g., Lunch Regulars, Office Combo"
                 value={packName}
                 onChange={(e) => setPackName(e.target.value)}
                 required

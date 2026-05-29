@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import MenuItemCard from '../../../components/MenuItemCard';
-import { menuCategories } from '../../../lib/utils';
+import { deriveMenuCategories, defaultMenuCategories } from '../../../lib/utils';
+import { useShop } from '@/components/ShopProvider';
+import firebaseApp from '@/lib/firebase';
 
 const emptyForm = {
   name: '',
   description: '',
   price: '',
-  category: menuCategories[0],
+  category: defaultMenuCategories[0] || '',
   image_url: '',
 };
 
@@ -23,13 +26,17 @@ export default function AdminMenuPage() {
   const [showBulkImport, setShowBulkImport] = useState(false);
   const [bulkText, setBulkText] = useState('');
   const [bulkImporting, setBulkImporting] = useState(false);
+  const { shopSlug } = useShop();
+
+  const categoryOptions = useMemo(() => deriveMenuCategories(items, defaultMenuCategories), [items]);
 
   const title = useMemo(() => (editingId ? 'Update Menu Item' : 'Add New Menu Item'), [editingId]);
 
   const fetchItems = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/menu/list', { cache: 'no-store' });
+      const query = shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : '';
+      const res = await fetch(`/api/menu/list${query}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Failed to fetch menu');
       const data = await res.json();
       setItems(data || []);
@@ -43,7 +50,7 @@ export default function AdminMenuPage() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [shopSlug]);
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -57,7 +64,7 @@ export default function AdminMenuPage() {
       name: item.name || '',
       description: item.description || '',
       price: item.price || '',
-      category: item.category || menuCategories[0],
+      category: item.category || categoryOptions[0] || defaultMenuCategories[0] || '',
       image_url: item.image_url || '',
     });
     setFile(null);
@@ -72,7 +79,7 @@ export default function AdminMenuPage() {
       const res = await fetch('/api/menu/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: item.id, delete: true }),
+        body: JSON.stringify({ id: item.id, delete: true, shop_slug: shopSlug }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Unable to delete item');
@@ -90,11 +97,19 @@ export default function AdminMenuPage() {
 
   const handleUploadIfNeeded = async () => {
     if (!file) return form.image_url || '';
-    
-    // TODO: Implement Firebase Storage upload or use external service
-    // For now, return a placeholder or the existing image_url
-    console.warn('File upload not yet implemented for Firebase. Use external storage or Firebase Storage SDK.');
-    return form.image_url || '';
+    if (!firebaseApp) {
+      throw new Error('Firebase Storage is not configured. Set the Firebase public env vars before uploading images.');
+    }
+
+    const storage = getStorage(firebaseApp);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const filePath = `menu-images/${shopSlug}/${Date.now()}-${safeName}`;
+    const storageRef = ref(storage, filePath);
+    const snapshot = await uploadBytes(storageRef, file, {
+      contentType: file.type || 'application/octet-stream',
+    });
+
+    return getDownloadURL(snapshot.ref);
   };
 
   const handleSubmit = async (e) => {
@@ -108,6 +123,7 @@ export default function AdminMenuPage() {
         ...form,
         price: Number(form.price),
         image_url: uploadedUrl,
+        shop_slug: shopSlug,
       };
 
       const endpoint = editingId ? '/api/menu/update' : '/api/menu/add';
@@ -205,7 +221,7 @@ export default function AdminMenuPage() {
           const res = await fetch('/api/menu/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(item),
+            body: JSON.stringify({ ...item, shop_slug: shopSlug }),
           });
           
           if (res.ok) {
@@ -348,7 +364,7 @@ Greek Salad: R95.00`}
                   onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
                   className="w-full rounded-lg border border-orange/30 bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
                 >
-                  {menuCategories.map((cat) => (
+                  {categoryOptions.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>
@@ -386,7 +402,9 @@ Greek Salad: R95.00`}
               <label className="text-sm font-semibold text-charcoal">Upload Image</label>
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
                 <p className="font-semibold mb-1">📌 Note:</p>
-                <p>File upload requires Firebase Storage setup. For now, use direct image URLs from:</p>
+                <p>Images upload to Firebase Storage automatically when you save a menu item.</p>
+                <p className="mt-1">You can still paste a direct image URL if you already have one.</p>
+                <p className="mt-2">If you need hosting for reference images, these still work well:</p>
                 <ul className="list-disc ml-4 mt-1 space-y-0.5">
                   <li><a href="https://unsplash.com" target="_blank" className="text-flame hover:underline">Unsplash</a> (free stock photos)</li>
                   <li><a href="https://imgur.com" target="_blank" className="text-flame hover:underline">Imgur</a> (image hosting)</li>
@@ -398,7 +416,6 @@ Greek Salad: R95.00`}
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="w-full rounded-lg border border-orange/30 bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none"
-                disabled
               />
               {file && <p className="text-xs text-charcoal/70">Selected: {file.name}</p>}
             </div>
@@ -435,17 +452,17 @@ Greek Salad: R95.00`}
           <div className="p-4 bg-gold/10 border-2 border-gold/30 rounded-xl text-sm">
             <p className="font-semibold text-primary mb-2">💡 Creating Combo Packs:</p>
             <p className="text-charcoal/80 text-xs mb-2">
-              To create combo packs (e.g., "Family Braai Pack"), add to Firestore with:
+              To create combo packs (e.g., "Weekend Special Bundle"), add to Firestore with:
             </p>
             <pre className="text-xs bg-white p-2 rounded text-charcoal overflow-x-auto">
 {`{
-  name: "Family Braai Pack",
+  name: "Weekend Special Bundle",
   category: "Packs",
   price: 299.99,
   isPack: true,
   items: [
-    { id: "chops", name: "Lamb Chops", quantity: 10, price: 15.00 },
-    { id: "chicken", name: "Chicken Pieces", quantity: 8, price: 12.00 }
+    { id: "item-1", name: "Signature Item", quantity: 2, price: 45.00 },
+    { id: "item-2", name: "Side", quantity: 1, price: 25.00 }
   ]
 }`}
             </pre>

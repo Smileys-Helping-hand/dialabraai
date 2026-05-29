@@ -2,23 +2,26 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import EmailDispatchTester from '../../../components/EmailDispatchTester';
+import { useShop } from '@/components/ShopProvider';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { shop, shopSlug } = useShop();
 
   useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [shopSlug]);
 
   async function fetchData() {
     try {
+      const query = shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : '';
       const [statsRes, inventoryRes] = await Promise.all([
-        fetch('/api/admin/stats'),
-        fetch('/api/admin/inventory')
+        fetch(`/api/admin/stats${query}`),
+        fetch(`/api/admin/inventory${query}`)
       ]);
       
       if (statsRes.ok) {
@@ -50,7 +53,7 @@ export default function AdminDashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-heading font-bold text-primary mb-3">Dashboard</h1>
+        <h1 className="text-4xl font-heading font-bold text-primary mb-3">{shop.name} Dashboard</h1>
         <p className="text-lg text-charcoal/70">Welcome! Here's your business overview</p>
       </div>
 

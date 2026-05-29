@@ -6,10 +6,17 @@ import { demoStore } from '@/lib/demo-store';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const shopSlug = searchParams.get('shop') || 'default';
+
   if (sql) {
     try {
-      const rows = await sql`SELECT * FROM menu_items WHERE available = true ORDER BY category, name`;
+      const rows = await sql`
+        SELECT * FROM menu_items
+        WHERE available = true AND COALESCE(shop_slug, 'default') = ${shopSlug}
+        ORDER BY category, name
+      `;
       const data = rows.map(r => ({ ...r, price: Number(r.price) }));
       return new Response(JSON.stringify(data || []), {
         status: 200,

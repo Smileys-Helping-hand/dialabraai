@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth, persistAdminSession, getStoredAdminSession } from '../../../lib/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { SHOP_CONFIG } from '@/lib/shop-config';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [mode, setMode] = useState('signin');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -30,10 +33,19 @@ export default function AdminLoginPage() {
 
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      let userCredential;
+      if (mode === 'signup') {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        if (name.trim()) {
+          await updateProfile(userCredential.user, { displayName: name.trim() });
+        }
+      } else {
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+      }
+
       if (userCredential.user) {
         persistAdminSession(userCredential.user);
-        router.replace('/admin/orders');
+        router.replace(mode === 'signup' ? '/admin/setup' : '/admin/orders');
       } else {
         setError('Unable to sign in.');
       }
@@ -50,19 +62,33 @@ export default function AdminLoginPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-xs uppercase tracking-wide text-charcoal/60">Admin Portal</p>
-            <h1 className="text-2xl font-heading text-primary">Sign in to manage orders</h1>
+            <h1 className="text-2xl font-heading text-primary">
+              {mode === 'signin' ? 'Sign in to manage your shop' : 'Create your shop owner account'}
+            </h1>
           </div>
           <Link href="/" className="text-sm text-orange hover:underline">
             Back home
           </Link>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {mode === 'signup' && (
+            <div>
+              <label className="block text-sm font-medium text-charcoal/80 mb-1">Name</label>
+              <input
+                className="w-full border border-orange/20 rounded-lg p-3 bg-white focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none"
+                type="text"
+                placeholder="Store owner name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-charcoal/80 mb-1">Email</label>
             <input
               className="w-full border border-orange/20 rounded-lg p-3 bg-white focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none"
               type="email"
-              placeholder="admin@dialabraai.co.za"
+              placeholder="admin@yourshop.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -85,10 +111,22 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="button-primary w-full justify-center disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in…' : 'Sign In'}
+            {loading ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
           </button>
         </form>
-        <p className="text-xs text-charcoal/60 mt-4">Access restricted to Dial-A-Braai staff.</p>
+        <div className="mt-4 flex items-center justify-between gap-3 text-xs text-charcoal/70">
+          <span>Access is restricted to {SHOP_CONFIG.name} staff.</span>
+          <button
+            type="button"
+            onClick={() => {
+              setMode((prev) => (prev === 'signin' ? 'signup' : 'signin'));
+              setError('');
+            }}
+            className="text-orange font-semibold hover:underline"
+          >
+            {mode === 'signin' ? 'New seller? Sign up' : 'Already have an account? Sign in'}
+          </button>
+        </div>
       </div>
     </div>
   );

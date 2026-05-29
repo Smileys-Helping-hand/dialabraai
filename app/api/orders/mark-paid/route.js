@@ -4,7 +4,7 @@ import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
   const body = await request.json();
-  const { id, paid = true } = body || {};
+  const { id, paid = true, shop_slug = 'default' } = body || {};
 
   if (!id) {
     return NextResponse.json({ error: 'Order id is required.' }, { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(request) {
   }
 
   try {
-    await sql`UPDATE orders SET paid = ${paid} WHERE id = ${id}`;
+    await sql`UPDATE orders SET paid = ${paid} WHERE id = ${id} AND COALESCE(shop_slug, 'default') = ${shop_slug || 'default'}`;
     const [row] = await sql`SELECT * FROM orders WHERE id = ${id}`;
     const order = { ...row, total_price: Number(row.total_price), created_at: row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at };
     return NextResponse.json({ order });

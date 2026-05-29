@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import AdminOrderCard from '../../../components/AdminOrderCard';
 import AdminStatusButtons from '../../../components/AdminStatusButtons';
 import OrderStatusBadge from '../../../components/OrderStatusBadge';
+import { SHOP_CONFIG } from '@/lib/shop-config';
+import { useShop } from '@/components/ShopProvider';
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -11,6 +13,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
+  const { shopSlug } = useShop();
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,7 +43,8 @@ export default function AdminOrdersPage() {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const res = await fetch('/api/orders/list');
+        const query = shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : '';
+        const res = await fetch(`/api/orders/list${query}`);
         if (!active) return;
         if (!res.ok) throw new Error('Failed to fetch orders');
         const data = await res.json();
@@ -64,7 +68,7 @@ export default function AdminOrdersPage() {
       active = false;
       clearInterval(interval);
     };
-  }, []);
+  }, [shopSlug]);
 
   const updateStatus = async (status) => {
     if (!selected) return;
@@ -73,7 +77,7 @@ export default function AdminOrdersPage() {
       const res = await fetch('/api/orders/update-status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: selected.id, status }),
+        body: JSON.stringify({ id: selected.id, status, shop_slug: shopSlug }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Unable to update status');
@@ -93,7 +97,7 @@ export default function AdminOrdersPage() {
       const res = await fetch('/api/orders/mark-paid', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: selected.id, paid: !selected.paid }),
+        body: JSON.stringify({ id: selected.id, paid: !selected.paid, shop_slug: shopSlug }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Unable to update payment status');
@@ -127,7 +131,7 @@ export default function AdminOrdersPage() {
         </head>
         <body>
           <div class="header">
-            <h1>🔥 Dial-A-Braai</h1>
+            <h1>🔥 ${SHOP_CONFIG.name}</h1>
             <p>Order Receipt</p>
           </div>
           

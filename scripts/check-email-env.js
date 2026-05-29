@@ -27,7 +27,7 @@ console.log('-'.repeat(60));
 console.log(`AWS_ACCESS_KEY_ID: ${hasAwsAccessKey ? '✅ SET' : '⚠️  NOT SET'}`);
 console.log(`AWS_SECRET_ACCESS_KEY: ${hasAwsSecretKey ? '✅ SET' : '⚠️  NOT SET'}`);
 console.log(`AWS_REGION: ${hasAwsRegion ? `✅ ${process.env.AWS_REGION}` : '⚠️  NOT SET (will default to us-east-1)'}`);
-console.log(`AWS_SES_FROM_EMAIL: ${hasFromEmail ? `✅ ${process.env.AWS_SES_FROM_EMAIL}` : '⚠️  NOT SET (will use noreply@dialabraai.com)'}`);
+console.log(`AWS_SES_FROM_EMAIL: ${hasFromEmail ? `✅ ${process.env.AWS_SES_FROM_EMAIL}` : '⚠️  NOT SET (will use noreply@yourshop.com)'}`);
 
 console.log('\n' + '-'.repeat(60));
 console.log('SYSTEM MODE');

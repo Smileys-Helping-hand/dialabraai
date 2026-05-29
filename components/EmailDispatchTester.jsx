@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { SHOP_CONFIG } from '@/lib/shop-config';
 
 /**
  * Email Dispatch Tester Component
@@ -20,8 +21,8 @@ export default function EmailDispatchTester() {
         body: JSON.stringify({
           secretKey: process.env.NEXT_PUBLIC_INTERNAL_API_KEY || 'test-key-change-me',
           to: 'test@example.com',
-          subject: 'Test Email - Dial-A-Braai',
-          body: '<h1>Test Email</h1><p>This is a test email from your Dial-A-Braai system.</p>',
+          subject: `Test Email - ${SHOP_CONFIG.name}`,
+          body: `<h1>Test Email</h1><p>This is a test email from your ${SHOP_CONFIG.name} system.</p>`,
           orderId: 'test-' + Date.now(),
         }),
       });

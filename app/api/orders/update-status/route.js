@@ -6,7 +6,7 @@ const allowedStatuses = ['pending', 'preparing', 'ready', 'completed'];
 
 export async function POST(request) {
   const body = await request.json();
-  const { id, status } = body || {};
+  const { id, status, shop_slug = 'default' } = body || {};
 
   if (!id || !status) {
     return NextResponse.json({ error: 'Order id and status are required.' }, { status: 400 });
@@ -27,7 +27,7 @@ export async function POST(request) {
   }
 
   try {
-    await sql`UPDATE orders SET status = ${status} WHERE id = ${id}`;
+    await sql`UPDATE orders SET status = ${status} WHERE id = ${id} AND COALESCE(shop_slug, 'default') = ${shop_slug || 'default'}`;
     const [row] = await sql`SELECT * FROM orders WHERE id = ${id}`;
     const order = { ...row, total_price: Number(row.total_price), created_at: row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at };
     return NextResponse.json({ order });

@@ -83,14 +83,21 @@ function calculateStats(orders) {
   };
 }
 
-export async function GET() {
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const shopSlug = searchParams.get('shop') || 'default';
+
   if (!sql) {
     const orders = demoStore.getAllOrders();
     return NextResponse.json(calculateStats(orders));
   }
 
   try {
-    const orders = await sql`SELECT * FROM orders ORDER BY created_at DESC`;
+    const orders = await sql`
+      SELECT * FROM orders
+      WHERE COALESCE(shop_slug, 'default') = ${shopSlug}
+      ORDER BY created_at DESC
+    `;
     return NextResponse.json(calculateStats(orders));
   } catch (error) {
     console.error('Failed to fetch stats', error);

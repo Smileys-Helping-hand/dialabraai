@@ -4,7 +4,7 @@ import { demoStore } from '@/lib/demo-store';
 
 export async function POST(request) {
   const body = await request.json();
-  const { items, customer_name, customer_phone, customer_email, notes, total_price, userId } = body || {};
+  const { items, customer_name, customer_phone, customer_email, notes, total_price, userId, shop_slug = 'default' } = body || {};
 
   if (!Array.isArray(items) || items.length === 0) {
     return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
@@ -27,13 +27,14 @@ export async function POST(request) {
     paid: false,
     created_at: getTimestamp(),
     userId: userId || null,
+    shop_slug: shop_slug || 'default',
   };
 
   if (sql) {
     try {
       await sql`
-        INSERT INTO orders (id, items, total_price, customer_name, customer_phone, customer_email, notes, status, paid, created_at, user_id)
-        VALUES (${orderId}, ${JSON.stringify(items)}::jsonb, ${payload.total_price}, ${customer_name}, ${customer_phone}, ${payload.customer_email}, ${payload.notes}, 'pending', false, ${payload.created_at}, ${userId || null})
+        INSERT INTO orders (id, items, total_price, customer_name, customer_phone, customer_email, notes, status, paid, created_at, user_id, shop_slug)
+        VALUES (${orderId}, ${JSON.stringify(items)}::jsonb, ${payload.total_price}, ${customer_name}, ${customer_phone}, ${payload.customer_email}, ${payload.notes}, 'pending', false, ${payload.created_at}, ${userId || null}, ${payload.shop_slug})
       `;
       return NextResponse.json({ id: orderId }, { status: 200 });
     } catch (error) {

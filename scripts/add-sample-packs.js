@@ -2,38 +2,36 @@
 // Run this with: node scripts/add-sample-packs.js
 
 const { adminDb } = require('../lib/firebase-admin');
+const SHOP_SLUG = process.env.SEED_SHOP_SLUG || 'default';
 
 const samplePacks = [
   {
-    name: 'Platter for 1',
-    description: 'Perfect individual meal with a variety of meats',
+    name: 'Lunch Starter Pack',
+    description: 'Popular solo lunch bundle',
     category: 'Packs',
     price: 89.99,
     isPack: true,
     available: true,
     image_url: '/images/menu/platter-1.jpg',
+    shopSlug: SHOP_SLUG,
     items: [
-      { id: 'chops', name: 'Lamb Chops', quantity: 3, price: 15.00 },
-      { id: 'chicken', name: 'Chicken Pieces', quantity: 2, price: 12.00 },
-      { id: 'boerewors', name: 'Boerewors', quantity: 1, price: 18.00 },
-      { id: 'pap', name: 'Pap & Sauce', quantity: 1, price: 8.00 },
+      { id: 'burger', name: 'Classic Burger', quantity: 1, price: 95.00 },
+      { id: 'fries', name: 'Loaded Fries', quantity: 1, price: 55.00 },
     ],
   },
   {
-    name: 'Family Braai Pack',
-    description: 'Feed the whole family with this generous combo',
+    name: 'Family Value Bundle',
+    description: 'Shareable family deal',
     category: 'Packs',
     price: 299.99,
     isPack: true,
     available: true,
     image_url: '/images/menu/family-pack.jpg',
+    shopSlug: SHOP_SLUG,
     items: [
-      { id: 'chops', name: 'Lamb Chops', quantity: 10, price: 15.00 },
-      { id: 'chicken', name: 'Chicken Pieces', quantity: 8, price: 12.00 },
-      { id: 'sosaties', name: 'Sosaties', quantity: 6, price: 10.00 },
-      { id: 'boerewors', name: 'Boerewors', quantity: 3, price: 18.00 },
-      { id: 'pap', name: 'Pap & Sauce', quantity: 4, price: 8.00 },
-      { id: 'salad', name: 'Garden Salad', quantity: 2, price: 15.00 },
+      { id: 'burger', name: 'Classic Burger', quantity: 3, price: 95.00 },
+      { id: 'wrap', name: 'Chicken Wrap', quantity: 2, price: 85.00 },
+      { id: 'fries', name: 'Loaded Fries', quantity: 2, price: 55.00 },
     ],
   },
   {
@@ -74,7 +72,7 @@ async function addSamplePacks() {
     process.exit(1);
   }
 
-  console.log('Adding sample menu packs...');
+  console.log(`Adding sample menu packs for shop: ${SHOP_SLUG}...`);
 
   for (const pack of samplePacks) {
     try {

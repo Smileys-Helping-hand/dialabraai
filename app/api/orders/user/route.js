@@ -14,6 +14,7 @@ function normaliseOrder(row) {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
+  const shopSlug = searchParams.get('shop') || 'default';
 
   if (!userId) {
     return NextResponse.json({ error: 'userId is required' }, { status: 400 });
@@ -26,7 +27,7 @@ export async function GET(request) {
   try {
     const rows = await sql`
       SELECT * FROM orders
-      WHERE user_id = ${userId}
+      WHERE user_id = ${userId} AND COALESCE(shop_slug, 'default') = ${shopSlug}
       ORDER BY created_at DESC
     `;
     return NextResponse.json(rows.map(normaliseOrder));

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { sql, getTimestamp } from '@/lib/db';
-import { menuCategories } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -11,7 +10,7 @@ export async function POST(request) {
   }
 
   const body = await request.json();
-  const { id, name, description = '', price, category, image_url, delete: shouldDelete } = body || {};
+  const { id, name, description = '', price, category, image_url, delete: shouldDelete, shop_slug = 'default' } = body || {};
 
   if (!id) {
     return NextResponse.json({ error: 'Menu item id is required.' }, { status: 400 });
@@ -19,7 +18,7 @@ export async function POST(request) {
 
   try {
     if (shouldDelete) {
-      await sql`DELETE FROM menu_items WHERE id = ${id}`;
+      await sql`DELETE FROM menu_items WHERE id = ${id} AND COALESCE(shop_slug, 'default') = ${shop_slug || 'default'}`;
       return NextResponse.json({ deleted: id });
     }
 
@@ -27,8 +26,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Name, price, and category are required for updates.' }, { status: 400 });
     }
 
-    if (!menuCategories.includes(category)) {
-      return NextResponse.json({ error: 'Invalid category provided.' }, { status: 400 });
+    const safeCategory = String(category).trim();
+    if (!safeCategory) {
+      return NextResponse.json({ error: 'Category cannot be empty.' }, { status: 400 });
     }
 
     const numericPrice = Number(price);
@@ -40,8 +40,8 @@ export async function POST(request) {
     await sql`
       UPDATE menu_items
       SET name = ${name}, description = ${description}, price = ${numericPrice},
-          category = ${category}, image_url = ${image_url || ''}, available = true, updated_at = ${updated_at}
-      WHERE id = ${id}
+          category = ${safeCategory}, image_url = ${image_url || ''}, available = true, updated_at = ${updated_at}
+      WHERE id = ${id} AND COALESCE(shop_slug, 'default') = ${shop_slug || 'default'}
     `;
     const [row] = await sql`SELECT * FROM menu_items WHERE id = ${id}`;
     const item = row ? { ...row, price: Number(row.price) } : null;

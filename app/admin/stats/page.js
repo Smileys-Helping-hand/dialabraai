@@ -3,9 +3,11 @@
 import { useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { formatCurrency } from '@/lib/price';
+import { useShop } from '@/components/ShopProvider';
 
-const fetchStats = async () => {
-  const res = await fetch('/api/admin/stats');
+const fetchStats = async (shopSlug) => {
+  const query = shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : '';
+  const res = await fetch(`/api/admin/stats${query}`);
   if (!res.ok) {
     throw new Error('Unable to fetch stats');
   }
@@ -30,13 +32,14 @@ const Section = ({ title, children }) => (
 );
 
 function StatsBody() {
+  const { shopSlug } = useShop();
   const {
     data,
     isLoading,
     isError,
     refetch,
     isFetching,
-  } = useQuery({ queryKey: ['admin-stats'], queryFn: fetchStats, refetchInterval: 30000, staleTime: 30000 });
+  } = useQuery({ queryKey: ['admin-stats', shopSlug], queryFn: () => fetchStats(shopSlug), refetchInterval: 30000, staleTime: 30000 });
 
   const monthlyTotal = useMemo(
     () => (data?.monthlyIncome || []).reduce((sum, entry) => sum + Number(entry.total || 0), 0),

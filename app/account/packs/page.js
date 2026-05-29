@@ -9,10 +9,12 @@ import {
   deleteOrderPackLocal,
 } from '@/lib/order-packs';
 import { loadCart, saveCart } from '@/lib/utils';
+import { useShop } from '@/components/ShopProvider';
 
 export default function OrderPacksPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { shopSlug } = useShop();
   const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,10 +25,10 @@ export default function OrderPacksPage() {
     const fetchPacks = async () => {
       try {
         if (user) {
-          const userPacks = await getOrderPacks(user.uid);
+          const userPacks = await getOrderPacks(user.uid, shopSlug);
           setPacks(userPacks);
         } else {
-          const localPacks = getOrderPacksLocal();
+          const localPacks = getOrderPacksLocal(shopSlug);
           setPacks(localPacks);
         }
       } catch (err) {
@@ -38,7 +40,7 @@ export default function OrderPacksPage() {
     };
 
     fetchPacks();
-  }, [user, authLoading]);
+  }, [user, authLoading, shopSlug]);
 
   const handleDelete = async (packId) => {
     if (!confirm('Are you sure you want to delete this pack?')) return;
@@ -47,7 +49,7 @@ export default function OrderPacksPage() {
       if (user) {
         await deleteOrderPack(user.uid, packId);
       } else {
-        deleteOrderPackLocal(packId);
+        deleteOrderPackLocal(packId, shopSlug);
       }
       setPacks((prev) => prev.filter((p) => p.id !== packId));
     } catch (err) {
@@ -57,10 +59,10 @@ export default function OrderPacksPage() {
   };
 
   const handleLoadPack = (pack) => {
-    const currentCart = loadCart();
+    const currentCart = loadCart(shopSlug);
     const newCart = [...currentCart, ...pack.items];
-    saveCart(newCart);
-    router.push('/menu');
+    saveCart(newCart, shopSlug);
+    router.push(`/menu${shopSlug !== 'default' ? `?shop=${encodeURIComponent(shopSlug)}` : ''}`);
   };
 
   if (authLoading || loading) {
