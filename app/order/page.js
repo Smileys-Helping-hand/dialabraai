@@ -229,6 +229,14 @@ export default function OrderPage() {
               </div>
             </Field>
 
+            {/* Payment methods */}
+            {shop.paymentMethods && (
+              <div className="rounded-2xl border border-gold/25 bg-gold/8 p-4">
+                <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1.5">Payment accepted</p>
+                <p className="text-sm text-charcoal/75">{shop.paymentMethods}</p>
+              </div>
+            )}
+
             {/* WhatsApp note */}
             <div className="flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <MessageCircle className="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />

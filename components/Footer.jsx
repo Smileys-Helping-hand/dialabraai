@@ -70,6 +70,7 @@ export default function Footer() {
                 { href: `/menu${q}`, label: 'Browse Menu' },
                 { href: `/order${q}`, label: 'Place Order' },
                 { href: '/account/orders', label: 'My Orders' },
+                { href: '/pricing', label: 'Pricing & Plans' },
                 { href: '/account/packs', label: 'My Order Packs' },
               ].map(({ href, label }) => (
                 <li key={href}>
@@ -86,21 +87,23 @@ export default function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-gold">Business</h3>
             <ul className="space-y-2">
               <li>
+                <Link href="/join" className="flex items-center gap-1 text-sm font-semibold text-gold transition hover:text-gold/80">
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  List your shop — free
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="flex items-center gap-1 text-sm text-cream/60 transition hover:text-gold">
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  Pricing &amp; plans
+                </Link>
+              </li>
+              <li>
                 <Link href="/admin" className="flex items-center gap-1 text-sm text-cream/60 transition hover:text-gold">
                   <Store className="h-3.5 w-3.5" />
                   Admin Login
                 </Link>
               </li>
-              {waLink && (
-                <li>
-                  <a href={`https://wa.me/27837864913?text=${encodeURIComponent('Hi! I want to list my shop.')}`}
-                    target="_blank" rel="noreferrer"
-                    className="flex items-center gap-1 text-sm text-cream/60 transition hover:text-gold">
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                    List your shop
-                  </a>
-                </li>
-              )}
             </ul>
 
             {shop.supportPhoneDisplay && (

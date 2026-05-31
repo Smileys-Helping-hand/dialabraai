@@ -32,6 +32,8 @@ export async function GET() {
         slug,
         name,
         short_name,
+        is_open,
+        operating_hours,
         tagline,
         description,
         logo_url,
@@ -68,6 +70,8 @@ export async function GET() {
           : SHOP_CONFIG.defaultMenuCategories,
         estimatedReadyTime: row.estimated_ready_time,
         instagramHandle: row.instagram_handle,
+        isOpen:          row.is_open !== false,
+        operatingHours:  row.operating_hours || '',
         createdAt: row.created_at,
       }))
     );

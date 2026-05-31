@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin, Clock, MessageCircle, ChevronRight, Star } from 'lucide-react';
+import { MapPin, Clock, MessageCircle, ChevronRight } from 'lucide-react';
 
 function getCategoryEmoji(category) {
   const map = {
@@ -83,13 +83,23 @@ export default function ShopCard({ shop, index = 0 }) {
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-        {/* Ready time badge */}
-        {shop.estimatedReadyTime && (
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
-            <Clock className="h-3 w-3" />
-            {shop.estimatedReadyTime}
+        {/* Open/Closed + ready time */}
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+          <div className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold backdrop-blur-sm ${
+            shop.isOpen !== false
+              ? 'bg-emerald-500/90 text-white'
+              : 'bg-black/60 text-white/80'
+          }`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${shop.isOpen !== false ? 'bg-white animate-ping-slow' : 'bg-white/50'}`} />
+            {shop.isOpen !== false ? 'Open' : 'Closed'}
           </div>
-        )}
+          {shop.estimatedReadyTime && shop.isOpen !== false && (
+            <div className="flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-xs text-white/90 backdrop-blur-sm">
+              <Clock className="h-3 w-3" />
+              {shop.estimatedReadyTime}
+            </div>
+          )}
+        </div>
 
         {/* Logo avatar — overlapping cover/body */}
         <div
@@ -117,6 +127,14 @@ export default function ShopCard({ shop, index = 0 }) {
           <div className="flex items-center gap-1.5 text-xs text-charcoal/50">
             <MapPin className="h-3.5 w-3.5 shrink-0" />
             <span className="line-clamp-1">{shop.locationSummary}</span>
+          </div>
+        )}
+
+        {/* Hours */}
+        {shop.operatingHours && (
+          <div className="flex items-center gap-1.5 text-xs text-charcoal/45">
+            <Clock className="h-3.5 w-3.5 shrink-0" />
+            <span className="line-clamp-1">{shop.operatingHours}</span>
           </div>
         )}
 

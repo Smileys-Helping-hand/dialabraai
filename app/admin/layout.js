@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { SHOP_CONFIG } from '@/lib/shop-config';
 import { useShop } from '@/components/ShopProvider';
 import { auth, clearAdminSession, getStoredAdminSession } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -83,12 +82,12 @@ export default function AdminLayout({ children }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/admin/dashboard" className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-cream font-bold text-xl border-2 border-gold">
-                  {SHOP_CONFIG.shortName}
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame text-cream font-bold text-xl border-2 border-gold shadow-glow">
+                  🔥
                 </span>
                 <div>
-                  <h1 className="text-xl font-heading font-bold text-primary">Admin Panel</h1>
-                  <p className="text-xs text-charcoal/60">{SHOP_CONFIG.name} Management</p>
+                  <h1 className="text-xl font-heading font-bold text-primary">Shop Admin</h1>
+                  <p className="text-xs text-charcoal/60">Graze Business Portal</p>
                 </div>
               </Link>
             </div>
@@ -152,6 +151,9 @@ export default function AdminLayout({ children }) {
             <NavTab href="/admin/setup" active={pathname.startsWith('/admin/setup')} icon="🧭">
               Setup
             </NavTab>
+            <NavTab href="/superadmin" active={false} icon="👑">
+              Super Admin
+            </NavTab>
           </div>
         </div>
       </nav>
@@ -164,7 +166,7 @@ export default function AdminLayout({ children }) {
       {/* Footer */}
       <footer className="bg-white border-t border-charcoal/10 py-4 mt-12">
         <div className="container mx-auto px-4 text-center text-sm text-charcoal/60">
-          <p>{SHOP_CONFIG.name} Admin Panel • {new Date().getFullYear()}</p>
+          <p>Graze Business Admin • {new Date().getFullYear()}</p>
         </div>
       </footer>
     </div>

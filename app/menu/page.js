@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Bookmark, ChevronRight, ShoppingCart, X, Loader2, AlertCircle } from 'lucide-react';
+import { Bookmark, ChevronRight, ShoppingCart, X, Loader2, AlertCircle, Search, Sparkles, Share2 } from 'lucide-react';
+import { useTheme } from '@/components/ThemeEngine';
 import CategoryTabs from '@/components/CategoryTabs';
 import MenuItemCard from '@/components/MenuItemCard';
 import PackItemCard from '@/components/PackItemCard';
@@ -28,6 +29,8 @@ function SkeletonCard() {
 
 export default function MenuPage() {
   const { shop, shopSlug } = useShop();
+  const { theme } = useTheme();
+  const feedStyle = theme?.productFeed || 'grid';
   const [active, setActive] = useState('');
   const [items, setItems] = useState([]);
   const [packs, setPacks] = useState([]);
@@ -36,6 +39,7 @@ export default function MenuPage() {
   const [error, setError] = useState('');
   const [cart, setCart] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [menuSearch, setMenuSearch] = useState('');
   const [showSavePackModal, setShowSavePackModal] = useState(false);
   const [packName, setPackName] = useState('');
   const [savingPack, setSavingPack] = useState(false);
@@ -134,7 +138,34 @@ export default function MenuPage() {
     }
   };
 
-  const displayItems = useMemo(() => items.filter((i) => i.category === active), [items, active]);
+  const specials = useMemo(() => items.filter((i) => i.is_special), [items]);
+
+  const handleShare = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    if (navigator.share) {
+      try { await navigator.share({ title: `${shop.name} Menu`, url }); } catch { /* dismissed */ }
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  };
+
+  const categoryCounts = useMemo(() =>
+    categories.reduce((acc, cat) => {
+      acc[cat] = items.filter((i) => i.category === cat).length;
+      return acc;
+    }, {}),
+  [categories, items]);
+
+  const displayItems = useMemo(() => {
+    let base = items.filter((i) => i.category === active);
+    if (menuSearch.trim()) {
+      const q = menuSearch.toLowerCase();
+      base = base.filter((i) =>
+        i.name?.toLowerCase().includes(q) || i.description?.toLowerCase().includes(q)
+      );
+    }
+    return base;
+  }, [items, active, menuSearch]);
   const total = useMemo(() => calculateTotal(cart), [cart]);
   const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
 
@@ -161,12 +192,12 @@ export default function MenuPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button onClick={handleShare} className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/40 bg-white/10 text-cream backdrop-blur transition hover:bg-white/20" title="Share this menu">
+              <Share2 className="h-4 w-4" />
+            </button>
             {cart.length > 0 && (
-              <button
-                onClick={() => setShowSavePackModal(true)}
-                className="flex items-center gap-2 rounded-2xl border border-gold/40 bg-white/10 px-4 py-2.5 text-sm font-semibold text-cream backdrop-blur transition hover:bg-white/20"
-              >
+              <button onClick={() => setShowSavePackModal(true)} className="flex items-center gap-2 rounded-2xl border border-gold/40 bg-white/10 px-4 py-2.5 text-sm font-semibold text-cream backdrop-blur transition hover:bg-white/20">
                 <Bookmark className="h-4 w-4" />
                 Save Pack
               </button>
@@ -178,6 +209,25 @@ export default function MenuPage() {
           </div>
         </div>
       </div>
+
+      {/* Today's Specials */}
+      {!loading && specials.length > 0 && (
+        <div className="space-y-4 animate-slide-up">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-gold" />
+            <h2 className="font-display text-2xl font-extrabold text-charcoal">Today&apos;s Specials</h2>
+            <span className="rounded-full bg-flame/10 px-2.5 py-1 text-xs font-bold text-flame border border-flame/20">{specials.length} on special</span>
+          </div>
+          <div className={feedStyle === 'list' ? 'flex flex-col gap-2.5' : 'grid gap-5 sm:grid-cols-2 md:grid-cols-3'}>
+            {specials.map((item, i) => (
+              <div key={item.id} className="relative animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
+                <div className="absolute -top-2 -right-2 z-10 rounded-full bg-flame px-2.5 py-1 text-[10px] font-black text-cream shadow-glow">Special</div>
+                <MenuItemCard item={item} onAdd={handleAdd} feedStyle={feedStyle} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Combo packs */}
       {packs.length > 0 && (
@@ -222,9 +272,26 @@ export default function MenuPage() {
         </div>
       )}
 
-      {/* Category tabs */}
+      {/* Category tabs + search */}
       {categories.length > 0 && (
-        <CategoryTabs categories={categories} active={active} onChange={setActive} />
+        <div className="space-y-3">
+          <CategoryTabs categories={categories} active={active} onChange={(cat) => { setActive(cat); setMenuSearch(''); }} counts={categoryCounts} />
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal/35" />
+            <input
+              type="text"
+              value={menuSearch}
+              onChange={(e) => setMenuSearch(e.target.value)}
+              placeholder={`Search in ${active}…`}
+              className="input-base pl-10 py-2.5 text-sm"
+            />
+            {menuSearch && (
+              <button onClick={() => setMenuSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-charcoal/40 hover:text-charcoal">
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Items grid */}
@@ -239,14 +306,29 @@ export default function MenuPage() {
         </div>
       ) : displayItems.length === 0 ? (
         <div className="py-12 text-center">
-          <p className="text-4xl mb-3">🍽️</p>
-          <p className="text-charcoal/60">No items in this category yet.</p>
+          <p className="text-4xl mb-3">{menuSearch ? '🔍' : '🍽️'}</p>
+          <p className="text-charcoal/60">
+            {menuSearch
+              ? `No items match "${menuSearch}" in ${active}.`
+              : `No items in ${active} yet.`}
+          </p>
+          {menuSearch && (
+            <button onClick={() => setMenuSearch('')} className="mt-3 text-sm font-semibold text-flame hover:text-primary transition">
+              Clear search
+            </button>
+          )}
         </div>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+        <div className={
+          feedStyle === 'list'
+            ? 'flex flex-col gap-2.5'
+            : feedStyle === 'masonry'
+            ? 'columns-2 md:columns-3 gap-4 [&>div]:mb-4 [&>div]:break-inside-avoid'
+            : 'grid gap-5 sm:grid-cols-2 md:grid-cols-3'
+        }>
           {displayItems.map((item, i) => (
             <div key={item.id} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
-              <MenuItemCard item={item} onAdd={handleAdd} />
+              <MenuItemCard item={item} onAdd={handleAdd} feedStyle={feedStyle} />
             </div>
           ))}
         </div>

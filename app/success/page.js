@@ -191,6 +191,14 @@ export default function SuccessPage({ searchParams }) {
         )}
       </div>
 
+      {/* ── Payment methods ─────────────────────────────────────────────── */}
+      {shop.paymentMethods && (
+        <div className="rounded-3xl border border-gold/25 bg-gold/8 p-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Payment accepted</p>
+          <p className="text-sm text-charcoal/75">{shop.paymentMethods}</p>
+        </div>
+      )}
+
       {/* ── Next steps ──────────────────────────────────────────────────── */}
       <div className="rounded-3xl border border-charcoal/8 bg-[#FAFAF8] p-5">
         <p className="mb-3 text-sm font-bold text-charcoal">What happens next?</p>

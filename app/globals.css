@@ -269,6 +269,18 @@
     overflow-y: auto;
   }
 
+  /* ─── Aurora animation ─── */
+  @keyframes aurora-shift {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+  }
+
+  @keyframes noise-move {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(10px, 10px); }
+  }
+
   /* ─── Text gradients ─── */
   .text-gradient-flame {
     background: linear-gradient(135deg, #E46A28 0%, #F4C056 100%);
@@ -284,3 +296,214 @@
     background-clip: text;
   }
 }
+
+/* ════════════════════════════════════════════════════════
+   THEME ENGINE ARCHETYPE RULES
+   Applied via data-theme attribute set by ThemeEngine.jsx
+   ════════════════════════════════════════════════════════ */
+
+/* ── Global background controlled by ThemeEngine ─────── */
+html[data-theme] body {
+  background-color: var(--te-bg, #FFF4E2);
+  background-image: none !important;
+  color: var(--te-text, #1A1715);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── Glassmorphism ───────────────────────────────────── */
+html[data-theme="glassmorphism"] .card,
+html[data-theme="glassmorphism"] .brand-card,
+html[data-theme="glassmorphism"] .card-contrast,
+html[data-theme="glassmorphism"] .section-surface,
+html[data-glass="1"] .card,
+html[data-glass="1"] .brand-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #F1F5F9;
+}
+
+html[data-theme="glassmorphism"] .button-primary,
+html[data-glass="1"] .button-primary {
+  background: rgba(99, 102, 241, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+}
+
+html[data-theme="glassmorphism"] h1,
+html[data-theme="glassmorphism"] h2,
+html[data-theme="glassmorphism"] h3,
+html[data-glass="1"] h1,
+html[data-glass="1"] h2 {
+  color: #F1F5F9;
+}
+
+html[data-theme="glassmorphism"] p,
+html[data-glass="1"] p {
+  color: rgba(241, 245, 249, 0.75);
+}
+
+/* ── Aurora background ───────────────────────────────── */
+html[data-aurora="1"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    -45deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(168, 85, 247, 0.25),
+    rgba(59, 130, 246, 0.2),
+    rgba(16, 185, 129, 0.2)
+  );
+  background-size: 400% 400%;
+  animation: aurora-shift 12s ease infinite;
+}
+
+/* ── Noise / texture overlay ─────────────────────────── */
+html[data-noise="1"] body::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px;
+  animation: noise-move 0.15s steps(2) infinite;
+}
+
+/* ── Neubrutalism ────────────────────────────────────── */
+html[data-theme="neubrutalism"] .card,
+html[data-theme="neubrutalism"] .brand-card,
+html[data-theme="neubrutalism"] .card-contrast,
+html[data-theme="neubrutalism"] .section-surface,
+html[data-theme="neubrutalism"] article {
+  border-radius: 0 !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 4px 4px 0px #000000 !important;
+  transition: box-shadow 0.1s ease, transform 0.1s ease !important;
+}
+
+html[data-theme="neubrutalism"] .card:hover,
+html[data-theme="neubrutalism"] article:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0px #000000 !important;
+}
+
+html[data-theme="neubrutalism"] .button-primary,
+html[data-theme="neubrutalism"] .brand-button,
+html[data-theme="neubrutalism"] button[class*="rounded"] {
+  border-radius: 0 !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 3px 3px 0px #000000 !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+
+html[data-theme="neubrutalism"] .button-primary:hover,
+html[data-theme="neubrutalism"] .brand-button:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 5px 5px 0px #000000 !important;
+}
+
+html[data-theme="neubrutalism"] input,
+html[data-theme="neubrutalism"] select,
+html[data-theme="neubrutalism"] textarea {
+  border-radius: 0 !important;
+  border: 2px solid #000000 !important;
+}
+
+/* ── Cyberpunk ───────────────────────────────────────── */
+html[data-theme="cyberpunk"] body {
+  background-color: #09090B !important;
+  color: #F4F4F5;
+}
+
+html[data-theme="cyberpunk"] .card,
+html[data-theme="cyberpunk"] .brand-card,
+html[data-theme="cyberpunk"] article {
+  background: #18181B !important;
+  border-color: rgba(255, 0, 127, 0.2) !important;
+  border-radius: 0 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+html[data-theme="cyberpunk"] .card:hover,
+html[data-theme="cyberpunk"] article:hover {
+  border-color: rgba(255, 0, 127, 0.5) !important;
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.15) !important;
+}
+
+html[data-theme="cyberpunk"] .button-primary,
+html[data-theme="cyberpunk"] .brand-button {
+  background: #FF007F !important;
+  border-radius: 0 !important;
+  border-color: #FF007F !important;
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.4), 0 0 40px rgba(255, 0, 127, 0.15) !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+html[data-theme="cyberpunk"] .button-primary:hover,
+html[data-theme="cyberpunk"] .brand-button:hover {
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.6), 0 0 60px rgba(255, 0, 127, 0.25) !important;
+}
+
+html[data-theme="cyberpunk"] h1,
+html[data-theme="cyberpunk"] h2,
+html[data-theme="cyberpunk"] h3 {
+  color: #F4F4F5;
+  text-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+}
+
+html[data-theme="cyberpunk"] .shimmer {
+  background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+}
+
+/* ── Minimal ─────────────────────────────────────────── */
+html[data-theme="minimal"] .card,
+html[data-theme="minimal"] .brand-card,
+html[data-theme="minimal"] article {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+html[data-theme="minimal"] .button-primary,
+html[data-theme="minimal"] .brand-button {
+  box-shadow: none !important;
+}
+
+html[data-theme="minimal"] .button-primary:hover,
+html[data-theme="minimal"] .brand-button:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* ── Dynamic radius via CSS variable ─────────────────── */
+html[data-theme] .card,
+html[data-theme] .brand-card,
+html[data-theme] article,
+html[data-theme] .section-surface {
+  border-radius: var(--te-radius, 20px);
+}
+
+html[data-theme] .button-primary,
+html[data-theme] .button-secondary,
+html[data-theme] .brand-button {
+  border-radius: calc(var(--te-radius, 20px) * 0.8);
+}
+
+/* Override: neubrutalism and cyberpunk always sharp (handled above with higher specificity) */
+
+/* ── Theme transition smoothness ─────────────────────── */
+html[data-theme] * {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+/* But don't transition animations */
+html[data-theme] [class*="animate-"] {
+  transition: none;
+}
+

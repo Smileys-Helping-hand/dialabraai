@@ -20,7 +20,7 @@ export default function OrderHistoryPage() {
     if (authLoading) return;
 
     if (!user) {
-      router.push('/home');
+      router.push('/');
       return;
     }
 

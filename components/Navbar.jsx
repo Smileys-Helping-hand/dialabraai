@@ -95,13 +95,25 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <AccountButton />
 
-            {inShopContext && (
+            {!inShopContext && (
+              <Link href="/pricing" className={`hidden sm:inline-block rounded-xl px-3.5 py-2 text-sm font-semibold transition-all ${isActive('/pricing') ? 'bg-primary/10 text-primary' : 'text-charcoal/55 hover:text-charcoal'}`}>
+                Pricing
+              </Link>
+            )}
+
+            {inShopContext ? (
               <Link
                 href={href('/order')}
                 className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-cream shadow-glow transition-all hover:shadow-glow-lg hover:scale-[1.02] active:scale-[0.98]"
               >
-                Order now
-                <ChevronRight className="h-3.5 w-3.5" />
+                Order now <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            ) : (
+              <Link
+                href="/join"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-cream shadow-glow transition-all hover:shadow-glow-lg hover:scale-[1.02] active:scale-[0.98]"
+              >
+                List your shop <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             )}
 

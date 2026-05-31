@@ -37,7 +37,10 @@ function mapShop(row, fallbackSlug) {
     defaultMenuCategories: Array.isArray(row.default_menu_categories) && row.default_menu_categories.length
       ? row.default_menu_categories
       : SHOP_CONFIG.defaultMenuCategories,
-    fontChoice: row.font_choice || 'jakarta',
+    fontChoice:      row.font_choice      || 'jakarta',
+    isOpen:          row.is_open !== false,
+    operatingHours:  row.operating_hours  || '',
+    paymentMethods:  row.payment_methods  || '',
   };
 }
 

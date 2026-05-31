@@ -70,6 +70,17 @@ export default function AdminMenuPage() {
     setFile(null);
   };
 
+  const handleToggleSpecial = async (item) => {
+    try {
+      await fetch('/api/menu/toggle-special', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, isSpecial: !item.is_special, shop_slug: shopSlug }),
+      });
+      setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, is_special: !i.is_special } : i));
+    } catch { /* silent */ }
+  };
+
   const handleDelete = async (item) => {
     const confirmed = typeof window === 'undefined' ? true : window.confirm('Delete this menu item?');
     if (!confirmed) return;
@@ -475,7 +486,22 @@ Greek Salad: R95.00`}
           {!loading && items.length === 0 && <p className="text-sm text-charcoal/70">No menu items yet.</p>}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
-              <MenuItemCard key={item.id} item={item} onEdit={handleEdit} onDelete={handleDelete} />
+              <div key={item.id} className="relative">
+                {/* Special badge overlay */}
+                <button
+                  type="button"
+                  onClick={() => handleToggleSpecial(item)}
+                  title={item.is_special ? 'Remove from Today\'s Specials' : 'Mark as Today\'s Special'}
+                  className={`absolute -top-2 -left-2 z-10 rounded-full px-2.5 py-1 text-[10px] font-black shadow-md transition ${
+                    item.is_special
+                      ? 'bg-flame text-cream border border-gold/30'
+                      : 'bg-white text-charcoal/40 border border-charcoal/15 hover:bg-flame/10 hover:text-flame'
+                  }`}
+                >
+                  {item.is_special ? '⭐ Special' : '☆ Special'}
+                </button>
+                <MenuItemCard item={item} onEdit={handleEdit} onDelete={handleDelete} />
+              </div>
             ))}
           </div>
         </section>

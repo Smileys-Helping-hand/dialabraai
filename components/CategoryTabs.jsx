@@ -1,23 +1,31 @@
 'use client';
 
-export default function CategoryTabs({ categories, active, onChange }) {
+export default function CategoryTabs({ categories, active, onChange, counts = {} }) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 w-full">
+    <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
       {categories.map((cat) => {
         const isActive = active === cat;
+        const count    = counts[cat];
         return (
           <button
             key={cat}
-            className={`whitespace-nowrap rounded-2xl border px-4 py-2 min-h-[48px] text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flame focus-visible:ring-offset-2 ${
-              isActive
-                ? 'bg-primary text-cream border-gold shadow-[0_0_10px_#E46A28]'
-                : 'bg-cream border-charcoal/20 text-charcoal hover:border-primary'
-            }`}
-            onClick={() => onChange(cat)}
             type="button"
-            aria-label={`Filter menu to ${cat}`}
+            onClick={() => onChange(cat)}
+            aria-label={`Filter to ${cat}`}
+            className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
+              isActive
+                ? 'bg-primary text-cream shadow-glow scale-105'
+                : 'border border-charcoal/10 bg-white text-charcoal/65 hover:border-primary/25 hover:text-primary hover:scale-[1.02]'
+            }`}
           >
             {cat}
+            {count !== undefined && (
+              <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-black leading-none ${
+                isActive ? 'bg-white/20 text-cream' : 'bg-charcoal/8 text-charcoal/50'
+              }`}>
+                {count}
+              </span>
+            )}
           </button>
         );
       })}

@@ -15,7 +15,7 @@ export async function GET(request) {
       const rows = await sql`
         SELECT * FROM menu_items
         WHERE available = true AND COALESCE(shop_slug, 'default') = ${shopSlug}
-        ORDER BY category, name
+        ORDER BY is_special DESC NULLS LAST, category, name
       `;
       const data = rows.map(r => ({ ...r, price: Number(r.price) }));
       return new Response(JSON.stringify(data || []), {

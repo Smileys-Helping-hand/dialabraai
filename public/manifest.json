@@ -1,0 +1,19 @@
+{
+  "name": "Graze — Local Food Ordering",
+  "short_name": "Graze",
+  "description": "Order from local shops without the chaos. Browse, pick, done.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF4E2",
+  "theme_color": "#762C1B",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["food", "shopping", "lifestyle"],
+  "shortcuts": [
+    { "name": "Explore Shops", "url": "/",     "description": "Browse local shops" },
+    { "name": "My Orders",     "url": "/account/orders", "description": "View your order history" }
+  ]
+}

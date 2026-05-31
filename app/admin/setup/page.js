@@ -33,6 +33,9 @@ const emptyForm = {
   logoUrl: '',
   heroImageUrl: '',
   fontChoice: 'jakarta',
+  isOpen: true,
+  operatingHours: '',
+  paymentMethods: '',
 };
 
 const steps = [
@@ -81,6 +84,9 @@ export default function ShopSetupPage() {
       logoUrl: shop.logoUrl || '',
       heroImageUrl: shop.heroImageUrl || '',
       fontChoice: shop.fontChoice || 'jakarta',
+      isOpen: shop.isOpen !== false,
+      operatingHours: shop.operatingHours || '',
+      paymentMethods: shop.paymentMethods || '',
     }));
   }, [searchParams, shop, shopSlug]);
 
@@ -217,6 +223,33 @@ export default function ShopSetupPage() {
             <p className="text-xs text-charcoal/60">
               These colors drive the storefront shell, buttons, and the live preview on the right.
             </p>
+          </div>
+
+          {/* ── Open/Closed + Hours + Payment ──────────────────────────── */}
+          <div className="rounded-3xl border border-charcoal/10 bg-white p-4 space-y-4">
+            <div>
+              <p className="text-sm uppercase tracking-wide text-flame font-semibold">Operations</p>
+              <h2 className="text-xl font-heading text-primary">Shop status &amp; hours</h2>
+            </div>
+
+            {/* Open/Closed toggle */}
+            <div className="flex items-center justify-between rounded-2xl border border-charcoal/10 px-4 py-3">
+              <div>
+                <p className="text-sm font-bold text-charcoal">Shop is open</p>
+                <p className="text-xs text-charcoal/55">Customers see a live Open / Closed badge on your card</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setForm({ ...form, isOpen: !form.isOpen })}
+                className={`relative h-7 w-12 rounded-full transition-colors duration-300 ${form.isOpen ? 'bg-emerald-500' : 'bg-charcoal/20'}`}
+              >
+                <span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all duration-300 ${form.isOpen ? 'left-6' : 'left-1'}`} />
+              </button>
+            </div>
+
+            <Field label="Operating Hours" value={form.operatingHours} onChange={(v) => setForm({ ...form, operatingHours: v })} placeholder="Mon–Fri 09:00–21:00 · Sat 10:00–20:00 · Sun Closed" helper="Free text — shown on your marketplace card" />
+
+            <Field label="Payment Methods" value={form.paymentMethods} onChange={(v) => setForm({ ...form, paymentMethods: v })} placeholder="Cash, SnapScan, EFT — Capitec 1234567890" helper="Shown to customers on checkout and order confirmation" />
           </div>
 
           {/* ── Font picker ─────────────────────────────────────────────── */}
@@ -361,6 +394,32 @@ export default function ShopSetupPage() {
               </div>
             </div>
           </div>
+
+          {/* QR Code */}
+          {form.slug && (
+            <div className="card p-6 space-y-3 text-center">
+              <p className="text-sm uppercase tracking-wide text-flame font-semibold">QR Code</p>
+              <p className="text-xs text-charcoal/60">Print or share this to let customers scan directly to your shop.</p>
+              <div className="flex justify-center">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(typeof window !== 'undefined' ? `${window.location.origin}/shop/${form.slug}` : `https://graze.app/shop/${form.slug}`)}&color=762C1B&bgcolor=FFF4E2`}
+                  alt="QR code"
+                  className="rounded-2xl border border-charcoal/10 shadow-card"
+                  width={180}
+                  height={180}
+                />
+              </div>
+              <a
+                href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(typeof window !== 'undefined' ? `${window.location.origin}/shop/${form.slug}` : `https://graze.app/shop/${form.slug}`)}&color=762C1B&bgcolor=FFF4E2`}
+                download={`${form.slug}-qr.png`}
+                target="_blank"
+                rel="noreferrer"
+                className="button-secondary text-sm inline-flex justify-center"
+              >
+                ⬇ Download QR (500×500)
+              </a>
+            </div>
+          )}
 
           <div className="card p-6 space-y-3">
             <p className="text-sm uppercase tracking-wide text-flame font-semibold">Next steps</p>
