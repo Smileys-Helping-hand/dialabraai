@@ -1,260 +1,135 @@
-# Dial-A-Braai - Firebase Production Deployment Guide
-
-## Overview
-This Next.js application now uses Firebase for authentication, Firestore for database, and is ready for production deployment.
+# Deployment Guide — Vercel Production
 
 ## Prerequisites
-- Node.js 18+ installed
-- Firebase account and project created
-- Firebase CLI installed: `npm install -g firebase-tools`
 
-## 1. Firebase Project Setup
+- Vercel account (vercel.com)
+- Neon PostgreSQL database
+- Resend API key for emails
+- Firebase project (for shop owner auth)
 
-### Create Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project or select existing one
-3. Enable Firestore Database (in "Build" section)
-4. Enable Authentication with Email/Password provider
-5. (Optional) Enable Firebase Storage if you plan to upload menu images
+## Steps to Deploy
 
-### Get Firebase Config
-1. In Firebase Console, go to Project Settings (gear icon)
-2. Scroll down to "Your apps" section
-3. Click "Web" icon (</>) to add a web app
-4. Copy the Firebase config object
+### 1. Set Up Environment Variables
 
-### Get Service Account Key
-1. In Firebase Console, go to Project Settings → Service Accounts
-2. Click "Generate new private key"
-3. Save the JSON file securely (NEVER commit to Git)
+Copy `.env.example` to your local `.env.local` and fill in real values:
 
-## 2. Environment Variables Setup
-
-Create `.env.local` in the project root:
-
-```env
-# Firebase Client Config (from Firebase Console)
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
-
-# Firebase Admin SDK (from service account JSON)
-# Option 1: Individual fields (easier for development)
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nYour-Private-Key-Here\\n-----END PRIVATE KEY-----\\n"
-
-# Option 2: Full service account JSON (recommended for production)
-# FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account","project_id":"...","private_key":"...","client_email":"..."}'
+```bash
+cp .env.example .env.local
 ```
 
-**Important:** 
-- Replace all placeholders with your actual Firebase values
-- The private key must include escaped newlines (`\\n`)
-- Never commit `.env.local` to version control
+Edit `.env.local` with:
+- `DATABASE_URL` — Neon PostgreSQL connection string
+- `RESEND_API_KEY` — From resend.com dashboard
+- `SUPER_ADMIN_USERNAME` — Change from default!
+- `SUPER_ADMIN_PASSWORD` — Change from default!
+- Firebase credentials
 
-## 3. Firestore Database Setup
+### 2. Test Locally
 
-### Deploy Firestore Rules & Indexes
-```powershell
-firebase login
-firebase init firestore
-# Select your Firebase project
-# Use existing firestore.rules and firestore.indexes.json
-
-firebase deploy --only firestore:rules
-firebase deploy --only firestore:indexes
-```
-
-### Create Initial Collections
-The app requires two Firestore collections:
-
-**`menu` collection:**
-- Fields: `name` (string), `description` (string), `price` (number), `category` (string), `image_url` (string), `created_at` (string)
-
-**`orders` collection:**
-- Fields: `customer_name` (string), `customer_phone` (string), `items` (array), `total_price` (number), `status` (string), `paid` (boolean), `notes` (string), `created_at` (string)
-
-You can add sample data via Firebase Console or use the admin panel after deployment.
-
-## 4. Create Admin User
-
-### Via Firebase Console
-1. Go to Firebase Console → Authentication → Users
-2. Click "Add user"
-3. Enter email and password
-4. Save the credentials for admin login
-
-### Via Firebase CLI (Alternative)
-```powershell
-firebase auth:import users.json --project your-project-id
-```
-
-Create `users.json`:
-```json
-{
-  "users": [
-    {
-      "email": "admin@dialabraai.co.za",
-      "passwordHash": "your-hashed-password",
-      "emailVerified": true
-    }
-  ]
-}
-```
-
-## 5. Local Development
-
-```powershell
-# Install dependencies
+```bash
 npm install
-
-# Run development server
 npm run dev
 
-# Open browser to http://localhost:3000
+# Visit http://localhost:3000
+# Test superadmin: http://localhost:3000/superadmin/login
 ```
 
-**Test the app:**
-- Menu page: http://localhost:3000/menu
-- Admin login: http://localhost:3000/admin/login
-- Order page: http://localhost:3000/order
+### 3. Deploy to Vercel
 
-## 6. Production Deployment Options
+**Option A: Via Vercel Dashboard**
+1. Go to vercel.com
+2. Import your GitHub repository
+3. Vercel auto-detects Next.js
+4. Add environment variables:
+   - `DATABASE_URL`
+   - `RESEND_API_KEY`
+   - `FROM_EMAIL`
+   - `SUPER_ADMIN_USERNAME` (strong password!)
+   - `SUPER_ADMIN_PASSWORD` (strong password!)
+   - Firebase env vars
+5. Deploy
 
-### Option A: Vercel (Recommended for Next.js)
-
-1. Install Vercel CLI:
-```powershell
+**Option B: Via CLI**
+```bash
 npm install -g vercel
+vercel --prod
+
+# Follow prompts to connect GitHub repo and add env vars
 ```
 
-2. Deploy:
-```powershell
-vercel
+### 4. Verify Deployment
+
+After deploy:
+- ✅ Visit your deployment URL
+- ✅ Test superadmin login at `/superadmin/login`
+- ✅ Generate an API key at `/superadmin/developer`
+- ✅ Test API: `curl -H "Authorization: Bearer graze_live_XXX" https://yourapp.com/api/v1/health`
+
+## Production Checklist
+
+- [ ] Change `SUPER_ADMIN_USERNAME` and `SUPER_ADMIN_PASSWORD` from defaults
+- [ ] Set `DATABASE_URL` to production Neon database
+- [ ] Verify Resend API key works
+- [ ] Test email delivery
+- [ ] Run migrations on first deploy: Visit `/api/shops/bootstrap` or create a shop
+- [ ] Monitor logs at `/superadmin/logs`
+- [ ] Test webhook dispatch (register a webhook at `/superadmin/developer`)
+- [ ] Verify API endpoints with Bearer auth
+
+## Database Migrations
+
+Migrations run automatically when:
+1. A shop is created via `/api/shops/bootstrap`
+2. You can manually trigger via Neon SQL console if needed
+
+To manually run:
+```sql
+-- Run against your Neon database to create API & Developer Hub tables
+CREATE TABLE IF NOT EXISTS registered_apps (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  type TEXT NOT NULL DEFAULT 'owned',
+  description TEXT DEFAULT '',
+  owner_email TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ... (see lib/migrations.js for full schema)
 ```
 
-3. Add environment variables in Vercel Dashboard:
-   - Go to Project Settings → Environment Variables
-   - Add all `NEXT_PUBLIC_*` and `FIREBASE_*` variables
-   - Redeploy
+## Monitoring
 
-**Vercel Deployment URL:** Your app will be at `https://your-app.vercel.app`
+- **API Logs**: `/superadmin/logs` (auto-refresh, filterable)
+- **App Health**: `/superadmin/developer` > Health tab
+- **Webhooks**: `/superadmin/developer` > Webhooks tab
+- **Ad Campaigns**: `/superadmin/ads`
 
-### Option B: Firebase Hosting
+## Troubleshooting
 
-1. Build the app for static export:
-```powershell
-npm run build
-```
+**"Database connection error"**
+- Verify `DATABASE_URL` is set in Vercel environment variables
+- Check Neon connection status
 
-2. Initialize Firebase Hosting:
-```powershell
-firebase init hosting
-# Select: Use an existing project
-# Public directory: out
-# Configure as single-page app: Yes
-# Overwrite index.html: No
-```
+**"Superadmin login fails"**
+- Verify `SUPER_ADMIN_USERNAME` and `SUPER_ADMIN_PASSWORD` are set
+- Ensure no typos in credentials
 
-3. Deploy:
-```powershell
-firebase deploy --only hosting
-```
+**"Webhook dispatch failing"**
+- Check webhook URL is accessible from internet
+- Verify HTTPS (required)
+- Check Vercel function timeout (set to 60s in vercel.json)
 
-**Note:** Firebase Hosting works best with static exports. For full Next.js features (API routes, SSR), use Vercel or a Node.js server.
-
-### Option C: Docker + Cloud Run / Azure / AWS
-
-1. Create `Dockerfile`:
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-2. Build and push:
-```powershell
-docker build -t dialabraai .
-docker tag dialabraai gcr.io/your-project-id/dialabraai
-docker push gcr.io/your-project-id/dialabraai
-```
-
-3. Deploy to Cloud Run / Azure Container Instances / ECS
-
-## 7. Post-Deployment Checklist
-
-- [ ] Verify all environment variables are set correctly
-- [ ] Test admin login at `/admin/login`
-- [ ] Test creating orders at `/order`
-- [ ] Verify menu displays correctly at `/menu`
-- [ ] Check Firestore rules are deployed
-- [ ] Monitor Firebase Console for errors
-- [ ] Set up Firebase Analytics (optional)
-- [ ] Configure custom domain (optional)
-- [ ] Enable Firebase Performance Monitoring (optional)
-
-## 8. Firestore Security Best Practices
-
-Current rules allow:
-- Anyone can read menu items
-- Anyone can create orders (for customer orders)
-- Only authenticated users can read/update/delete orders (for admin panel)
-
-**For production, consider:**
-- Adding rate limiting
-- Validating data on write
-- Adding role-based access control (RBAC)
-- Implementing Cloud Functions for complex business logic
-
-## 9. Monitoring & Maintenance
-
-### Firebase Console Monitoring
-- Check Authentication → Users for admin accounts
-- Monitor Firestore → Data for database contents
-- Review Usage & Billing to track costs
-
-### Application Logs
-- Vercel: Check deployment logs in dashboard
-- Firebase Functions: Use Firebase Console → Functions → Logs
-- Local: Check terminal output during `npm run dev`
-
-## 10. Troubleshooting
-
-### "Firebase is not configured" Error
-- Verify all `NEXT_PUBLIC_FIREBASE_*` variables are set
-- Check browser console for detailed errors
-- Ensure environment variables are loaded (restart dev server)
-
-### "Permission denied" in Firestore
-- Deploy Firestore rules: `firebase deploy --only firestore:rules`
-- Verify user is authenticated for admin operations
-- Check Firebase Console → Firestore → Rules
-
-### Admin login fails
-- Verify user exists in Firebase Authentication
-- Check that `FIREBASE_CLIENT_EMAIL` and `FIREBASE_PRIVATE_KEY` are correct
-- Ensure Firebase Auth Email/Password provider is enabled
-
-### Orders/Menu not showing
-- Check Firestore collections exist with correct names (`menu`, `orders`)
-- Verify Firestore indexes are deployed
-- Check browser Network tab for API errors
+**"API keys not working"**
+- Ensure `DATABASE_URL` can connect to database
+- Verify API key format: `graze_live_...`
 
 ## Support
 
-For Firebase-specific issues, consult:
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [Next.js Deployment Docs](https://nextjs.org/docs/deployment)
-- [Vercel Documentation](https://vercel.com/docs)
+For issues, check:
+- Vercel deployment logs: `vercel logs`
+- Application logs: `/superadmin/logs` (live viewer)
+- Database status: Neon console
 
-## License
-
-Proprietary - Dial-A-Braai © 2025
