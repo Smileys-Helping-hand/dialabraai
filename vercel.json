@@ -3,38 +3,6 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "env": {
-    "DATABASE_URL": {
-      "description": "Neon PostgreSQL connection string (required)"
-    },
-    "RESEND_API_KEY": {
-      "description": "Resend email API key (required)"
-    },
-    "FROM_EMAIL": {
-      "description": "Email sender address (required)"
-    },
-    "SUPER_ADMIN_USERNAME": {
-      "description": "Superadmin login username (required - change from default!)"
-    },
-    "SUPER_ADMIN_PASSWORD": {
-      "description": "Superadmin login password (required - change from default!)"
-    },
-    "NEXT_PUBLIC_FIREBASE_API_KEY": {
-      "description": "Firebase public API key"
-    },
-    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": {
-      "description": "Firebase auth domain"
-    },
-    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": {
-      "description": "Firebase project ID"
-    },
-    "FIREBASE_CLIENT_EMAIL": {
-      "description": "Firebase admin client email"
-    },
-    "FIREBASE_PRIVATE_KEY": {
-      "description": "Firebase admin private key"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
