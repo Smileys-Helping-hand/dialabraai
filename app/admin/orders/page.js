@@ -147,10 +147,10 @@ export default function AdminOrdersPage() {
     const w = window.open('', '', 'width=800,height=600');
     w.document.write(`<html><head><title>Receipt #${selected.id.slice(0,8)}</title>
       <style>body{font-family:Arial,sans-serif;padding:24px;max-width:480px;margin:auto}
-      h1{color:#E46A28;margin-bottom:4px}.sub{color:#888;font-size:13px;margin-bottom:16px}
+      h1{color:#10B981;margin-bottom:4px}.sub{color:#888;font-size:13px;margin-bottom:16px}
       table{width:100%;border-collapse:collapse}td{padding:8px 4px;border-bottom:1px solid #eee}
       .total{font-size:1.1em;font-weight:bold;margin-top:12px}
-      .btn{margin-top:20px;padding:10px 24px;background:#E46A28;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px}
+      .btn{margin-top:20px;padding:10px 24px;background:#10B981;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:15px}
       @media print{.btn{display:none}}</style></head><body>
       <h1>🔥 ${shop.name}</h1>
       <div class="sub">Order #${selected.id.slice(0,10)} · ${new Date(selected.created_at).toLocaleString()}</div>
@@ -329,7 +329,7 @@ export default function AdminOrdersPage() {
 
                 {/* Contact row */}
                 <div className="flex flex-wrap gap-2">
-                  <div className="flex items-center gap-1.5 rounded-xl border border-charcoal/8 bg-[#FAFAF8] px-3 py-2 text-sm text-charcoal/70">
+                  <div className="flex items-center gap-1.5 rounded-xl border border-charcoal/8 bg-[#FFFFFF] px-3 py-2 text-sm text-charcoal/70">
                     <Phone className="h-3.5 w-3.5" />
                     {selected.customer_phone}
                   </div>
@@ -352,7 +352,7 @@ export default function AdminOrdersPage() {
                 </div>
 
                 {/* Status controls */}
-                <div className="rounded-2xl border border-charcoal/8 bg-[#FAFAF8] p-4 space-y-3">
+                <div className="rounded-2xl border border-charcoal/8 bg-[#FFFFFF] p-4 space-y-3">
                   <p className="text-xs font-bold uppercase tracking-widest text-charcoal/45">Update status</p>
                   <AdminStatusButtons currentStatus={selected.status} onUpdate={updateStatus} isUpdating={isUpdating} />
                   <button
@@ -372,7 +372,7 @@ export default function AdminOrdersPage() {
                 <div className="space-y-2">
                   <p className="text-xs font-bold uppercase tracking-widest text-charcoal/45">Items</p>
                   {(selected.items || []).map((item, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#FAFAF8] px-3 py-2.5">
+                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#FFFFFF] px-3 py-2.5">
                       <div className="flex items-center gap-2">
                         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-black text-primary">{item.quantity}</span>
                         <span className="text-sm font-semibold text-charcoal">{item.name}</span>

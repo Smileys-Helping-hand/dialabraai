@@ -200,7 +200,7 @@ export default function SuccessPage({ searchParams }) {
       )}
 
       {/* ── Next steps ──────────────────────────────────────────────────── */}
-      <div className="rounded-3xl border border-charcoal/8 bg-[#FAFAF8] p-5">
+      <div className="rounded-3xl border border-charcoal/8 bg-[#FFFFFF] p-5">
         <p className="mb-3 text-sm font-bold text-charcoal">What happens next?</p>
         <ol className="space-y-2.5">
           {[

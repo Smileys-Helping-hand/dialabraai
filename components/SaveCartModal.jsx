@@ -72,7 +72,7 @@ export default function SaveCartModal({ isOpen, onClose, cart, shopSlug = 'defau
                 <strong>Note:</strong> You're saving this as a guest. For cloud sync across devices,{' '}
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="text-flame hover:text-orange font-semibold underline"
+                  className="text-flame hover:text-[rgb(var(--color-flame))] font-semibold underline"
                 >
                   create an account
                 </button>
@@ -90,7 +90,7 @@ export default function SaveCartModal({ isOpen, onClose, cart, shopSlug = 'defau
               <span className="text-sm font-semibold text-charcoal">Pack Name</span>
               <input
                 type="text"
-                className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-orange focus:ring-2 focus:ring-orange/30"
+                className="w-full border border-charcoal/15 rounded-2xl p-3 focus:border-flame focus:ring-2 focus:ring-flame/30"
                 placeholder="e.g., Lunch Regulars, Office Combo"
                 value={packName}
                 onChange={(e) => setPackName(e.target.value)}

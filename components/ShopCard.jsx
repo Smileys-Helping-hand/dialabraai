@@ -44,17 +44,17 @@ function ShopHero({ shop }) {
       <img
         src={shop.heroImageUrl}
         alt={shop.name}
-        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
       />
     );
   }
-  const accent = shop.accentColor || '#E46A28';
-  const primary = shop.primaryColor || '#762C1B';
+  const accent = shop.accentColor || '#10B981';
+  const primary = shop.primaryColor || '#065F46';
   return (
     <div
-      className="h-full w-full transition duration-500 group-hover:scale-105"
+      className="h-full w-full transition duration-700 ease-out group-hover:scale-[1.04]"
       style={{
-        background: `linear-gradient(135deg, ${primary} 0%, ${accent} 60%, #F4C056 100%)`,
+        background: `linear-gradient(135deg, ${primary} 0%, ${accent} 60%, #34D399 100%)`,
       }}
     />
   );
@@ -73,7 +73,7 @@ export default function ShopCard({ shop, index = 0 }) {
 
   return (
     <article
-      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-charcoal/8 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1"
+      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-charcoal/8 shadow-card shadow-glow-primary transition-all duration-300 hover:-translate-y-1.5"
       style={{ animationDelay: `${index * 80}ms` }}
     >
       {/* Cover image */}
@@ -104,7 +104,7 @@ export default function ShopCard({ shop, index = 0 }) {
         {/* Logo avatar — overlapping cover/body */}
         <div
           className="absolute -bottom-6 left-5 h-14 w-14 overflow-hidden rounded-2xl border-2 border-white shadow-[0_4px_16px_-4px_rgba(0,0,0,0.3)]"
-          style={{ backgroundColor: shop.primaryColor || '#762C1B' }}
+          style={{ backgroundColor: shop.primaryColor || '#065F46' }}
         >
           <ShopAvatar shop={shop} />
         </div>

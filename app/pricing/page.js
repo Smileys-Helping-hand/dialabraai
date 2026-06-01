@@ -119,7 +119,7 @@ export default function PricingPage() {
     <div className="flex flex-col">
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#FFF9F2] via-[#FFF4E2] to-[#FEF0D4] px-4 py-16 text-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#F9FAFB] via-[#F3F4F6] to-[#E5E7EB] px-4 py-16 text-center">
         <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-flame/10 blur-3xl" />
         <div className="relative z-10 mx-auto max-w-3xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-flame/20 bg-flame/8 px-4 py-2 text-sm font-semibold text-flame">
@@ -154,7 +154,7 @@ export default function PricingPage() {
       </section>
 
       {/* ── Plans ────────────────────────────────────────────────────── */}
-      <section className="bg-[#FAFAF8] px-4 py-16">
+      <section className="bg-[#FFFFFF] px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <p className="text-xs font-bold uppercase tracking-widest text-flame mb-1">Pricing</p>
@@ -242,7 +242,7 @@ export default function PricingPage() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {GUARANTEES.map(({ icon, title, desc }) => (
-              <div key={title} className="flex gap-4 rounded-2xl border border-charcoal/6 bg-[#FAFAF8] p-5">
+              <div key={title} className="flex gap-4 rounded-2xl border border-charcoal/6 bg-[#FFFFFF] p-5">
                 <span className="text-3xl shrink-0">{icon}</span>
                 <div>
                   <p className="font-display font-bold text-charcoal mb-1">{title}</p>
@@ -255,7 +255,7 @@ export default function PricingPage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
-      <section className="bg-[#FAFAF8] px-4 py-16 border-t border-charcoal/6">
+      <section className="bg-[#FFFFFF] px-4 py-16 border-t border-charcoal/6">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">
             <h2 className="font-display text-3xl font-extrabold text-charcoal">Questions answered</h2>
@@ -272,7 +272,7 @@ export default function PricingPage() {
       </section>
 
       {/* ── Final CTA ────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-[#8B3520] to-flame px-4 py-20 text-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-[#047857] to-flame px-4 py-20 text-center">
         <div className="pointer-events-none absolute -top-10 -right-10 h-56 w-56 rounded-full bg-gold/15 blur-3xl" />
         <div className="relative z-10 mx-auto max-w-2xl">
           <h2 className="font-display mb-4 text-4xl font-extrabold text-cream">Ready to stop losing money to WhatsApp chaos?</h2>

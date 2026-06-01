@@ -35,14 +35,14 @@ function SidebarNav() {
       <Link href="/" className="flex h-16 items-center gap-3 border-b px-5" style={{ borderColor: 'rgba(var(--color-charcoal)/0.06)' }}>
         <div
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg"
-          style={{ background: `linear-gradient(135deg, var(--te-primary,#762C1B), var(--te-accent,#E46A28))` }}
+          style={{ background: `linear-gradient(135deg, var(--te-primary,#065F46), var(--te-accent,#10B981))` }}
         >
           <Flame className="h-5 w-5 text-white" />
         </div>
         <div>
-          <p className="text-sm font-black" style={{ color: 'var(--te-text,#1A1715)' }}>Graze</p>
+          <p className="text-sm font-black" style={{ color: 'var(--te-text,#111827)' }}>Graze</p>
           {shop.name && shop.name !== 'Shopfront' && (
-            <p className="text-[10px] font-medium truncate max-w-[6rem]" style={{ color: 'var(--te-text,#1A1715)', opacity: 0.5 }}>{shop.name}</p>
+            <p className="text-[10px] font-medium truncate max-w-[6rem]" style={{ color: 'var(--te-text,#111827)', opacity: 0.5 }}>{shop.name}</p>
           )}
         </div>
       </Link>
@@ -58,8 +58,8 @@ function SidebarNav() {
               href={href}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all"
               style={active
-                ? { background: 'rgba(var(--color-primary)/0.1)', color: 'var(--te-primary,#762C1B)' }
-                : { color: 'var(--te-text,#1A1715)', opacity: 0.55 }
+                ? { background: 'rgba(var(--color-primary)/0.1)', color: 'var(--te-primary,#065F46)' }
+                : { color: 'var(--te-text,#111827)', opacity: 0.55 }
               }
             >
               <Icon className="h-4 w-4 shrink-0" />

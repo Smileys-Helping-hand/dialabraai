@@ -40,7 +40,7 @@ export default function AdminStatusButtons({ currentStatus = 'pending', onUpdate
               ? 'bg-cream text-charcoal/40 cursor-not-allowed border-charcoal/15' 
               : isRevert
                 ? 'bg-amber-600 text-white border-amber-700 hover:shadow-[0_0_10px_rgba(217,119,6,0.5)]'
-                : 'bg-primary text-cream border-gold hover:shadow-[0_0_10px_#E46A28]'
+                : 'bg-primary text-cream border-gold hover:shadow-[0_0_10px_#10B981]'
             }
           `}
           onClick={() => onUpdate && onUpdate(status)}

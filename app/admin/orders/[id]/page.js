@@ -169,7 +169,7 @@ export default function AdminOrderDetailPage() {
                 <div key={status} className="flex items-center gap-2 text-sm">
                   <span
                     className={`h-3 w-3 rounded-full border ${
-                      isDone ? 'bg-primary border-gold shadow-[0_0_6px_rgba(228,106,40,0.5)]' : 'bg-cream border-charcoal/20'
+                      isDone ? 'bg-primary border-gold shadow-[0_0_6px_rgba(16, 185, 129,0.5)]' : 'bg-cream border-charcoal/20'
                     }`}
                     aria-label={`${status} ${isDone ? 'completed' : 'pending'}`}
                   />

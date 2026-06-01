@@ -19,10 +19,10 @@ export default function CartNotification({ item, onClose }) {
       role="alert"
       aria-live="polite"
     >
-      <div className="bg-white border-2 border-orange rounded-2xl shadow-2xl p-4 max-w-sm flex items-center gap-4 transform hover:scale-105 transition-transform">
-        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center">
+      <div className="bg-white/90 border-2 border-[rgb(var(--color-primary))]/20 backdrop-blur-xl rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.12)] shadow-glow-primary p-4 max-w-sm flex items-center gap-4 hover:scale-[1.02] transition-transform duration-300">
+        <div className="flex-shrink-0 w-11 h-11 rounded-full bg-[rgba(var(--color-primary),0.1)] flex items-center justify-center">
           <svg
-            className="w-6 h-6 text-gold animate-bounce"
+            className="w-5.5 h-5.5 text-[rgb(var(--color-primary))] animate-bounce-subtle"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -30,22 +30,22 @@ export default function CartNotification({ item, onClose }) {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              strokeWidth={3}
               d="M5 13l4 4L19 7"
             />
           </svg>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-primary truncate">
+        <div className="flex-1 min-w-0 text-left">
+          <p className="text-sm font-black text-charcoal">
             Added to cart!
           </p>
-          <p className="text-xs text-charcoal/75 truncate">
-            {item.name} • {formatPrice(item.price)}
+          <p className="text-xs font-bold text-charcoal/50 mt-0.5 truncate">
+            {item.name} · {formatPrice(item.price)}
           </p>
         </div>
         <button
           onClick={onClose}
-          className="flex-shrink-0 text-charcoal/50 hover:text-charcoal"
+          className="flex-shrink-0 text-charcoal/30 hover:text-charcoal transition"
           aria-label="Close notification"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

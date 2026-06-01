@@ -8,8 +8,8 @@ export default function AdminOrderCard({ order, onSelect, isSelected }) {
       onClick={() => onSelect(order)}
       className={`w-full text-left card p-5 transition border-2 ${
         isSelected
-          ? 'border-gold shadow-[0_0_10px_#E46A28]'
-          : 'border-transparent hover:border-gold/70 hover:shadow-[0_0_10px_rgba(228,106,40,0.35)]'
+          ? 'border-gold shadow-[0_0_10px_#10B981]'
+          : 'border-transparent hover:border-gold/70 hover:shadow-[0_0_10px_rgba(16, 185, 129,0.35)]'
       }`}
     >
       <div className="flex items-center justify-between mb-2">

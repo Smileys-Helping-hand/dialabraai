@@ -19,7 +19,7 @@ function PresetSwatch({ preset, active, onClick }) {
       onClick={() => onClick(preset.key)}
       title={preset.desc}
       className={`group relative flex flex-col items-center gap-1.5 rounded-xl p-2 transition-all ${
-        active ? 'ring-2 ring-[var(--te-accent,#E46A28)] bg-white/10' : 'hover:bg-white/5'
+        active ? 'ring-2 ring-[var(--te-accent,#10B981)] bg-white/10' : 'hover:bg-white/5'
       }`}
     >
       <div
@@ -78,7 +78,7 @@ function RadiusSlider({ value, onChange }) {
         min={0} max={RADIUS_STEPS.length - 1}
         value={idx === -1 ? 3 : idx}
         onChange={(e) => onChange(RADIUS_STEPS[Number(e.target.value)])}
-        className="w-full h-1.5 rounded-full accent-[var(--te-accent,#E46A28)] cursor-pointer"
+        className="w-full h-1.5 rounded-full accent-[var(--te-accent,#10B981)] cursor-pointer"
       />
       <div className="flex justify-between">
         {RADIUS_STEPS.map((r) => (

@@ -61,7 +61,7 @@ export default function ShopHomePage() {
             <div
               className="h-full w-full"
               style={{
-                background: `linear-gradient(135deg, ${shop.primaryColor || '#762C1B'} 0%, ${shop.accentColor || '#E46A28'} 60%, #F4C056 100%)`,
+                background: `linear-gradient(135deg, ${shop.primaryColor || '#065F46'} 0%, ${shop.accentColor || '#10B981'} 60%, #34D399 100%)`,
               }}
             />
           )}

@@ -62,7 +62,7 @@ function JoinForm() {
     name: '', slug: '', tagline: '', whatsappNumber: '',
     supportPhoneDisplay: '', supportEmail: '', locationSummary: '',
     estimatedReadyTime: '30-45 minutes',
-    primaryColor: '#762C1B', accentColor: '#E46A28',
+    primaryColor: '#065F46', accentColor: '#10B981',
     fontChoice: 'jakarta',
     defaultMenuCategories: [],
     operatingHours: '', paymentMethods: 'Cash on collection',
@@ -318,7 +318,7 @@ function JoinForm() {
         <p className="text-sm text-charcoal/40">Select at least one cuisine type above.</p>
       )}
 
-      <div className="mt-6 rounded-2xl border border-charcoal/8 bg-[#FAFAF8] p-4">
+      <div className="mt-6 rounded-2xl border border-charcoal/8 bg-[#FFFFFF] p-4">
         <p className="text-xs font-bold text-charcoal/50 mb-2">Your menu categories will be:</p>
         {form.defaultMenuCategories.length === 0
           ? <p className="text-sm text-charcoal/35 italic">Nothing selected yet</p>
@@ -365,7 +365,7 @@ export default function JoinPage() {
   const [error, setError] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF9F2] via-[#FFF4E2] to-[#FEF0D4] px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#F9FAFB] via-[#F3F4F6] to-[#E5E7EB] px-4 py-12">
       <div className="mx-auto max-w-xl">
 
         {/* Header */}
@@ -411,7 +411,7 @@ function JoinFormInner() {
     name: '', slug: '', tagline: '', whatsappNumber: '',
     supportPhoneDisplay: '', supportEmail: '', locationSummary: '',
     estimatedReadyTime: '30-45 minutes',
-    primaryColor: '#762C1B', accentColor: '#E46A28',
+    primaryColor: '#065F46', accentColor: '#10B981',
     fontChoice: 'jakarta',
     defaultMenuCategories: [],
     operatingHours: '', paymentMethods: 'Cash on collection',

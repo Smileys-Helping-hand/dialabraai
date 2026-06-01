@@ -46,7 +46,7 @@ export default function SuperAdminLogin() {
       <div className="relative z-10 w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8 flex flex-col items-center gap-3">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame shadow-[0_0_40px_rgba(228,106,40,0.4)]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame shadow-[0_0_40px_rgba(16, 185, 129,0.4)]">
             <Flame className="h-8 w-8 text-cream" />
           </div>
           <div className="text-center">
@@ -107,7 +107,7 @@ export default function SuperAdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-r from-primary to-flame py-3.5 text-sm font-bold text-cream shadow-[0_8px_30px_rgba(228,106,40,0.3)] transition-all hover:shadow-[0_8px_40px_rgba(228,106,40,0.5)] hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-xl bg-gradient-to-r from-primary to-flame py-3.5 text-sm font-bold text-cream shadow-[0_8px_30px_rgba(16, 185, 129,0.3)] transition-all hover:shadow-[0_8px_40px_rgba(16, 185, 129,0.5)] hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>

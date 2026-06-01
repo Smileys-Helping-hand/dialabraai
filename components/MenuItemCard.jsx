@@ -9,7 +9,7 @@ function MenuItemListCard({ item, onAdd, onEdit, onDelete }) {
   const adminMode = Boolean(onEdit || onDelete);
   return (
     <article
-      className={`group flex items-center gap-4 rounded-[var(--te-radius,20px)] border border-charcoal/8 bg-white px-4 py-3 transition-all duration-200 ${onAdd ? 'cursor-pointer hover:border-flame/25 hover:shadow-card' : ''}`}
+      className={`group flex items-center gap-4 rounded-[var(--te-radius,20px)] border border-charcoal/8 bg-white px-4 py-3 shadow-glow-primary transition-all duration-300 hover:-translate-y-0.5 ${onAdd ? 'cursor-pointer hover:border-flame/25 hover:shadow-card' : ''}`}
       onClick={onAdd ? () => onAdd(item) : undefined}
       role={onAdd ? 'button' : 'article'}
       tabIndex={onAdd ? 0 : -1}
@@ -59,14 +59,14 @@ function MenuItemMasonryCard({ item, onAdd, onEdit, onDelete }) {
   const adminMode = Boolean(onEdit || onDelete);
   return (
     <article
-      className={`group relative overflow-hidden rounded-[var(--te-radius,20px)] border border-charcoal/8 bg-white transition-all duration-200 ${onAdd ? 'cursor-pointer hover:border-flame/25 hover:shadow-card-hover' : ''} ${height}`}
+      className={`group relative overflow-hidden rounded-[var(--te-radius,20px)] border border-charcoal/8 bg-white shadow-glow-primary transition-all duration-300 ${onAdd ? 'cursor-pointer hover:border-flame/25 hover:shadow-card-hover hover:-translate-y-1' : ''} ${height}`}
       onClick={onAdd ? () => onAdd(item) : undefined}
       role={onAdd ? 'button' : 'article'}
       tabIndex={onAdd ? 0 : -1}
     >
       {/* Full-bleed image */}
       {item.image_url
-        ? <Image src={item.image_url} alt={item.name} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width:768px)50vw,33vw" unoptimized />
+        ? <Image src={item.image_url} alt={item.name} fill className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]" sizes="(max-width:768px)50vw,33vw" unoptimized />
         : <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-cream to-[#FDF3D2] text-5xl">🍽️</div>
       }
       {/* Gradient overlay */}
@@ -103,8 +103,8 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete, feedStyle 
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-[var(--te-radius,24px)] bg-white border border-charcoal/8 shadow-card transition-all duration-300 ${
-        onAdd ? 'cursor-pointer hover:shadow-card-hover hover:-translate-y-1 hover:border-flame/20' : ''
+      className={`group relative flex flex-col overflow-hidden rounded-[var(--te-radius,24px)] bg-white border border-charcoal/8 shadow-card shadow-glow-primary transition-all duration-300 ${
+        onAdd ? 'cursor-pointer hover:-translate-y-1.5 hover:border-flame/20' : ''
       }`}
       onClick={onAdd ? () => onAdd(item) : undefined}
       onKeyDown={(e) => {
@@ -124,7 +124,7 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete, feedStyle 
             src={item.image_url}
             alt={item.name}
             fill
-            className="object-cover transition duration-500 group-hover:scale-105"
+            className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 100vw, 33vw"
             unoptimized
             onError={(e) => {

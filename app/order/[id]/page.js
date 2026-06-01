@@ -229,7 +229,7 @@ export default function OrderTrackingPage({ params }) {
         <p className="text-xs font-bold uppercase tracking-widest text-charcoal/45 mb-3">Your items</p>
         <div className="space-y-2 mb-4">
           {(order.items || []).map((item, i) => (
-            <div key={i} className="flex items-center justify-between gap-3 rounded-xl bg-[#FAFAF8] px-3 py-2.5">
+            <div key={i} className="flex items-center justify-between gap-3 rounded-xl bg-[#FFFFFF] px-3 py-2.5">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-black text-primary">
                   {item.quantity}

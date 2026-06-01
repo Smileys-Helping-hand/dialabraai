@@ -131,7 +131,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
                 <span className="text-sm font-semibold text-charcoal">Full Name</span>
                 <input
                   type="text"
-                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-flame focus:ring-2 focus:ring-flame/20 transition-all"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -142,7 +142,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
                 <span className="text-sm font-semibold text-charcoal">Phone Number</span>
                 <input
                   type="tel"
-                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                  className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-flame focus:ring-2 focus:ring-flame/20 transition-all"
                   placeholder="0123456789"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -156,7 +156,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             <span className="text-sm font-semibold text-charcoal">Email</span>
             <input
               type="email"
-              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+              className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 text-base focus:border-flame focus:ring-2 focus:ring-flame/20 transition-all"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -169,7 +169,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 pr-12 text-base focus:border-orange focus:ring-2 focus:ring-orange/20 transition-all"
+                className="w-full border-2 border-charcoal/15 rounded-xl p-3.5 pr-12 text-base focus:border-flame focus:ring-2 focus:ring-flame/20 transition-all"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -209,7 +209,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode = 'signin
           <button
             type="button"
             onClick={toggleMode}
-            className="text-sm text-flame hover:text-orange font-semibold transition-colors"
+            className="text-sm text-flame hover:text-[rgb(var(--color-flame))] font-semibold transition-colors"
           >
             {mode === 'signin'
               ? "Don't have an account? Sign up"

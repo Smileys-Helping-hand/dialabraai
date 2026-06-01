@@ -88,7 +88,7 @@ export default function SuperAdminLayout({ children }) {
                 href={href}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                   active
-                    ? 'bg-flame/15 text-flame shadow-[inset_0_0_0_1px_rgba(228,106,40,0.2)]'
+                    ? 'bg-flame/15 text-flame shadow-[inset_0_0_0_1px_rgba(16, 185, 129,0.2)]'
                     : 'text-white/45 hover:bg-white/5 hover:text-white/80'
                 }`}
               >

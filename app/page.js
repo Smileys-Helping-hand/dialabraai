@@ -120,54 +120,57 @@ export default function MarketplacePage() {
     <div className="flex flex-col">
 
       {/* ─── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#FFF9F2] via-[#FFF4E2] to-[#FEF0D4]">
-        {/* Decorative blobs */}
-        <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-flame/10 blur-3xl" />
-        <div className="pointer-events-none absolute top-1/2 -left-16 h-64 w-64 rounded-full bg-gold/15 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 right-1/3 h-48 w-48 rounded-full bg-primary/8 blur-2xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#FAFAFB] via-[#F4F5F7] to-[#EAECEF] border-b border-charcoal/5">
+        {/* Animated dynamic background grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(17,24,39,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(17,24,39,0.03)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-70" />
+        
+        {/* Soft parallax-like float blobs */}
+        <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-[rgba(var(--color-flame),0.12)] blur-3xl animate-float" />
+        <div className="pointer-events-none absolute top-1/3 -left-20 h-80 w-80 rounded-full bg-[rgba(var(--color-primary),0.08)] blur-3xl animate-float delay-500" />
+        <div className="pointer-events-none absolute bottom-4 right-1/4 h-64 w-64 rounded-full bg-[rgba(var(--color-flame),0.06)] blur-2xl animate-float delay-300" />
 
-        <div className="relative z-10 mx-auto max-w-5xl px-4 pb-16 pt-14 text-center">
+        <div className="relative z-10 mx-auto max-w-5xl px-4 pb-20 pt-16 text-center">
 
-          {/* Badge */}
-          <div className="animate-fade-in mb-5">
-            <HeroBadge>
-              <Sparkles className="h-3.5 w-3.5" />
+          {/* Badge with pulse ring */}
+          <div className="animate-scale-in-soft mb-6">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(var(--color-flame),0.2)] bg-[rgba(var(--color-flame),0.08)] px-4 py-2 text-xs font-black uppercase tracking-wider text-[rgb(var(--color-flame))] shadow-[0_4px_16px_rgba(var(--color-primary),0.1)]">
+              <Sparkles className="h-3.5 w-3.5 animate-bounce-subtle" />
               Local food ordering — no app required
-            </HeroBadge>
+            </span>
           </div>
 
           {/* Headline */}
-          <h1 className="animate-slide-up delay-75 font-display mb-4 text-5xl font-extrabold leading-[1.08] tracking-tight text-charcoal sm:text-6xl md:text-7xl">
+          <h1 className="animate-scale-in-soft delay-100 font-display mb-6 text-4xl font-black leading-[1.05] tracking-tight text-charcoal sm:text-5xl md:text-7xl">
             Order from shops<br />
-            <span className="relative inline-block">
+            <span className="relative inline-block mt-2">
               <span className="text-gradient-flame">you actually love.</span>
-              {/* Underline squiggle */}
-              <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
-                <path d="M2 6 Q75 2 150 6 Q225 10 298 6" stroke="#E46A28" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.45"/>
+              {/* Dynamic theme underline squiggle */}
+              <svg className="absolute -bottom-2.5 left-0 w-full text-[rgb(var(--color-flame))]" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
+                <path d="M2 6 Q75 2 150 6 Q225 10 298 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" className="opacity-60" />
               </svg>
             </span>
           </h1>
 
-          <p className="animate-slide-up delay-150 mx-auto mb-8 max-w-lg text-lg text-charcoal/60 leading-relaxed">
+          <p className="animate-slide-up delay-250 mx-auto mb-10 max-w-lg text-lg text-charcoal/60 leading-relaxed">
             Browse local restaurants and shops. Build your order. Skip the WhatsApp thread.
           </p>
 
-          {/* Search */}
-          <div className="animate-slide-up delay-200 mx-auto max-w-lg">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-charcoal/35" />
+          {/* Search bar with glowing ring */}
+          <div className="animate-slide-up delay-300 mx-auto max-w-lg">
+            <div className="group relative">
+              <Search className="pointer-events-none absolute left-4.5 top-1/2 h-5 w-5 -translate-y-1/2 text-charcoal/30 transition-colors group-focus-within:text-[rgb(var(--color-flame))]" />
               <input
                 ref={searchRef}
                 type="text"
                 placeholder="Search shops, food type or area…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="search-input pl-12"
+                className="w-full rounded-2xl border border-charcoal/10 bg-white/80 pl-12 pr-12 py-4 text-base text-charcoal shadow-sm transition-all duration-300 backdrop-blur-md placeholder:text-charcoal/35 focus:border-[rgba(var(--color-flame),0.4)] focus:outline-none focus:ring-4 focus:ring-[rgba(var(--color-primary),0.08)] focus:shadow-[0_8px_30px_rgba(var(--color-primary),0.12)]"
               />
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs font-semibold text-charcoal/40 hover:text-charcoal"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 rounded-xl bg-charcoal/5 px-2.5 py-1.5 text-xs font-bold text-charcoal/50 hover:bg-charcoal/10 hover:text-charcoal transition"
                 >
                   Clear
                 </button>
@@ -175,43 +178,58 @@ export default function MarketplacePage() {
             </div>
           </div>
 
-          {/* Trust stats */}
-          <div className="animate-fade-in delay-400 mt-10 flex flex-wrap justify-center gap-4">
+          {/* Trust stats with dynamic float and high-end borders */}
+          <div className="animate-fade-in delay-500 mt-12 flex flex-wrap justify-center gap-4">
             {TRUST_STATS.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="flex items-center gap-2 rounded-2xl border border-charcoal/8 bg-white/70 px-4 py-2.5 backdrop-blur-sm shadow-card">
-                <Icon className="h-4 w-4 text-flame" />
-                <span className="text-base font-black text-charcoal">{value}</span>
-                <span className="text-sm text-charcoal/50">{label}</span>
+              <div key={label} className="group flex items-center gap-2.5 rounded-2xl border border-charcoal/8 bg-white/60 px-5 py-3 backdrop-blur-md shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-0.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[rgba(var(--color-flame),0.08)] text-[rgb(var(--color-flame))] group-hover:scale-110 transition duration-300">
+                  <Icon className="h-4.5 w-4.5" />
+                </div>
+                <div className="text-left leading-none">
+                  <span className="block text-base font-black text-charcoal">{value}</span>
+                  <span className="block text-xs font-bold text-charcoal/40 mt-0.5">{label}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1 opacity-30 hover:opacity-60 transition duration-300">
+          <div className="w-5 h-8.5 rounded-full border-2 border-charcoal/20 flex justify-center p-1">
+            <span className="w-1 h-1.5 rounded-full bg-charcoal/70 animate-scroll-dot" />
+          </div>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40">Scroll</span>
+        </div>
+
         {/* Soft bottom fade into main content */}
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#FAFAF8] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white to-transparent pointer-events-none" />
       </section>
 
       {/* ─── SHOPS ─────────────────────────────────────────────────────────── */}
-      <section className="bg-[#FAFAF8] px-4 py-12">
+      <section className="bg-white px-4 py-14">
         <div className="mx-auto max-w-6xl">
 
           {/* Section label */}
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="mb-0.5 text-xs font-bold uppercase tracking-widest text-flame">Explore</p>
+              <p className="mb-1 text-xs font-black uppercase tracking-widest text-[rgb(var(--color-flame))]">Explore</p>
               <h2 className="font-display text-3xl font-extrabold text-charcoal">
                 {search ? `Results for "${search}"` : 'All Shops'}
               </h2>
             </div>
             {!loading && !search && (
-              <p className="text-sm text-charcoal/45">
+              <div className="rounded-full bg-charcoal/4 px-3 py-1.5 text-xs font-bold text-charcoal/50">
                 {shops.length} {shops.length === 1 ? 'shop' : 'shops'} available
-              </p>
+              </div>
             )}
           </div>
 
-          {/* Filter chips */}
-          <div className="mb-8 flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+          {/* Filter chips with momentum scroll */}
+          <div 
+            className="mb-10 flex gap-2.5 overflow-x-auto pb-2 scrollbar-none scroll-smooth overscroll-x-contain" 
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             {FILTERS.map((f) => (
               <FilterChip
                 key={f.value}
@@ -257,7 +275,7 @@ export default function MarketplacePage() {
       <section className="border-t border-charcoal/6 bg-white px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-flame">Why Graze</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[rgb(var(--color-flame))]">Why Graze</p>
             <h2 className="font-display text-4xl font-extrabold text-charcoal">
               Built for the shop owner. Loved by customers.
             </h2>
@@ -267,7 +285,7 @@ export default function MarketplacePage() {
             {FEATURES.map(({ emoji, title, desc }, i) => (
               <div
                 key={title}
-                className="animate-slide-up flex flex-col gap-3 rounded-3xl border border-charcoal/6 bg-[#FAFAF8] p-6 transition-all duration-300 hover:border-flame/20 hover:shadow-card hover:-translate-y-0.5"
+                className="animate-slide-up flex flex-col gap-3 rounded-3xl border border-charcoal/6 bg-white p-6 transition-all duration-300 hover:border-[rgba(var(--color-flame),0.2)] hover:shadow-card hover:-translate-y-0.5"
                 style={{ animationDelay: `${i * 80}ms` }}
               >
                 <span className="text-3xl">{emoji}</span>
@@ -280,7 +298,7 @@ export default function MarketplacePage() {
       </section>
 
       {/* ─── FOR BUSINESSES ────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-[#8B3520] to-flame px-4 py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-[#047857] to-flame px-4 py-20">
         {/* Decorative */}
         <div className="pointer-events-none absolute -top-12 -right-12 h-56 w-56 rounded-full bg-gold/15 blur-3xl" />
         <div className="pointer-events-none absolute bottom-0 left-1/4 h-40 w-40 rounded-full bg-white/5 blur-2xl" />
@@ -323,10 +341,10 @@ export default function MarketplacePage() {
       </section>
 
       {/* ─── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <section className="bg-[#FAFAF8] px-4 py-16">
+      <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="mb-10 text-center">
-            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-flame">Simple</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[rgb(var(--color-flame))]">Simple</p>
             <h2 className="font-display text-3xl font-extrabold text-charcoal">Three taps and you&apos;re done</h2>
           </div>
 

@@ -6,7 +6,7 @@ export default function PackItemCard({ pack, onAdd }) {
   const itemCount = pack.items?.reduce((sum, item) => sum + (item.quantity || 1), 0) || 0;
 
   return (
-    <article className="card group flex flex-col gap-3 p-5 transition hover:-translate-y-0.5 hover:shadow-[0_0_10px_#E46A28]">
+    <article className="card group flex flex-col gap-3 p-5 transition hover:-translate-y-0.5 hover:shadow-[0_0_10px_#10B981]">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1 flex-1">
           <div className="flex items-center gap-2">

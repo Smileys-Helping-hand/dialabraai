@@ -18,7 +18,7 @@ export default function CartItem({ item, onIncrement, onDecrement, onRemove }) {
       <div className="flex items-center gap-1.5">
         <button
           onClick={() => onDecrement(item.id)}
-          className="flex h-8 w-8 items-center justify-center rounded-xl border border-charcoal/12 bg-[#FAFAF8] text-charcoal/60 transition hover:border-primary/25 hover:text-primary active:scale-95"
+          className="flex h-8 w-8 items-center justify-center rounded-xl border border-charcoal/12 bg-[#FFFFFF] text-charcoal/60 transition hover:border-primary/25 hover:text-primary active:scale-95"
           aria-label={`Decrease ${item.name}`}
         >
           <Minus className="h-3.5 w-3.5" />
