@@ -1,0 +1,188 @@
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+✅ Firebase Admin SDK initializing...
+   Project ID: dialabraai-78714
+   Client Email: firebase-adminsdk-fbsvc@dialabraai-78714.iam.gserviceaccount.com
+   Private Key Length: 1703
+✅ Firebase Admin SDK initialized successfully
+   Generating static pages (0/46) ...
+[superadmin/logs] GET error: B [Error]: Dynamic server usage: Route /api/superadmin/logs couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at p (K:\Projects\dialabraai\.next\server\app\api\superadmin\logs\route.js:1:629)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/superadmin/logs couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[api/v1/health] GET error: B [Error]: Dynamic server usage: Route /api/v1/health couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at d (K:\Projects\dialabraai\.next\server\app\api\v1\health\route.js:1:615)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/v1/health couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[api/v1/shops] GET error: B [Error]: Dynamic server usage: Route /api/v1/shops couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at l (K:\Projects\dialabraai\.next\server\app\api\v1\shops\route.js:1:783)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/v1/shops couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[api/v1/orders] GET error: B [Error]: Dynamic server usage: Route /api/v1/orders couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at l (K:\Projects\dialabraai\.next\server\app\api\v1\orders\route.js:1:784)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/v1/orders couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (11/46) 
+[api/v1/stats] GET error: B [Error]: Dynamic server usage: Route /api/v1/stats couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at l (K:\Projects\dialabraai\.next\server\app\api\v1\stats\route.js:1:781)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/v1/stats couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[superadmin/health] GET error: B [Error]: Dynamic server usage: Route /api/superadmin/health couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at u (K:\Projects\dialabraai\.next\server\app\api\superadmin\health\route.js:1:629)
+    at K:\Projects\dialabraai\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (K:\Projects\dialabraai\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24)
+    at K:\Projects\dialabraai\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+  description: "Route /api/superadmin/health couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (22/46) 
+   Generating static pages (34/46) 
+ ✓ Generating static pages (46/46)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ƒ /                                    7.26 kB         103 kB
+├ ƒ /_not-found                          876 B          88.2 kB
+├ ƒ /account/orders                      1.98 kB         206 kB
+├ ƒ /account/packs                       1.85 kB         206 kB
+├ ƒ /admin                               488 B          87.8 kB
+├ ƒ /admin/dashboard                     5.79 kB         102 kB
+├ ƒ /admin/login                         3.17 kB         212 kB
+├ ƒ /admin/menu                          8.83 kB         223 kB
+├ ƒ /admin/orders                        9.13 kB        96.5 kB
+├ ƒ /admin/orders/[id]                   2.62 kB          90 kB
+├ ƒ /admin/setup                         7.34 kB         215 kB
+├ ƒ /admin/stats                         15.1 kB         102 kB
+├ ƒ /api/admin/inventory                 0 B                0 B
+├ ƒ /api/admin/stats                     0 B                0 B
+├ ƒ /api/dispatch                        0 B                0 B
+├ ƒ /api/health-check                    0 B                0 B
+├ ƒ /api/menu/add                        0 B                0 B
+├ ƒ /api/menu/get                        0 B                0 B
+├ ƒ /api/menu/list                       0 B                0 B
+├ ƒ /api/menu/toggle-special             0 B                0 B
+├ ƒ /api/menu/update                     0 B                0 B
+├ ƒ /api/orders/create                   0 B                0 B
+├ ƒ /api/orders/delete                   0 B                0 B
+├ ƒ /api/orders/get                      0 B                0 B
+├ ƒ /api/orders/list                     0 B                0 B
+├ ƒ /api/orders/mark-paid                0 B                0 B
+├ ƒ /api/orders/update-status            0 B                0 B
+├ ƒ /api/orders/user                     0 B                0 B
+├ ƒ /api/shops/bootstrap                 0 B                0 B
+├ ƒ /api/shops/current                   0 B                0 B
+├ ƒ /api/shops/list                      0 B                0 B
+├ ƒ /api/site-login                      0 B                0 B
+├ ƒ /api/superadmin/api-keys             0 B                0 B
+├ ƒ /api/superadmin/api-keys/[id]        0 B                0 B
+├ ƒ /api/superadmin/apps                 0 B                0 B
+├ ƒ /api/superadmin/auth                 0 B                0 B
+├ ƒ /api/superadmin/campaigns            0 B                0 B
+├ ƒ /api/superadmin/campaigns/[id]       0 B                0 B
+├ ƒ /api/superadmin/health               0 B                0 B
+├ ƒ /api/superadmin/logs                 0 B                0 B
+├ ƒ /api/superadmin/shops                0 B                0 B
+├ ƒ /api/superadmin/stats                0 B                0 B
+├ ƒ /api/superadmin/webhooks             0 B                0 B
+├ ƒ /api/superadmin/webhooks/[id]        0 B                0 B
+├ ƒ /api/track/click                     0 B                0 B
+├ ƒ /api/v1/health                       0 B                0 B
+├ ƒ /api/v1/orders                       0 B                0 B
+├ ƒ /api/v1/shops                        0 B                0 B
+├ ƒ /api/v1/stats                        0 B                0 B
+├ ƒ /home                                178 B           103 kB
+├ ƒ /join                                5.92 kB         102 kB
+├ ƒ /menu                                192 B           220 kB
+├ ƒ /order                               8 kB            221 kB
+├ ƒ /order/[id]                          7.68 kB         104 kB
+├ ƒ /pricing                             5.11 kB         101 kB
+├ ƒ /shop/[slug]                         178 B           103 kB
+├ ƒ /shop/[slug]/menu                    192 B           220 kB
+├ ƒ /success                             6.7 kB          103 kB
+├ ƒ /superadmin                          487 B          87.8 kB
+├ ƒ /superadmin/ads                      3.36 kB        90.7 kB
+├ ƒ /superadmin/dashboard                3.43 kB        99.5 kB
+├ ƒ /superadmin/developer                4.41 kB        91.7 kB
+├ ƒ /superadmin/login                    2.91 kB        90.2 kB
+├ ƒ /superadmin/logs                     3.03 kB        90.4 kB
+├ ƒ /superadmin/orders                   2.96 kB        90.3 kB
+└ ƒ /superadmin/shops                    4.18 kB         100 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/2117-81f035f23e32a8f2.js      31.7 kB
+  ├ chunks/fd9d1056-f80fd41c632981fe.js  53.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+ƒ Middleware                             25.6 kB
+
+ƒ  (Dynamic)  server-rendered on demand
+

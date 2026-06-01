@@ -39,19 +39,47 @@ export async function GET() {
   }
 }
 
+export async function POST(req) {
+  if (!sql) return NextResponse.json({ error: 'No DB' }, { status: 503 });
+
+  try {
+    const body = await req.json();
+    const { slug, name, shortName = '', tagline = '', whatsappNumber = '', ownerEmail = '' } = body;
+    if (!slug || !name) return NextResponse.json({ error: 'slug and name required' }, { status: 400 });
+
+    await sql`
+      INSERT INTO shops (slug, name, short_name, tagline, whatsapp_number, status, featured, created_at)
+      VALUES (${slug.toLowerCase().replace(/\s+/g,'-')}, ${name}, ${shortName}, ${tagline}, ${whatsappNumber}, 'active', false, ${getTimestamp()})
+    `;
+    return NextResponse.json({ ok: true, slug });
+  } catch (err) {
+    if (err.message?.includes('unique') || err.message?.includes('duplicate')) {
+      return NextResponse.json({ error: 'Slug already taken' }, { status: 409 });
+    }
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
 export async function PATCH(req) {
   if (!sql) return NextResponse.json({ error: 'No DB' }, { status: 503 });
 
   try {
-    const { slug, featured, status } = await req.json();
+    const body = await req.json();
+    const { slug, featured, status, name, shortName, tagline, whatsappNumber, logoUrl, heroImageUrl } = body;
     if (!slug) return NextResponse.json({ error: 'slug required' }, { status: 400 });
 
     await sql`
       UPDATE shops
       SET
-        featured   = COALESCE(${featured ?? null}, featured),
-        status     = COALESCE(${status  ?? null}, status),
-        updated_at = ${getTimestamp()}
+        featured         = COALESCE(${featured        ?? null}, featured),
+        status           = COALESCE(${status          ?? null}, status),
+        name             = COALESCE(${name            ?? null}, name),
+        short_name       = COALESCE(${shortName       ?? null}, short_name),
+        tagline          = COALESCE(${tagline         ?? null}, tagline),
+        whatsapp_number  = COALESCE(${whatsappNumber  ?? null}, whatsapp_number),
+        logo_url         = COALESCE(${logoUrl         ?? null}, logo_url),
+        hero_image_url   = COALESCE(${heroImageUrl    ?? null}, hero_image_url),
+        updated_at       = ${getTimestamp()}
       WHERE slug = ${slug}
     `;
     return NextResponse.json({ ok: true });

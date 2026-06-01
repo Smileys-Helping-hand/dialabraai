@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"k:\\\\Projects\\\\dialabraai\\\\app\\\\shop\\\\[slug]\\\\menu\")"
+    ],
+    "additionalDirectories": [
+      "k:\\Projects\\dialabraai\\app\\shop\\[slug]"
+    ]
+  }
+}

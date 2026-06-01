@@ -3,6 +3,8 @@ import { sql } from '@/lib/db.js';
 import { validateApiKey } from '@/lib/api-keys.js';
 import { logApiCall } from '@/lib/api-logger.js';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   const start = Date.now();
   try {

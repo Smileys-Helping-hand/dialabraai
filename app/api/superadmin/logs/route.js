@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db.js';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     if (!sql) {

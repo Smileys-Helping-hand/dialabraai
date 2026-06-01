@@ -37,26 +37,26 @@ export default function SuperAdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0F0D0C] px-4">
-      {/* Subtle glow */}
+    <div className="flex min-h-screen items-center justify-center px-4" style={{ background: '#08090A' }}>
+      {/* Subtle radial glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-flame/10 blur-3xl" />
+        <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)' }} />
       </div>
 
       <div className="relative z-10 w-full max-w-sm">
         {/* Logo */}
-        <div className="mb-8 flex flex-col items-center gap-3">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame shadow-[0_0_40px_rgba(16, 185, 129,0.4)]">
-            <Flame className="h-8 w-8 text-cream" />
+        <div className="mb-8 flex flex-col items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-[0_0_40px_rgba(16,185,129,0.35)]">
+            <Flame className="h-7 w-7 text-white" />
           </div>
           <div className="text-center">
-            <p className="text-lg font-black text-white">Graze</p>
-            <p className="text-sm text-white/40">Super Admin Portal</p>
+            <p className="text-[17px] font-bold text-white tracking-tight">Graze Platform</p>
+            <p className="text-[12px] text-white/35 mt-0.5">Super Admin Portal</p>
           </div>
         </div>
 
         {/* Card */}
-        <div className="rounded-3xl border border-white/8 bg-white/5 p-8 backdrop-blur-xl">
+        <div className="rounded-2xl p-8" style={{ background: '#0D0E10', border: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="mb-6 flex items-center gap-2">
             <Shield className="h-4 w-4 text-gold" />
             <p className="text-sm font-semibold text-white/60">Restricted access</p>
