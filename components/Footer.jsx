@@ -41,19 +41,19 @@ export default function Footer() {
             {/* Social */}
             <div className="flex gap-3">
               {waLink && (
-                <a href={waLink} target="_blank" rel="noreferrer"
+                <a href={waLink} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
                   className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/20 text-emerald-400 transition hover:bg-emerald-500 hover:text-white">
                   <MessageCircle className="h-5 w-5" />
                 </a>
               )}
               {shop.instagramUrl && (
-                <a href={shop.instagramUrl} target="_blank" rel="noreferrer"
+                <a href={shop.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram"
                   className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-cream/60 transition hover:bg-white/15 hover:text-cream">
                   <AtSign className="h-5 w-5" />
                 </a>
               )}
               {shop.supportEmail && (
-                <a href={`mailto:${shop.supportEmail}`}
+                <a href={`mailto:${shop.supportEmail}`} aria-label="Send us an email"
                   className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-cream/60 transition hover:bg-white/15 hover:text-cream">
                   <Mail className="h-5 w-5" />
                 </a>

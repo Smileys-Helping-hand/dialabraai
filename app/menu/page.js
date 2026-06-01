@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { Bookmark, ChevronRight, ShoppingCart, X, Loader2, AlertCircle, Search, Sparkles, Share2 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeEngine';
 import CategoryTabs from '@/components/CategoryTabs';
@@ -40,6 +40,8 @@ export default function MenuPage() {
   const [cart, setCart] = useState([]);
   const [notification, setNotification] = useState(null);
   const [menuSearch, setMenuSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debounceRef = useRef(null);
   const [showSavePackModal, setShowSavePackModal] = useState(false);
   const [packName, setPackName] = useState('');
   const [savingPack, setSavingPack] = useState(false);
@@ -79,6 +81,12 @@ export default function MenuPage() {
   }, [user, shopSlug]);
 
   useEffect(() => { saveCart(cart, shopSlug); }, [cart, shopSlug]);
+
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setDebouncedSearch(menuSearch), 300);
+    return () => clearTimeout(debounceRef.current);
+  }, [menuSearch]);
 
   const categories = useMemo(() => deriveMenuCategories(items, shop.defaultMenuCategories), [items, shop.defaultMenuCategories]);
 
@@ -158,14 +166,14 @@ export default function MenuPage() {
 
   const displayItems = useMemo(() => {
     let base = items.filter((i) => i.category === active);
-    if (menuSearch.trim()) {
-      const q = menuSearch.toLowerCase();
+    if (debouncedSearch.trim()) {
+      const q = debouncedSearch.toLowerCase();
       base = base.filter((i) =>
         i.name?.toLowerCase().includes(q) || i.description?.toLowerCase().includes(q)
       );
     }
     return base;
-  }, [items, active, menuSearch]);
+  }, [items, active, debouncedSearch]);
   const total = useMemo(() => calculateTotal(cart), [cart]);
   const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
 
@@ -275,7 +283,7 @@ export default function MenuPage() {
       {/* Category tabs + search */}
       {categories.length > 0 && (
         <div className="space-y-3">
-          <CategoryTabs categories={categories} active={active} onChange={(cat) => { setActive(cat); setMenuSearch(''); }} counts={categoryCounts} />
+          <CategoryTabs categories={categories} active={active} onChange={(cat) => { setActive(cat); setMenuSearch(''); setDebouncedSearch(''); }} counts={categoryCounts} />
           <div className="relative">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal/35" />
             <input
@@ -286,7 +294,7 @@ export default function MenuPage() {
               className="input-base pl-10 py-2.5 text-sm"
             />
             {menuSearch && (
-              <button onClick={() => setMenuSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-charcoal/40 hover:text-charcoal">
+              <button onClick={() => { setMenuSearch(''); setDebouncedSearch(''); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-charcoal/40 hover:text-charcoal">
                 Clear
               </button>
             )}
@@ -313,7 +321,7 @@ export default function MenuPage() {
               : `No items in ${active} yet.`}
           </p>
           {menuSearch && (
-            <button onClick={() => setMenuSearch('')} className="mt-3 text-sm font-semibold text-flame hover:text-primary transition">
+            <button onClick={() => { setMenuSearch(''); setDebouncedSearch(''); }} className="mt-3 text-sm font-semibold text-flame hover:text-primary transition">
               Clear search
             </button>
           )}

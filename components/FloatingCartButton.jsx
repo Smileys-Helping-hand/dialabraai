@@ -15,7 +15,7 @@ export default function FloatingCartButton({ itemCount, total }) {
   return (
     <button
       onClick={() => router.push(`/order${q}`)}
-      className="fixed bottom-6 right-6 z-40 flex items-center gap-3 rounded-full bg-primary px-5 py-3.5 text-cream shadow-[0_8px_32px_-8px_rgba(6, 95, 70,0.6)] transition-all duration-300 hover:shadow-[0_12px_40px_-8px_rgba(16, 185, 129,0.6)] hover:scale-105 active:scale-95 animate-bounce-subtle"
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-3 rounded-full bg-primary px-5 py-3.5 text-cream shadow-[0_8px_32px_-8px_rgba(6,95,70,0.6)] transition-all duration-300 hover:shadow-[0_12px_40px_-8px_rgba(16,185,129,0.6)] hover:scale-105 active:scale-95"
       aria-label={`View cart — ${itemCount} items`}
     >
       <div className="relative shrink-0">

@@ -134,7 +134,7 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete, feedStyle 
           />
         ) : null}
         {/* Placeholder */}
-        <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-cream to-[#FDF3D2] text-4xl ${item.image_url ? 'hidden' : ''}`}>
+        <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br from-cream to-[#FDF3D2] text-4xl ${item.image_url ? 'hidden' : ''}`} role="img" aria-label="No image available">
           🍽️
         </div>
 
@@ -199,6 +199,7 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete, feedStyle 
                 type="button"
                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-charcoal/15 py-2.5 text-sm font-semibold text-charcoal transition hover:border-primary/30 hover:text-primary"
                 onClick={(e) => { e.stopPropagation(); onEdit(item); }}
+                aria-label={`Edit ${item.name}`}
               >
                 <Pencil className="h-4 w-4" />
                 Edit
@@ -209,6 +210,7 @@ export default function MenuItemCard({ item, onAdd, onEdit, onDelete, feedStyle 
                 type="button"
                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-50 border border-red-200 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100"
                 onClick={(e) => { e.stopPropagation(); onDelete(item); }}
+                aria-label={`Delete ${item.name}`}
               >
                 <Trash2 className="h-4 w-4" />
                 Delete
