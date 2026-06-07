@@ -1,0 +1,319 @@
+================================================================================
+COMPLETE ENVIRONMENT VARIABLES FOR VERCEL
+Copy and paste these into Vercel Dashboard → Settings → Environment Variables
+Last Updated: June 7, 2026
+================================================================================
+
+🔴 REQUIRED - YOU MUST SET THESE (Critical for function)
+================================================================================
+
+DATABASE_URL=postgresql://user:password@host.eu-west-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
+
+RESEND_API_KEY=re_your_api_key_here
+
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+
+SUPER_ADMIN_USERNAME=admin
+
+SUPER_ADMIN_PASSWORD=YourVeryStrongPassword123!@#
+
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789012
+
+NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789012:web:abcdefghijklmnopqrst
+
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your-project.iam.gserviceaccount.com
+
+FIREBASE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC...\n-----END PRIVATE KEY-----\n
+
+
+🟡 OPTIONAL BUT RECOMMENDED (For advanced features)
+================================================================================
+
+NEXT_PUBLIC_WHATSAPP_NUMBER=27837864913
+
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+TWILIO_AUTH_TOKEN=your_auth_token_here
+
+NEXT_PUBLIC_WECHAT_ID=your_wechat_official_account_id
+
+WECHAT_ACCESS_TOKEN=your_wechat_access_token
+
+
+🟢 SHOP BRANDING (Customize for your shop)
+================================================================================
+
+NEXT_PUBLIC_SHOP_NAME=Graze
+
+NEXT_PUBLIC_SHOP_SHORT_NAME=Graze
+
+NEXT_PUBLIC_SHOP_TAGLINE=Fresh, local food delivered
+
+NEXT_PUBLIC_SHOP_DESCRIPTION=Fast, fresh ordering for local food shops
+
+NEXT_PUBLIC_SUPPORT_PHONE_DISPLAY=081 749 2724
+
+NEXT_PUBLIC_SUPPORT_PHONE_DIAL=0817492724
+
+NEXT_PUBLIC_SUPPORT_EMAIL=hello@graze.local
+
+NEXT_PUBLIC_INSTAGRAM_HANDLE=@graze
+
+NEXT_PUBLIC_INSTAGRAM_URL=https://instagram.com/graze
+
+NEXT_PUBLIC_LOCATION_SUMMARY=Built for local stores and takeaways
+
+NEXT_PUBLIC_SERVICE_AREAS=In-store pickup and local delivery
+
+NEXT_PUBLIC_ORDER_TERMS=Pay on collection or delivery, unless your shop enables online payment.
+
+NEXT_PUBLIC_ESTIMATED_READY_TIME=30-45 minutes
+
+NEXT_PUBLIC_CURRENCY_SYMBOL=R
+
+NEXT_PUBLIC_OPERATING_HOURS=08:00 - 22:00
+
+NEXT_PUBLIC_PAYMENT_METHODS=Cash, EFT, Card, Online Payment
+
+NEXT_PUBLIC_PRIMARY_COLOR=#762C1B
+
+NEXT_PUBLIC_ACCENT_COLOR=#E46A28
+
+NEXT_PUBLIC_GOLD_COLOR=#F4C056
+
+NEXT_PUBLIC_CREAM_COLOR=#FFF4E2
+
+NEXT_PUBLIC_CHARCOAL_COLOR=#1A1715
+
+NEXT_PUBLIC_LOGO_URL=https://your-domain.com/logo.png
+
+NEXT_PUBLIC_HERO_IMAGE_URL=https://your-domain.com/hero.jpg
+
+NEXT_PUBLIC_FONT_CHOICE=jakarta
+
+NEXT_PUBLIC_DEFAULT_MENU_CATEGORIES=Featured,Meals,Drinks,Desserts,Bundles
+
+NEXT_PUBLIC_APP_NAME=Graze
+
+NEXT_PUBLIC_APP_TYPE=owned
+
+
+🔵 SERVER-SIDE CONFIGURATION (Optional but useful)
+================================================================================
+
+WEBHOOK_TIMEOUT_MS=5000
+
+WEBHOOK_FAILURE_THRESHOLD=5
+
+LOG_RETENTION_DAYS=30
+
+
+================================================================================
+IMPORTANT NOTES
+================================================================================
+
+1. REQUIRED VARIABLES (must have):
+   - DATABASE_URL
+   - RESEND_API_KEY
+   - RESEND_FROM_EMAIL
+   - SUPER_ADMIN_USERNAME
+   - SUPER_ADMIN_PASSWORD
+   - All FIREBASE_* variables
+
+2. OPTIONAL VARIABLES (nice to have):
+   - TWILIO_* (for WhatsApp)
+   - WECHAT_* (for WeChat)
+
+3. PUBLIC VARIABLES (safe in browser):
+   - All NEXT_PUBLIC_* variables
+   - Can be seen in client-side code
+   - No secrets here!
+
+4. SECRET VARIABLES (keep secure):
+   - DATABASE_URL
+   - RESEND_API_KEY
+   - FIREBASE_PRIVATE_KEY
+   - TWILIO_AUTH_TOKEN
+   - WECHAT_ACCESS_TOKEN
+   - SUPER_ADMIN_PASSWORD
+   - FIREBASE_CLIENT_EMAIL
+   - Never share or commit to GitHub!
+
+5. WHERE TO GET EACH:
+   - DATABASE_URL: https://neon.tech
+   - RESEND_API_KEY: https://resend.com
+   - Firebase: https://console.firebase.google.com
+   - Twilio: https://twilio.com
+   - WeChat: https://mp.weixin.qq.com
+
+6. FOR PRODUCTION:
+   - Use strong passwords (20+ characters)
+   - Use verified email addresses
+   - Use production databases (not test)
+   - Test everything before deploying
+   - Monitor logs after deployment
+
+================================================================================
+SETUP CHECKLIST
+================================================================================
+
+□ Have Neon database URL ready (DATABASE_URL)
+□ Have Resend API key ready (RESEND_API_KEY)
+□ Have Firebase credentials ready (all FIREBASE_* variables)
+□ Have created strong superadmin password
+□ Have shop name and branding ready
+□ Have created Vercel project
+□ Open Vercel Settings → Environment Variables
+□ Add each variable one by one
+□ Redeploy after adding all variables
+□ Test: Home page loads
+□ Test: Quote page loads
+□ Test: Admin login works
+□ Test: Can create order
+□ Test: Can request quote
+□ Test: Email received
+
+================================================================================
+QUICK START: Paste These First
+================================================================================
+
+If you want to get started quickly, these are MINIMUM required:
+
+DATABASE_URL=
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+SUPER_ADMIN_USERNAME=admin
+SUPER_ADMIN_PASSWORD=
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+NEXT_PUBLIC_SHOP_NAME=Your Shop
+NEXT_PUBLIC_SUPPORT_EMAIL=your@email.com
+
+Then you can add others later.
+
+================================================================================
+VARIABLES BY FEATURE
+================================================================================
+
+BASIC FUNCTIONALITY (Essential):
+✓ DATABASE_URL
+✓ SUPER_ADMIN_USERNAME
+✓ SUPER_ADMIN_PASSWORD
+✓ All FIREBASE_* variables
+
+CUSTOMER NOTIFICATIONS:
+✓ RESEND_API_KEY
+✓ RESEND_FROM_EMAIL
+
+WHATSAPP INTEGRATION:
+✓ NEXT_PUBLIC_WHATSAPP_NUMBER
+✓ TWILIO_ACCOUNT_SID
+✓ TWILIO_AUTH_TOKEN
+
+WECHAT INTEGRATION:
+✓ NEXT_PUBLIC_WECHAT_ID
+✓ WECHAT_ACCESS_TOKEN
+
+SHOP CUSTOMIZATION:
+✓ All NEXT_PUBLIC_SHOP_* variables
+✓ All NEXT_PUBLIC_*_COLOR variables
+✓ NEXT_PUBLIC_LOGO_URL
+✓ NEXT_PUBLIC_HERO_IMAGE_URL
+
+================================================================================
+TESTING AFTER SETUP
+================================================================================
+
+After adding all variables and redeploying:
+
+1. Home page: https://your-domain.com
+   Expected: Should load with your shop branding
+
+2. Quote page: https://your-domain.com/quote
+   Expected: Should load quote request form
+
+3. Admin login: https://your-domain.com/admin/login
+   Username: (what you set in SUPER_ADMIN_USERNAME)
+   Password: (what you set in SUPER_ADMIN_PASSWORD)
+   Expected: Should log in successfully
+
+4. Create test order:
+   - Add items to cart
+   - Go to /order
+   - Fill in details
+   - Submit
+   Expected: Success page with order ID
+
+5. Request test quote:
+   - Add items to cart
+   - Go to /quote
+   - Fill in details
+   - Submit
+   Expected: Success page with quote ID
+
+6. Check email:
+   - Should receive order/quote confirmation
+   - From: noreply@yourdomain.com
+   - Expected: Email with all details
+
+================================================================================
+NEED HELP?
+================================================================================
+
+See documentation:
+- VERCEL-ENV-GUIDE.md (Complete detailed guide)
+- VERCEL-ENV-QUICK-REFERENCE.md (Quick lookup card)
+- IMPLEMENTATION-COMPLETE.md (Full deployment guide)
+
+Service documentation:
+- Neon: https://neon.tech/docs
+- Resend: https://resend.com/docs
+- Firebase: https://firebase.google.com/docs
+- Twilio: https://twilio.com/docs
+- Vercel: https://vercel.com/docs
+
+================================================================================
+PRODUCTION CHECKLIST
+================================================================================
+
+Before going live:
+
+□ All required variables set
+□ Build succeeds in Vercel
+□ No errors in deployment logs
+□ Home page loads
+□ Orders can be created
+□ Quotes can be requested
+□ Email notifications work
+□ Admin dashboard accessible
+□ Mobile responsive works
+□ No console errors
+□ Superadmin password is very strong
+□ Database backups configured
+□ Error monitoring set up (optional)
+□ Tested on real payment method (cash/EFT)
+□ Tested on mobile device
+
+================================================================================
+GOOD LUCK! 🚀
+================================================================================
+
+You now have everything you need to deploy to production.
+Follow the guides above for detailed instructions.
+
+Questions? Check VERCEL-ENV-GUIDE.md for troubleshooting.
+
