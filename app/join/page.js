@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 const STEPS = [
   { icon: Store,   label: 'Your business'   },
   { icon: Palette, label: 'Your brand'       },
-  { icon: Menu,    label: 'Menu categories'  },
+  { icon: Menu,    label: 'Categories'      },
   { icon: Rocket,  label: 'Go live!'         },
 ];
 
@@ -22,7 +22,26 @@ const FONT_OPTIONS = [
   { key: 'oswald',   label: 'Strong',   sample: 'Aa', style: { fontFamily: 'Oswald, sans-serif' } },
 ];
 
-const CUISINE_OPTIONS = ['Braai & Grill', 'Burgers', 'Pizza', 'Chicken', 'Seafood', 'Healthy', 'Desserts', 'Drinks', 'Vegan', 'Indian', 'Asian', 'Bakery', 'Café', 'Mixed / Other'];
+// Business categories - now generic for all types
+const BUSINESS_CATEGORIES = [
+  // Food & Beverage
+  'Restaurant', 'Café', 'Bakery', 'Catering', 'Food Truck',
+  'Pizza', 'Burgers', 'Chicken', 'Seafood', 'Vegan', 'Healthy',
+  'Asian', 'Indian', 'Italian', 'Mexican', 'Braai & Grill',
+  'Desserts', 'Ice Cream', 'Smoothies', 'Coffee Shop',
+  // Retail & Shopping
+  'Clothing', 'Shoes', 'Accessories', 'Beauty & Cosmetics',
+  'Electronics', 'Home Goods', 'Books', 'Vintage & Secondhand',
+  'Sports Equipment', 'Toys & Games',
+  // Services
+  'Hair Salon', 'Spa & Wellness', 'Fitness', 'Photography',
+  'Cleaning Services', 'Laundry', 'Car Wash', 'Repairs',
+  // Entertainment & Hobbies
+  'Flowers & Gifts', 'Art & Craft Supplies', 'Music Store',
+  'Printing & Design', 'Events & Planning',
+  // Other
+  'Mixed / Other'
+];
 
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -297,11 +316,11 @@ function JoinForm() {
   if (step === 2) return (
     <>
       <StepIndicator current={2} />
-      <h2 className="font-display text-2xl font-extrabold text-charcoal mb-1">What do you serve?</h2>
-      <p className="text-sm text-charcoal/55 mb-6">Pick your cuisine types. Customers use these to find you. Choose all that apply.</p>
+      <h2 className="font-display text-2xl font-extrabold text-charcoal mb-1">What's your business type?</h2>
+      <p className="text-sm text-charcoal/55 mb-6">Select your business categories. Customers use these to find you. Choose all that apply.</p>
 
       <div className="flex flex-wrap gap-2 mb-4">
-        {CUISINE_OPTIONS.map((cat) => {
+        {BUSINESS_CATEGORIES.map((cat) => {
           const active = form.defaultMenuCategories.includes(cat);
           return (
             <button key={cat} type="button" onClick={() => toggleCategory(cat)}
@@ -315,11 +334,11 @@ function JoinForm() {
       </div>
 
       {form.defaultMenuCategories.length === 0 && (
-        <p className="text-sm text-charcoal/40">Select at least one cuisine type above.</p>
+        <p className="text-sm text-charcoal/40">Select at least one business category above.</p>
       )}
 
       <div className="mt-6 rounded-2xl border border-charcoal/8 bg-[#FFFFFF] p-4">
-        <p className="text-xs font-bold text-charcoal/50 mb-2">Your menu categories will be:</p>
+        <p className="text-xs font-bold text-charcoal/50 mb-2">Your business categories:</p>
         {form.defaultMenuCategories.length === 0
           ? <p className="text-sm text-charcoal/35 italic">Nothing selected yet</p>
           : <p className="text-sm font-semibold text-charcoal">{form.defaultMenuCategories.join(' · ')}</p>
@@ -344,7 +363,7 @@ function JoinForm() {
 
       <div className="flex flex-col gap-3">
         <Link href={`/admin/menu?shop=${form.slug}`} className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-base font-bold text-cream shadow-glow transition hover:shadow-glow-lg">
-          Add menu items <ArrowRight className="h-5 w-5" />
+          Add products / services <ArrowRight className="h-5 w-5" />
         </Link>
         <Link href={`/shop/${form.slug}`} className="flex items-center justify-center gap-2 rounded-2xl border border-charcoal/12 py-3.5 text-sm font-semibold text-charcoal transition hover:border-primary/25">
           Preview your shop →
@@ -586,7 +605,7 @@ function JoinFormInner() {
       <h2 className="font-display text-2xl font-extrabold text-charcoal mb-1">What do you serve?</h2>
       <p className="text-sm text-charcoal/55 mb-5">Pick your cuisine types. Customers filter by these.</p>
       <div className="flex flex-wrap gap-2 mb-4">
-        {CUISINE_OPTIONS.map((cat) => {
+        {BUSINESS_CATEGORIES.map((cat) => {
           const active = form.defaultMenuCategories.includes(cat);
           return (
             <button key={cat} type="button" onClick={() => toggleCategory(cat)}
