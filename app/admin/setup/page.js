@@ -364,8 +364,9 @@ export default function ShopSetupPage() {
 
         <aside className="space-y-4">
           <div
-            className="card p-8 space-y-5 overflow-hidden rounded-3xl shadow-2xl border border-white/30 animate-fade-in-up" style={{ animationDelay: '250ms' }}
+            className="card p-8 space-y-5 overflow-hidden rounded-3xl shadow-2xl border border-white/30 animate-fade-in-up"
             style={{
+              animationDelay: '250ms',
               '--preview-primary': form.primaryColor,
               '--preview-accent': form.accentColor,
               '--preview-gold': form.goldColor,
@@ -464,6 +465,7 @@ export default function ShopSetupPage() {
             </ul>
           </div>
         </aside>
+      </div>
       </div>
     </div>
   );
