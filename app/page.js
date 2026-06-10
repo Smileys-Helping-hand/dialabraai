@@ -11,43 +11,43 @@ import ShopCard, { ShopCardSkeleton } from '@/components/ShopCard';
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const FILTERS = [
-  { label: 'All',           value: '',        emoji: '🍽️' },
-  { label: 'Braai & Grill', value: 'braai',   emoji: '🔥' },
-  { label: 'Burgers',       value: 'burger',  emoji: '🍔' },
-  { label: 'Pizza',         value: 'pizza',   emoji: '🍕' },
-  { label: 'Chicken',       value: 'chicken', emoji: '🍗' },
-  { label: 'Healthy',       value: 'healthy', emoji: '🥗' },
-  { label: 'Desserts',      value: 'desserts',emoji: '🍰' },
-  { label: 'Drinks',        value: 'drinks',  emoji: '🥤' },
+  { label: 'All',              value: '',       emoji: '🌟' },
+  { label: 'Food & Beverage',  value: 'food',   emoji: '🍽️' },
+  { label: 'Retail',           value: 'retail', emoji: '🛍️' },
+  { label: 'Services',         value: 'services', emoji: '💇' },
+  { label: 'Events',           value: 'events', emoji: '🎉' },
+  { label: 'Entertainment',    value: 'entertainment', emoji: '🎨' },
+  { label: 'Wellness',         value: 'wellness', emoji: '🧘' },
+  { label: 'Local Favorites',  value: 'featured', emoji: '❤️' },
 ];
 
 const TRUST_STATS = [
-  { icon: Store,      value: '50+',    label: 'Local shops'   },
-  { icon: TrendingUp, value: '5 000+', label: 'Orders placed' },
-  { icon: Clock,      value: '30 min', label: 'Avg ready time'},
-  { icon: Star,       value: '4.8',    label: 'Avg rating'    },
+  { icon: Store,      value: '100+',   label: 'Local businesses' },
+  { icon: TrendingUp, value: '10 000+', label: 'Happy customers' },
+  { icon: Clock,      value: '24/7',   label: 'Always open'    },
+  { icon: Star,       value: '★★★★★', label: 'Community loved'  },
 ];
 
 const FEATURES = [
   {
-    emoji: '📋',
-    title: 'Structured orders',
-    desc:  'No more chaotic WhatsApp threads. Every order lands in one place, organised and ready to act on.',
+    emoji: '🏪',
+    title: 'Easy discovery',
+    desc:  'Browse local shops, services & events. Filter by what you need. Find hidden gems in your community.',
   },
   {
-    emoji: '⏱️',
-    title: 'Order timers',
-    desc:  'Customers see a live countdown. Shops get alerts if an order sits too long. No forgotten customers.',
+    emoji: '💌',
+    title: 'Direct connection',
+    desc:  'Chat with shop owners on WhatsApp. Place orders, ask questions, build relationships with locals.',
   },
   {
-    emoji: '💬',
-    title: 'WhatsApp-native',
-    desc:  'One tap confirms an order on WhatsApp. The connection stays — now with the structure you need.',
+    emoji: '⏰',
+    title: 'Real-time updates',
+    desc:  'Track your order status live. Get alerts when it\'s ready. No surprises, ever.',
   },
   {
-    emoji: '📊',
-    title: 'Sales dashboard',
-    desc:  'Revenue, best sellers, inventory — visible at a glance. Built for owners who are in the kitchen, not at a desk.',
+    emoji: '❤️',
+    title: 'Support local',
+    desc:  'Spend with small businesses & creators. Help your community thrive. Every order matters.',
   },
 ];
 
@@ -135,15 +135,15 @@ export default function MarketplacePage() {
           <div className="animate-scale-in-soft mb-6">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(var(--color-flame),0.2)] bg-[rgba(var(--color-flame),0.08)] px-4 py-2 text-xs font-black uppercase tracking-wider text-[rgb(var(--color-flame))] shadow-[0_4px_16px_rgba(var(--color-primary),0.1)]">
               <Sparkles className="h-3.5 w-3.5 animate-bounce-subtle" />
-              Local food ordering — no app required
+              Discover local businesses — no app needed
             </span>
           </div>
 
           {/* Headline */}
           <h1 className="animate-scale-in-soft delay-100 font-display mb-6 text-4xl font-black leading-[1.05] tracking-tight text-charcoal sm:text-5xl md:text-7xl">
-            Order from shops<br />
+            Find & support<br />
             <span className="relative inline-block mt-2">
-              <span className="text-gradient-flame">you actually love.</span>
+              <span className="text-gradient-flame">your local community.</span>
               {/* Dynamic theme underline squiggle */}
               <svg className="absolute -bottom-2.5 left-0 w-full text-[rgb(var(--color-flame))]" viewBox="0 0 300 8" fill="none" preserveAspectRatio="none">
                 <path d="M2 6 Q75 2 150 6 Q225 10 298 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" className="opacity-60" />
@@ -152,7 +152,7 @@ export default function MarketplacePage() {
           </h1>
 
           <p className="animate-slide-up delay-250 mx-auto mb-10 max-w-lg text-lg text-charcoal/60 leading-relaxed">
-            Browse local restaurants and shops. Build your order. Skip the WhatsApp thread.
+            Discover restaurants, shops, services & events. Connect with your community. Zero friction.
           </p>
 
           {/* Search bar with glowing ring */}
@@ -162,7 +162,7 @@ export default function MarketplacePage() {
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="Search shops, food type or area…"
+                placeholder="Search by shop name, type, or location…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full rounded-2xl border border-charcoal/10 bg-white/80 pl-12 pr-12 py-4 text-base text-charcoal shadow-sm transition-all duration-300 backdrop-blur-md placeholder:text-charcoal/35 focus:border-[rgba(var(--color-flame),0.4)] focus:outline-none focus:ring-4 focus:ring-[rgba(var(--color-primary),0.08)] focus:shadow-[0_8px_30px_rgba(var(--color-primary),0.12)]"
@@ -213,14 +213,14 @@ export default function MarketplacePage() {
           {/* Section label */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="mb-1 text-xs font-black uppercase tracking-widest text-[rgb(var(--color-flame))]">Explore</p>
+              <p className="mb-1 text-xs font-black uppercase tracking-widest text-[rgb(var(--color-flame))]">🌍 Browse</p>
               <h2 className="font-display text-3xl font-extrabold text-charcoal">
-                {search ? `Results for "${search}"` : 'All Shops'}
+                {search ? `Results for "${search}"` : 'Local Businesses & Events'}
               </h2>
             </div>
             {!loading && !search && (
               <div className="rounded-full bg-charcoal/4 px-3 py-1.5 text-xs font-bold text-charcoal/50">
-                {shops.length} {shops.length === 1 ? 'shop' : 'shops'} available
+                {shops.length} {shops.length === 1 ? 'business' : 'businesses'} nearby
               </div>
             )}
           </div>
@@ -306,16 +306,16 @@ export default function MarketplacePage() {
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-cream backdrop-blur-sm">
             <Store className="h-4 w-4 text-gold" />
-            For business owners
+            For all business owners
           </div>
 
           <h2 className="font-display mb-4 text-4xl font-extrabold leading-tight text-cream sm:text-5xl">
-            Stop taking orders on WhatsApp.<br />
-            <span className="text-gold">Start using a real system.</span>
+            Build your online presence.<br />
+            <span className="text-gold">Zero friction. Zero commission.</span>
           </h2>
           <p className="mx-auto mb-10 max-w-xl text-base text-cream/70 leading-relaxed">
-            Load your menu, share your link, and start getting structured orders within the hour.
-            No monthly fee, no commission — just your shop, online.
+            Whether it's food, retail, services or events — load your details, share your link, and start connecting
+            with customers immediately. No fees, no middleman. Just you and your community.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
@@ -340,19 +340,48 @@ export default function MarketplacePage() {
         </div>
       </section>
 
+      {/* ─── TESTIMONIALS ──────────────────────────────────────────────────── */}
+      <section className="bg-gradient-to-b from-slate-50 to-white px-4 py-16 border-t border-slate-100">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[rgb(var(--color-flame))]">💬 Community Love</p>
+            <h2 className="font-display text-3xl font-extrabold text-charcoal">Loved by shops & customers</h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { name: 'Sarah', role: 'Restaurant Owner', text: '"Finally, orders don\'t get lost in WhatsApp. My business is more organized than ever."', emoji: '👩‍💼' },
+              { name: 'Thabo', role: 'Coffee Shop', text: '"Customers love the simplicity. No app download needed. Pure genius."', emoji: '☕' },
+              { name: 'Amira', role: 'Event Planner', text: '"The easiest way to reach my clients. Bookings are now traceable and professional."', emoji: '📋' },
+            ].map(({ name, role, text, emoji }, i) => (
+              <div key={name} className="animate-slide-up rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-all" style={{ animationDelay: `${i * 100}ms` }}>
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-3xl">{emoji}</span>
+                  <div>
+                    <p className="font-bold text-charcoal">{name}</p>
+                    <p className="text-xs text-charcoal/60">{role}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-charcoal/70 italic">"{text}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── HOW IT WORKS ──────────────────────────────────────────────────── */}
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="mb-10 text-center">
-            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[rgb(var(--color-flame))]">Simple</p>
-            <h2 className="font-display text-3xl font-extrabold text-charcoal">Three taps and you&apos;re done</h2>
+            <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[rgb(var(--color-flame))]">🚀 Easy</p>
+            <h2 className="font-display text-3xl font-extrabold text-charcoal">Get started in minutes</h2>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { step: '01', emoji: '🔍', title: 'Discover',  desc: 'Browse shops in the marketplace. Filter by cuisine, search by name or area.' },
-              { step: '02', emoji: '🛒', title: 'Order',     desc: 'Pick your items, build your cart. We remember your details for next time.' },
-              { step: '03', emoji: '💬', title: 'Connect',   desc: 'One tap to confirm on WhatsApp. Get a live update when your order is ready.' },
+              { step: '01', emoji: '🔍', title: 'Browse',     desc: 'Discover restaurants, shops, services & events near you. Filter by what you need.' },
+              { step: '02', emoji: '🛒', title: 'Select',     desc: 'Pick items, build your order. We save your info so next time is instant.' },
+              { step: '03', emoji: '💬', title: 'Confirm',    desc: 'Message on WhatsApp to confirm. Track your order in real time.' },
             ].map(({ step, emoji, title, desc }, i) => (
               <div key={step} className="animate-slide-up relative rounded-3xl border border-charcoal/6 bg-white p-6 shadow-card" style={{ animationDelay: `${i * 100}ms` }}>
                 <span className="absolute right-4 top-4 font-display text-5xl font-black text-charcoal/5">{step}</span>

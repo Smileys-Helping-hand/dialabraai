@@ -77,17 +77,17 @@ export default function AdminLayout({ children }) {
   return (
     <div className="min-h-screen bg-cream">
       {/* Top Navigation Bar */}
-      <header className="bg-white border-b-2 border-gold/30 shadow-sm">
+      <header className="bg-gradient-to-r from-white to-slate-50 border-b-2 border-slate-100 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/admin/dashboard" className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame text-cream font-bold text-xl border-2 border-gold shadow-glow">
-                  🔥
+              <Link href="/admin/dashboard" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-flame text-cream font-bold text-xl border-2 border-primary/30 shadow-lg hover:shadow-xl transition-shadow">
+                  🏪
                 </span>
                 <div>
-                  <h1 className="text-xl font-heading font-bold text-primary">Shop Admin</h1>
-                  <p className="text-xs text-charcoal/60">Graze Business Portal</p>
+                  <h1 className="text-xl font-heading font-bold text-charcoal">Business Admin</h1>
+                  <p className="text-xs text-charcoal/50">Your shop dashboard</p>
                 </div>
               </Link>
             </div>
@@ -133,26 +133,26 @@ export default function AdminLayout({ children }) {
       </header>
 
       {/* Main Navigation Tabs */}
-      <nav className="bg-white border-b border-charcoal/10">
+      <nav className="bg-white border-b border-slate-100 sticky top-0 z-40">
         <div className="container mx-auto px-4">
           <div className="flex gap-1 overflow-x-auto">
             <NavTab href="/admin/dashboard" active={pathname === '/admin/dashboard'} icon="📊">
               Dashboard
             </NavTab>
             <NavTab href="/admin/orders" active={pathname.startsWith('/admin/orders')} icon="📦">
-              Orders
+              Orders & Bookings
             </NavTab>
-            <NavTab href="/admin/menu" active={pathname === '/admin/menu'} icon="🍖">
-              Menu
+            <NavTab href="/admin/menu" active={pathname === '/admin/menu'} icon="📋">
+              Products & Services
             </NavTab>
             <NavTab href="/admin/stats" active={pathname === '/admin/stats'} icon="📈">
-              Statistics
+              Analytics
             </NavTab>
-            <NavTab href="/admin/setup" active={pathname.startsWith('/admin/setup')} icon="🧭">
-              Setup
+            <NavTab href="/admin/setup" active={pathname.startsWith('/admin/setup')} icon="⚙️">
+              Settings
             </NavTab>
             <NavTab href="/superadmin" active={false} icon="👑">
-              Super Admin
+              Admin Panel
             </NavTab>
           </div>
         </div>
@@ -177,13 +177,13 @@ function NavTab({ href, active, icon, children }) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 px-6 py-4 font-semibold text-base transition border-b-4 whitespace-nowrap ${
+      className={`flex items-center gap-2 px-5 py-4 font-semibold text-base transition border-b-4 whitespace-nowrap duration-300 ${
         active
-          ? 'text-primary border-primary bg-primary/5'
-          : 'text-charcoal/60 border-transparent hover:text-primary hover:border-charcoal/20'
+          ? 'text-primary border-primary bg-gradient-to-b from-primary/8 to-transparent'
+          : 'text-charcoal/60 border-transparent hover:text-primary hover:border-primary/30 hover:bg-slate-50'
       }`}
     >
-      <span className="text-xl">{icon}</span>
+      <span className="text-lg">{icon}</span>
       {children}
     </Link>
   );

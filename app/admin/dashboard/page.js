@@ -52,9 +52,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-heading font-bold text-primary mb-3">{shop.name} Dashboard</h1>
-        <p className="text-lg text-charcoal/70">Welcome! Here's your business overview</p>
+      <div className="mb-8 bg-gradient-to-r from-primary/10 to-flame/10 rounded-3xl p-8 border border-primary/20">
+        <h1 className="text-4xl font-heading font-bold text-charcoal mb-2">{shop.name}</h1>
+        <p className="text-lg text-charcoal/70 mb-4">Your business is live & ready! 🎉</p>
+        <p className="text-sm text-charcoal/60">Track orders, manage inventory, and grow your business all in one place.</p>
       </div>
 
       {/* Alert for low stock */}
